@@ -7,6 +7,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+/*Añadir producto
+ * Obtener categorias
+ * Busqueda de productos
+ * Detalle de productos*/
 @Entity
 public class User {
 	
