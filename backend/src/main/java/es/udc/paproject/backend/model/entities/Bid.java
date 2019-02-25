@@ -2,6 +2,9 @@ package es.udc.paproject.backend.model.entities;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 public class Bid {
 	
 	private enum StateType {WON, LOST, WINNING};
@@ -10,21 +13,21 @@ public class Bid {
 	private float minPrice;
 	private StateType state;
 	private LocalDateTime date;
-	private User idUser;
-	private Product idProduct;
+	private User user;
+	private Product product;
 	
 	private Bid() {}
 	
-	private Bid(float bidQuantity, float minPrice, StateType state, LocalDateTime date, User idUser, Product idProduct) {
+	private Bid(float bidQuantity, float minPrice, StateType state, LocalDateTime date, User user, Product product) {
 		
 		this.bidQuantity = bidQuantity;
 		this.minPrice = minPrice;
 		this.state = state;
 		this.date = date;
-		this.idUser = idUser;
-		this.idProduct = idProduct; 
+		this.user = user;
+		this.product = product; 
 	}
-
+	
 	public float getBidQuantity() {
 		return bidQuantity;
 	}
@@ -57,21 +60,23 @@ public class Bid {
 		this.date = date;
 	}
 
-	public User getIdUser() {
-		return idUser;
+	@ManyToOne(optional=false)
+	@JoinColumn(name="userId")
+	public User getUser() {
+		return user;
 	}
 
-	public void setIdUser(User idUser) {
-		this.idUser = idUser;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	public Product getIdProduct() {
-		return idProduct;
+	@ManyToOne(optional=false)
+	@JoinColumn(name="productId")
+	public Product getProduct() {
+		return product;
 	}
 
-	public void setIdProduct(Product idProduct) {
-		this.idProduct = idProduct;
+	public void setProduct(Product product) {
+		this.product = product;
 	}
-	
-
 }

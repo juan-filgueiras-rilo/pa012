@@ -1,16 +1,18 @@
 package es.udc.paproject.backend.model.entities;
 
+import java.util.HashSet;
+
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 /*Añadir producto
  * Obtener categorias
  * Busqueda de productos
  * Detalle de productos*/
+
 @Entity
 public class User {
 	
@@ -23,6 +25,8 @@ public class User {
 	private String lastName;
 	private String email;
 	private RoleType role;
+	private HashSet<Bid> bids = null;
+	private HashSet<Product> products = null;
 
 	public User() {}
 
@@ -33,7 +37,8 @@ public class User {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		
+		this.bids = new HashSet<Bid>();
+		this.products = new HashSet<Product>();
 	}
 
 	@Id
@@ -92,6 +97,24 @@ public class User {
 
 	public void setRole(RoleType role) {
 		this.role = role;
+	}
+	
+	@OneToMany(mappedBy="user")
+	public HashSet<Bid> getBids() {
+		return bids;
+	}
+
+	public void setBids(HashSet<Bid> bids) {
+		this.bids = bids;
+	}
+	
+	@OneToMany(mappedBy="user")
+	public HashSet<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(HashSet<Product> products) {
+		this.products = products;
 	}
 
 }
