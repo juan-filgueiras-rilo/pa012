@@ -1,6 +1,8 @@
 package es.udc.paproject.backend.model.entities;
 
+import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 public class Product {
 	
