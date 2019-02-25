@@ -2,6 +2,9 @@ package es.udc.paproject.backend.model.entities;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Bid {
 	
 	private enum StateType {WON, LOST, WINNING};
