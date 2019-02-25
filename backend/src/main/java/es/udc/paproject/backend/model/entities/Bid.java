@@ -4,7 +4,9 @@ import java.time.LocalDateTime;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Entity;
 
+@Entity
 public class Bid {
 	
 	private enum StateType {WON, LOST, WINNING};

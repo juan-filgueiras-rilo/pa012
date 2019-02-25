@@ -1,5 +1,8 @@
 package es.udc.paproject.backend.model.entities;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Category {
 
 	private long id;
