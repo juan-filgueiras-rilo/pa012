@@ -5,6 +5,7 @@ import java.util.HashSet;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -46,9 +47,11 @@ public class CatalogServiceImpl implements CatalogService{
 	
 
 	@Override
-	public HashSet<Product> findProducts(String keywords, Category category) {
-		// TODO Auto-generated method stub
-		return null;
+	public Block<Product> findProducts(Long id, String keywords, int page, int size) {
+		
+		Slice<Product> slice = productDao.find(id, keywords, page, size);
+		
+		return new Block<>(slice.getContent(), slice.hasNext());
 	}
 
 	@Override
@@ -64,8 +67,8 @@ public class CatalogServiceImpl implements CatalogService{
 
 	@Override
 	public Product getProductDetail(Product product) {
-		// TODO Auto-generated method stub
-		return null;
+
+
 	}	
 	
 

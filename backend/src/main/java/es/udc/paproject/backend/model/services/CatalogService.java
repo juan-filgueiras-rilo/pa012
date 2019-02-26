@@ -10,7 +10,7 @@ public interface CatalogService {
 	
 	Product addProduct(Long id, Product product) throws InstanceNotFoundException;
 	
-	HashSet<Product> findProducts(String keywords, Category category);
+	Block<Product> findProducts(Long id, String keywords, int page, int size);
 	
 	HashSet<Category> getCategories(Category category);
 	
