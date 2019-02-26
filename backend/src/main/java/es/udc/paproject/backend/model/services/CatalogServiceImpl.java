@@ -8,15 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundException;
 import es.udc.paproject.backend.model.entities.Category;
 import es.udc.paproject.backend.model.entities.CategoryDao;
 import es.udc.paproject.backend.model.entities.Product;
 import es.udc.paproject.backend.model.entities.ProductDao;
 import es.udc.paproject.backend.model.entities.User;
+import es.udc.paproject.backend.model.entities.UserDao;
 
 @Service
 @Transactional
 public class CatalogServiceImpl implements CatalogService{
+	
+	@Autowired
+	private PermissionChecker permissionChecker;
 	
 	@Autowired
 	private ProductDao productDao;
@@ -24,12 +29,20 @@ public class CatalogServiceImpl implements CatalogService{
 	@Autowired
 	private CategoryDao categoryDao;
 	
+	@Autowired
+	private UserDao userDao;
+	
 
-	/*@Override
-	public Product addProduct(Long id, User products) {
+	@Override
+	public Product addProduct(Long id, Product product) throws InstanceNotFoundException {
 		
-		User user = permissionChecker.checkUserExists(id);
-	}*/
+		User user = permissionChecker.checkUser(id);
+		product = productDao.save(product);
+		//userDao.add añadir el producto al usuario ? 
+		
+		return product;
+		
+	}
 	
 
 	@Override
@@ -53,15 +66,7 @@ public class CatalogServiceImpl implements CatalogService{
 	public Product getProductDetail(Product product) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public Product addProduct(Long id, User products) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
+	}	
 	
 
 }
