@@ -14,6 +14,6 @@ public interface CatalogService {
 	
 	HashSet<Category> getCategories(Category category);
 	
-	Product getProductDetail(Product product);		
+	ProductInfo getProductDetail(Long productId);		
 
 }

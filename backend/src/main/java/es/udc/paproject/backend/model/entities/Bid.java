@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 @Entity
 public class Bid {
 	
-	private enum StateType {WON, LOST, WINNING};
+	public enum StateType {WON, LOST, WINNING};
 	
 	private float bidQuantity;
 	private float minPrice;
