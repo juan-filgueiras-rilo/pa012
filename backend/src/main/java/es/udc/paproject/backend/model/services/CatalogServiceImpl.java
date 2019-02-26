@@ -2,16 +2,35 @@ package es.udc.paproject.backend.model.services;
 
 import java.util.HashSet;
 
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
 import es.udc.paproject.backend.model.entities.Category;
+import es.udc.paproject.backend.model.entities.CategoryDao;
 import es.udc.paproject.backend.model.entities.Product;
+import es.udc.paproject.backend.model.entities.ProductDao;
 import es.udc.paproject.backend.model.entities.User;
 
+@Service
+@Transactional
 public class CatalogServiceImpl implements CatalogService{
+	
+	@Autowired
+	private ProductDao productDao;
 
-	@Override
-	public Product addProduct(User userName, User products, User bids) {
+	@Autowired
+	private CategoryDao categoryDao;
+	
+
+	/*@Override
+	public Product addProduct(Long id, User products) {
 		
-	}
+		User user = permissionChecker.checkUserExists(id);
+	}*/
+	
 
 	@Override
 	public HashSet<Product> findProducts(String keywords, Category category) {
@@ -21,8 +40,13 @@ public class CatalogServiceImpl implements CatalogService{
 
 	@Override
 	public HashSet<Category> getCategories(Category category) {
-		// TODO Auto-generated method stub
-		return null;
+
+		Iterable<Category> categories = categoryDao.findAll(new Sort(Sort.Direction.ASC, "name"));
+		HashSet<Category> categoriesAsList = new HashSet<>();
+		
+		categories.forEach(c -> categoriesAsList.add(c));
+		
+		return categoriesAsList;
 	}
 
 	@Override
@@ -30,6 +54,13 @@ public class CatalogServiceImpl implements CatalogService{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Product addProduct(Long id, User products) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	
 

@@ -8,7 +8,7 @@ import es.udc.paproject.backend.model.entities.User;
 
 public interface CatalogService {
 	
-	Product addProduct(User userName, User products, User bids);
+	Product addProduct(Long id, User products);
 	
 	HashSet<Product> findProducts(String keywords, Category category);
 	

@@ -1,6 +1,9 @@
 package es.udc.paproject.backend.model.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class Category {
@@ -8,7 +11,15 @@ public class Category {
 	private long id;
 	private String name;
 	
-	public long getId() {
+	public Category() {}
+	
+	public Category(String name) {
+		this.name = name; 
+	}
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public Long getId() {
 		return id;
 	}
 	
