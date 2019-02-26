@@ -1,0 +1,220 @@
+From 1ab14caf5d484785f5fab0503b2063f86f1db111 Mon Sep 17 00:00:00 2001
+From: Fernando Bellas Permuy <fbellas@udc.es>
+Date: Thu, 14 Feb 2019 10:27:21 +0100
+Subject: [PATCH] =?UTF-8?q?Frontend:=20se=20a=C3=B1adi=C3=B3=20el=20compon?=
+ =?UTF-8?q?ente=20Pager.?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../src/modules/common/components/Pager.js    | 31 +++++++++++++++++++
+ frontend/src/modules/common/index.js          |  3 +-
+ 2 files changed, 33 insertions(+), 1 deletion(-)
+ create mode 100644 frontend/src/modules/common/components/Pager.js
+
+diff --git a/frontend/src/modules/common/components/Pager.js b/frontend/src/modules/common/components/Pager.js
+new file mode 100644
+index 0000000..a29caa6
+--- /dev/null
++++ b/frontend/src/modules/common/components/Pager.js
+@@ -0,0 +1,31 @@
++import React from 'react';
++import PropTypes from 'prop-types';
++import {FormattedMessage} from 'react-intl';
++
++const Pager = ({back, next}) => (
++
++    <nav aria-label="page navigation">
++        <ul className="pagination justify-content-center">
++            <li className={`page-item ${back.enabled ? "": "disabled"}`}>
++                <button className="page-link"
++                    onClick={back.handle}>
++                    <FormattedMessage id='project.global.buttons.back'/>
++                </button>
++            </li>
++            <li className={`page-item ${next.enabled ? "": "disabled"}`}>
++                <button className="page-link"
++                    onClick={next.handle}>
++                    <FormattedMessage id='project.global.buttons.next'/>
++                </button>
++            </li>
++        </ul>
++    </nav>
++
++);
++
++Pager.propTypes = {
++    back: PropTypes.object.isRequired,
++    next: PropTypes.object.isRequired
++};
++
++export default Pager;
+\ No newline at end of file
+diff --git a/frontend/src/modules/common/index.js b/frontend/src/modules/common/index.js
+index 237648e..143104a 100644
+--- a/frontend/src/modules/common/index.js
++++ b/frontend/src/modules/common/index.js
+@@ -2,4 +2,5 @@ export {default as ConfirmDialog} from "./components/ConfirmDialog";
+ export {default as ErrorDialog} from "./components/ErrorDialog";
+ export {default as Errors} from "./components/Errors";
+ export {default as Loader} from "./components/Loader";
+-export {default as Success} from "./components/Success";
+\ No newline at end of file
++export {default as Success} from "./components/Success";
++export {default as Pager} from "./components/Pager";
+\ No newline at end of file
+-- 
+2.19.0.windows.1
+
+From 07708eb694094ace0833d349aade05220280f310 Mon Sep 17 00:00:00 2001
+From: Fernando Bellas Permuy <fbellas@udc.es>
+Date: Thu, 14 Feb 2019 10:24:57 +0100
+Subject: [PATCH] =?UTF-8?q?Backend:=20se=20a=C3=B1adi=C3=B3=20Block=20y=20?=
+ =?UTF-8?q?BlockDto.?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../backend/model/services/Block.java         | 54 +++++++++++++++++++
+ .../paproject/backend/rest/dtos/BlockDto.java | 35 ++++++++++++
+ 2 files changed, 89 insertions(+)
+ create mode 100644 backend/src/main/java/es/udc/paproject/backend/model/services/Block.java
+ create mode 100644 backend/src/main/java/es/udc/paproject/backend/rest/dtos/BlockDto.java
+
+diff --git a/backend/src/main/java/es/udc/paproject/backend/model/services/Block.java b/backend/src/main/java/es/udc/paproject/backend/model/services/Block.java
+new file mode 100644
+index 0000000..8cdb28d
+--- /dev/null
++++ b/backend/src/main/java/es/udc/paproject/backend/model/services/Block.java
+@@ -0,0 +1,54 @@
++package es.udc.paproject.backend.model.services;
++
++import java.util.List;
++
++public class Block<T> {
++	
++	private List<T> items;
++    private boolean existMoreItems;
++
++    public Block(List<T> items, boolean existMoreItems) {
++        
++        this.items = items;
++        this.existMoreItems = existMoreItems;
++
++    }
++    
++    public List<T> getItems() {
++        return items;
++    }
++    
++    public boolean getExistMoreItems() {
++        return existMoreItems;
++    }
++
++	@Override
++	public int hashCode() {
++		final int prime = 31;
++		int result = 1;
++		result = prime * result + (existMoreItems ? 1231 : 1237);
++		result = prime * result + ((items == null) ? 0 : items.hashCode());
++		return result;
++	}
++
++	@Override
++	public boolean equals(Object obj) {
++		if (this == obj)
++			return true;
++		if (obj == null)
++			return false;
++		if (getClass() != obj.getClass())
++			return false;
++		@SuppressWarnings("rawtypes")
++		Block other = (Block) obj;
++		if (existMoreItems != other.existMoreItems)
++			return false;
++		if (items == null) {
++			if (other.items != null)
++				return false;
++		} else if (!items.equals(other.items))
++			return false;
++		return true;
++	}
++    
++}
+diff --git a/backend/src/main/java/es/udc/paproject/backend/rest/dtos/BlockDto.java b/backend/src/main/java/es/udc/paproject/backend/rest/dtos/BlockDto.java
+new file mode 100644
+index 0000000..8f7ac95
+--- /dev/null
++++ b/backend/src/main/java/es/udc/paproject/backend/rest/dtos/BlockDto.java
+@@ -0,0 +1,35 @@
++package es.udc.paproject.backend.rest.dtos;
++
++import java.util.List;
++
++public class BlockDto<T> {
++	
++	private List<T> items;
++    private boolean existMoreItems;
++    
++    public BlockDto() {}
++
++    public BlockDto(List<T> items, boolean existMoreItems) {
++        
++        this.items = items;
++        this.existMoreItems = existMoreItems;
++
++    }
++    
++    public List<T> getItems() {
++        return items;
++    }
++    
++    public void setItems(List<T> items) {
++		this.items = items;
++	}
++    
++	public boolean getExistMoreItems() {
++        return existMoreItems;
++    }
++	
++	public void setExistMoreItems(boolean existMoreItems) {
++		this.existMoreItems = existMoreItems;
++	}
++    
++}
+-- 
+2.19.0.windows.1
+
+From 89ebb672f51bb2f1ca620fffe45faaeab42d1e76 Mon Sep 17 00:00:00 2001
+From: Fernando Bellas Permuy <fbellas@udc.es>
+Date: Tue, 5 Feb 2019 17:33:10 +0100
+Subject: [PATCH] =?UTF-8?q?Backend:=20se=20redefine=20de=20manera=20m?=
+ =?UTF-8?q?=C3=A1s=20apropiada=20el=20DataSource=20usado=20en=20applicatio?=
+ =?UTF-8?q?n-test.yml.?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ backend/src/test/resources/application-test.yml | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/backend/src/test/resources/application-test.yml b/backend/src/test/resources/application-test.yml
+index 7bb50b8..5cb6124 100644
+--- a/backend/src/test/resources/application-test.yml
++++ b/backend/src/test/resources/application-test.yml
+@@ -3,7 +3,5 @@ spring:
+     url: @testDataSource.url@
+     username: @testDataSource.user@
+     password: @testDataSource.password@
+-  jpa:
+-    hibernate:
+-      ddl-auto: none
+- 
++    max-active: 1
++    max-idle: 1
+-- 
+2.19.0.windows.1
+
