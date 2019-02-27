@@ -42,7 +42,6 @@ public class Product {
 	public long getId() {
 		return id;
 	}
-	
 
 	public void setId(long id) {
 		this.id = id;
@@ -113,6 +112,10 @@ public class Product {
 
 	public void setBids(HashSet<Bid> bid) {
 		this.bids = bid;
+	}
+	
+	public void addBid(Bid bid) {
+		this.bids.add(bid);
 	}
 
 	
