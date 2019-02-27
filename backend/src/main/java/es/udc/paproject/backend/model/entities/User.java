@@ -8,11 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-/*Añadir producto
- * Obtener categorias
- * Busqueda de productos
- * Detalle de productos*/
-
 @Entity
 public class User {
 	
@@ -107,6 +102,10 @@ public class User {
 	public void setBids(HashSet<Bid> bids) {
 		this.bids = bids;
 	}
+
+	public void addBid(Bid bid) {
+		this.bids.add(bid);
+	}
 	
 	@OneToMany(mappedBy="user")
 	public HashSet<Product> getProducts() {
@@ -115,6 +114,10 @@ public class User {
 
 	public void setProducts(HashSet<Product> products) {
 		this.products = products;
+	}
+	
+	public void addProduct(Product product) {
+		this.products.add(product);
 	}
 
 }
