@@ -70,25 +70,15 @@ public class CatalogServiceImpl implements CatalogService{
 	}
 
 	@Override
-	public ProductInfo getProductDetail(Long productId) {
+	public Product getProductDetail(Long productId) {
 		 
-		ProductInfo productInfo;
 		Optional<Product> optProduct;
 		Product product;
-		List<BidInfo> bidInfos;
 		
 		optProduct = productDao.findById(productId);
 		product = optProduct.get();
-		bidInfos = getBidDetails(product.getBid());
-		productInfo = new ProductInfo(product.getName(), product.getDescriptionProduct(), product.getBidTime(), product.getInitialPrice(), product.getShipmentInfo(),
-				product.getCategory(), product.getUser(), bidInfos);
-		return productInfo;
+		
+		return product;
 	}
 	
-	private List<BidInfo> getBidDetails(HashSet<Bid> bids) {
-		
-		List<BidInfo> bidInfos = new ArrayList<BidInfo>();
-		bids.forEach(b -> bidInfos.add(new BidInfo(b.getState(), b.getDate())));
-		return bidInfos;
-	}
 }
