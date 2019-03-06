@@ -38,6 +38,7 @@ public class BidServiceImpl implements BidService {
 		
 		bidDao.save(bid);
 		
+		
 		if(product.getUser() == user) {
 			throw new 
 		}
