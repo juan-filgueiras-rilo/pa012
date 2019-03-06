@@ -27,10 +27,9 @@ public class Product {
 
 	public Product() {}
 	
-	public Product(long id, String name, String descriptionProduct,
-			long duration, float initialPrice, String shipmentInfo,
+	public Product(String name, String descriptionProduct,
+			long bidTime, float initialPrice, String shipmentInfo,
 			Category category, User user) {
-		this.id = id;
 		this.name = name;
 		this.descriptionProduct = descriptionProduct; 
 		this.duration = duration;

@@ -1,0 +1,72 @@
+From 657e0a097a776a0900c6431bb8f325e80e068427 Mon Sep 17 00:00:00 2001
+From: Fernando Bellas Permuy <fbellas@udc.es>
+Date: Thu, 28 Feb 2019 10:32:57 +0100
+Subject: [PATCH 1/2] =?UTF-8?q?Backend:=20se=20a=C3=B1aden=20los=20mensaje?=
+ =?UTF-8?q?s=20de=20internacionalizaci=C3=B3n=20correspondientes=20a=20las?=
+ =?UTF-8?q?=20reglas=20de=20validaci=C3=B3n=20de=20Beans=20Validation=20qu?=
+ =?UTF-8?q?e=20se=20usan=20en=20pa-project.?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ backend/src/main/resources/messages_gl.properties | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/backend/src/main/resources/messages_gl.properties b/backend/src/main/resources/messages_gl.properties
+index 48a3cb5..682a85c 100644
+--- a/backend/src/main/resources/messages_gl.properties
++++ b/backend/src/main/resources/messages_gl.properties
+@@ -1,3 +1,6 @@
++javax.validation.constraints.NotNull.message=non pode ser null
++javax.validation.constraints.Size.message=o tamaño ten que estar entre {min} e {max}
++
+ project.entities.user=usuario
+ 
+ project.exceptions.DuplicateInstanceException=xa existe {0} ''{1}''
+-- 
+2.18.0.windows.1
+
+
+From 735061b745f2fc641f209180ed5c87407f8e4e10 Mon Sep 17 00:00:00 2001
+From: Fernando Bellas Permuy <fbellas@udc.es>
+Date: Thu, 28 Feb 2019 10:36:10 +0100
+Subject: [PATCH 2/2] Backend: se usa @javax.validation.constraint.Email sobre
+ User.getEmail y se define el mensaje internacionalizado para gallego.
+
+---
+ .../main/java/es/udc/paproject/backend/rest/dtos/UserDto.java   | 2 ++
+ backend/src/main/resources/messages_gl.properties               | 1 +
+ 2 files changed, 3 insertions(+)
+
+diff --git a/backend/src/main/java/es/udc/paproject/backend/rest/dtos/UserDto.java b/backend/src/main/java/es/udc/paproject/backend/rest/dtos/UserDto.java
+index 597f3a9..22cd022 100644
+--- a/backend/src/main/java/es/udc/paproject/backend/rest/dtos/UserDto.java
++++ b/backend/src/main/java/es/udc/paproject/backend/rest/dtos/UserDto.java
+@@ -1,5 +1,6 @@
+ package es.udc.paproject.backend.rest.dtos;
+ 
++import javax.validation.constraints.Email;
+ import javax.validation.constraints.NotNull;
+ import javax.validation.constraints.Size;
+ 
+@@ -80,6 +81,7 @@ public class UserDto {
+ 
+ 	@NotNull(groups={AllValidations.class, UpdateValidations.class})
+ 	@Size(min=1, max=60, groups={AllValidations.class, UpdateValidations.class})
++	@Email(groups={AllValidations.class, UpdateValidations.class})
+ 	public String getEmail() {
+ 		return email;
+ 	}
+diff --git a/backend/src/main/resources/messages_gl.properties b/backend/src/main/resources/messages_gl.properties
+index 682a85c..810fd7d 100644
+--- a/backend/src/main/resources/messages_gl.properties
++++ b/backend/src/main/resources/messages_gl.properties
+@@ -1,3 +1,4 @@
++javax.validation.constraints.Email.message=Non é unha dirección de correo correcta
+ javax.validation.constraints.NotNull.message=non pode ser null
+ javax.validation.constraints.Size.message=o tamaño ten que estar entre {min} e {max}
+ 
+-- 
+2.18.0.windows.1
+

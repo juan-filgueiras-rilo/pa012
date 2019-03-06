@@ -47,8 +47,14 @@ public class BidServiceImpl implements BidService {
 			throw new ExpiratedBidDateException(id);
 		}
 		
+<<<<<<< HEAD
 		Bid bid = new Bid(quantity, BidState.WINNING, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), user, product);
 				
+=======
+		bidDao.save(bid);
+		
+		
+>>>>>>> c81dda847c7a1d299184a59ddc4e0e99c3bc383e
 		if(product.getUser() == user) {
 			//throw new 
 		}
