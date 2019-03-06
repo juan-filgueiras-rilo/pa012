@@ -1,11 +1,15 @@
 package es.udc.paproject.backend.model.services;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundException;
 import es.udc.paproject.backend.model.entities.Bid;
+import es.udc.paproject.backend.model.entities.Bid.BidState;
 import es.udc.paproject.backend.model.entities.BidDao;
 import es.udc.paproject.backend.model.entities.Product;
 import es.udc.paproject.backend.model.entities.ProductDao;
@@ -28,23 +32,35 @@ public class BidServiceImpl implements BidService {
 	
 	
 	@Override
-	public Bid createBid(Long id, Product product, Bid bid) throws ExpiratedBidDateException, InstanceNotFoundException {
+	public Bid createBid(Long id, Long productId, Float quantity) throws ExpiratedBidDateException, InstanceNotFoundException {
 		
 		User user = permissionChecker.checkUser(id);		
+		Optional<Product> optProduct = productDao.findById(productId);
+		Product product;
+		try {
+			product = optProduct.get();
+		} catch (NoSuchElementException e) {
+			throw new InstanceNotFoundException("Product not found with id: ", productId);
+		}
 		
-		if (LocalDateTime.now().isAfter(bid.getDate())) {
+		if (!product.isActive()) {
 			throw new ExpiratedBidDateException(id);
 		}
 		
-		bidDao.save(bid);
-		
+		Bid bid = new Bid(quantity, BidState.WINNING, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), user, product);
+				
 		if(product.getUser() == user) {
-			throw new 
+			//throw new 
 		}
+		//Cambiar estado bids y buscar la bid que va ganando para poner que haperdido 
 		/*Comparamos con el precio inicial que sea mayor
 		 * Un señor no puede pujar sobre si mismo
 		 * Fecha expirada que ya la tenemos*/
-		product.addBid(bid);
+		bidDao.save(bid);
+		
+		//tiempo que dura la puja pero cuando empieza/acaba?
+		//version en prod
+		//que puja gana? como era esto? lo tengo anotado estado den puja
 		
 		
 		

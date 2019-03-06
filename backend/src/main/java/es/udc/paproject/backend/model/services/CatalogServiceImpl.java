@@ -32,16 +32,12 @@ public class CatalogServiceImpl implements CatalogService{
 	private CategoryDao categoryDao;
 	
 	@Override
-	public Product addProduct(Long id, Product product) throws InstanceNotFoundException {
+	public Product addProduct(Long id, String name, String descriptionProduct, Long bidTime, Float initialPrice, String shipmentInfo, Category category) throws InstanceNotFoundException {
 		
 		User user = permissionChecker.checkUser(id);
+		Product product = new Product(id, name, descriptionProduct, bidTime, initialPrice, shipmentInfo, category, user);
 		
-		//Comprobar product.getUser == user?
-		product.setUser(user);
-		product.setBids(new HashSet<>());
-		//Comprobar bidtime > 0?
 		product = productDao.save(product);
-		user.addProduct(product);
 		return product;
 	}
 

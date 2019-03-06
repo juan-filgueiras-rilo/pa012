@@ -20,8 +20,6 @@ public class User {
 	private String lastName;
 	private String email;
 	private RoleType role;
-	private HashSet<Bid> bids = null;
-	private HashSet<Product> products = null;
 
 	public User() {}
 
@@ -32,8 +30,6 @@ public class User {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.bids = new HashSet<Bid>();
-		this.products = new HashSet<Product>();
 	}
 
 	@Id
@@ -93,31 +89,5 @@ public class User {
 	public void setRole(RoleType role) {
 		this.role = role;
 	}
-	
-	@OneToMany(mappedBy="user")
-	public HashSet<Bid> getBids() {
-		return bids;
-	}
-
-	public void setBids(HashSet<Bid> bids) {
-		this.bids = bids;
-	}
-
-	public void addBid(Bid bid) {
-		this.bids.add(bid);
-	}
-	
-	@OneToMany(mappedBy="user")
-	public HashSet<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(HashSet<Product> products) {
-		this.products = products;
-	}
-	
-	public void addProduct(Product product) {
-		this.products.add(product);
-	}
-
+		
 }

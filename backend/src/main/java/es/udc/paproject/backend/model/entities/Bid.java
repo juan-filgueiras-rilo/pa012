@@ -12,22 +12,22 @@ import javax.persistence.Id;
 @Entity
 public class Bid {
 	
-	public enum StateType {WON, LOST, WINNING};
+	public enum BidState {WON, LOST, WINNING};
 	
 	private long id;
-	private float bidQuantity;
-	private float minPrice;
-	private StateType state;
-	private LocalDateTime date;
-	private User user;
+	private float quantity;
 	private Product product;
+	private User user;
+	private BidState state;
+	private LocalDateTime date;
 	
-	private Bid() {}
 	
-	private Bid(float bidQuantity, float minPrice, StateType state, LocalDateTime date, User user, Product product) {
+	
+	public Bid() {}
+	
+	public Bid(Float quantity, BidState state, LocalDateTime date, User user, Product product) {
 		
-		this.bidQuantity = bidQuantity;
-		this.minPrice = minPrice;
+		this.quantity = quantity;
 		this.state = state;
 		this.date = date;
 		this.user = user;
@@ -45,27 +45,19 @@ public class Bid {
 		this.id = id;
 	}
 	
-	public float getBidQuantity() {
-		return bidQuantity;
+	public float getQuantity() {
+		return quantity;
 	}
 
-	public void setBidQuantity(float bidQuantity) {
-		this.bidQuantity = bidQuantity;
+	public void setQuantity(float quantity) {
+		this.quantity = quantity;
 	}
 
-	public float getMinPrice() {
-		return minPrice;
-	}
-
-	public void setMinPrice(float minPrice) {
-		this.minPrice = minPrice;
-	}
-
-	public StateType getState() {
+	public BidState getState() {
 		return state;
 	}
 
-	public void setState(StateType state) {
+	public void setState(BidState state) {
 		this.state = state;
 	}
 

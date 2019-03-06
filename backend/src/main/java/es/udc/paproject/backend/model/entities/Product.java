@@ -1,5 +1,7 @@
 package es.udc.paproject.backend.model.entities;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,22 +17,24 @@ public class Product {
 	private long id;
 	private String name;
 	private String descriptionProduct;
-	private long bidTime;
+	private long duration;
+	private LocalDateTime creationTime;
+
 	private float initialPrice;
 	private String shipmentInfo;
 	private Category category;
 	private User user;
-	private HashSet<Bid> bids = new HashSet<Bid>();
 
 	public Product() {}
 	
 	public Product(long id, String name, String descriptionProduct,
-			long bidTime, float initialPrice, String shipmentInfo,
+			long duration, float initialPrice, String shipmentInfo,
 			Category category, User user) {
 		this.id = id;
 		this.name = name;
 		this.descriptionProduct = descriptionProduct; 
-		this.bidTime = bidTime;
+		this.duration = duration;
+		this.creationTime = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
 		this.initialPrice = initialPrice;
 		this.shipmentInfo = shipmentInfo;
 		this.category = category;
@@ -63,12 +67,20 @@ public class Product {
 		this.descriptionProduct = descriptionProduct;
 	}
 
-	public long getBidTime() {
-		return bidTime;
+	public long getDuration() {
+		return duration;
 	}
 
-	public void setBidTime(long bidTime) {
-		this.bidTime = bidTime;
+	public void setDuration(long duration) {
+		this.duration = duration;
+	}
+	
+	public LocalDateTime getCreationTime() {
+		return creationTime;
+	}
+
+	public void setCreationTime(LocalDateTime creationTime) {
+		this.creationTime = creationTime;
 	}
 
 	public float getInitialPrice() {
@@ -104,19 +116,9 @@ public class Product {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
-	@OneToMany(mappedBy="product")
-	public HashSet<Bid> getBids() {
-		return bids;
+		
+	public boolean isActive() {
+		return (this.creationTime.plusMinutes(this.duration).isAfter(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS)));
 	}
-
-	public void setBids(HashSet<Bid> bid) {
-		this.bids = bid;
-	}
-	
-	public void addBid(Bid bid) {
-		this.bids.add(bid);
-	}
-
 	
 }
