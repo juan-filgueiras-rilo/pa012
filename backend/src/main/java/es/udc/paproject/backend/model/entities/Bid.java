@@ -5,12 +5,16 @@ import java.time.LocalDateTime;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class Bid {
 	
 	public enum StateType {WON, LOST, WINNING};
 	
+	private long id;
 	private float bidQuantity;
 	private float minPrice;
 	private StateType state;
@@ -28,6 +32,17 @@ public class Bid {
 		this.date = date;
 		this.user = user;
 		this.product = product; 
+	}
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public long getId() {
+		return id;
+	}
+	
+
+	public void setId(long id) {
+		this.id = id;
 	}
 	
 	public float getBidQuantity() {

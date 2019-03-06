@@ -19,14 +19,14 @@ public class Product {
 	private float initialPrice;
 	private String shipmentInfo;
 	private Category category;
-	private String descriptionShipmentInfo; 
 	private User user;
-	private HashSet<Bid> bid;
+	private HashSet<Bid> bids = new HashSet<Bid>();
 
 	public Product() {}
 	
-	public Product(long id, String name, String descriptionProduct, long bidTime, float initialPrice, String shipmentInfo,
-			Category category, String descriptionShipmentInfo, User user) {
+	public Product(long id, String name, String descriptionProduct,
+			long bidTime, float initialPrice, String shipmentInfo,
+			Category category, User user) {
 		this.id = id;
 		this.name = name;
 		this.descriptionProduct = descriptionProduct; 
@@ -34,9 +34,7 @@ public class Product {
 		this.initialPrice = initialPrice;
 		this.shipmentInfo = shipmentInfo;
 		this.category = category;
-		this.descriptionShipmentInfo = descriptionShipmentInfo;
 		this.user = user;
-		this.bid = new HashSet<Bid>();
 	}
 
 	@Id
@@ -44,7 +42,6 @@ public class Product {
 	public long getId() {
 		return id;
 	}
-	
 
 	public void setId(long id) {
 		this.id = id;
@@ -98,14 +95,6 @@ public class Product {
 		this.category = category;
 	}
 
-	public String getDescriptionShipmentInfo() {
-		return descriptionShipmentInfo;
-	}
-
-	public void setDescriptionShipmentInfo(String descriptionShipmentInfo) {
-		this.descriptionShipmentInfo = descriptionShipmentInfo;
-	}
-
 	@ManyToOne(optional=false)
 	@JoinColumn(name="userId")
 	public User getUser() {
@@ -117,12 +106,16 @@ public class Product {
 	}
 	
 	@OneToMany(mappedBy="product")
-	public HashSet<Bid> getBid() {
-		return bid;
+	public HashSet<Bid> getBids() {
+		return bids;
 	}
 
-	public void setBid(HashSet<Bid> bid) {
-		this.bid = bid;
+	public void setBids(HashSet<Bid> bid) {
+		this.bids = bid;
+	}
+	
+	public void addBid(Bid bid) {
+		this.bids.add(bid);
 	}
 
 	

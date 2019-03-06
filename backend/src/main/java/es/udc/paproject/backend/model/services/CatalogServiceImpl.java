@@ -1,8 +1,6 @@
 package es.udc.paproject.backend.model.services;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -13,7 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundException;
-import es.udc.paproject.backend.model.entities.Bid;
 import es.udc.paproject.backend.model.entities.Category;
 import es.udc.paproject.backend.model.entities.CategoryDao;
 import es.udc.paproject.backend.model.entities.Product;
@@ -34,21 +31,19 @@ public class CatalogServiceImpl implements CatalogService{
 	@Autowired
 	private CategoryDao categoryDao;
 	
-	@Autowired
-	private UserDao userDao;
-	
-
 	@Override
 	public Product addProduct(Long id, Product product) throws InstanceNotFoundException {
 		
 		User user = permissionChecker.checkUser(id);
+		
+		//Comprobar product.getUser == user?
+		product.setUser(user);
+		product.setBids(new HashSet<>());
+		//Comprobar bidtime > 0?
 		product = productDao.save(product);
-		//userDao.add añadir el producto al usuario ? 
-		
+		user.addProduct(product);
 		return product;
-		
 	}
-	
 
 	@Override
 	public Block<Product> findProducts(Long id, String keywords, int page, int size) {
@@ -73,12 +68,10 @@ public class CatalogServiceImpl implements CatalogService{
 	public Product getProductDetail(Long productId) {
 		 
 		Optional<Product> optProduct;
-		Product product;
 		
 		optProduct = productDao.findById(productId);
-		product = optProduct.get();
 		
-		return product;
+		return optProduct.get();
 	}
 	
 }
