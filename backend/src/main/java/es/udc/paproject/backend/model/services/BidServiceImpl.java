@@ -37,6 +37,8 @@ public class BidServiceImpl implements BidService {
 		User user = permissionChecker.checkUser(id);		
 		Optional<Product> optProduct = productDao.findById(productId);
 		Product product;
+		Bid bid, winningBid;
+		
 		try {
 			product = optProduct.get();
 		} catch (NoSuchElementException e) {
@@ -47,22 +49,38 @@ public class BidServiceImpl implements BidService {
 			throw new ExpiratedBidDateException(id);
 		}
 		
-
-		Bid bid = new Bid(quantity, BidState.WINNING, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), user, product);
-				
-
-		bidDao.save(bid);
-		
-		
-
 		if(product.getUser() == user) {
 			//throw new 
 		}
-		//Cambiar estado bids y buscar la bid que va ganando para poner que haperdido 
+
+		bid = new Bid(quantity, BidState.WINNING, user, product);
+
+		Optional<Bid> optWinningBid = bidDao.findByState(BidState.WINNING);
+		if (optWinningBid.isPresent()) {
+			winningBid = optWinningBid.get();
+			Float winningQuantity = winningBid.getQuantity();
+			if (quantity > (winningQuantity+0.5)) {
+				winningBid.setState(BidState.LOST);
+				bid.setQuantity(winningQuantity+(float)0.5);
+				winningQuantity = bid.getQuantity();
+			} else if (quantity > winningQuantity) {
+				winningBid.setState(BidState.LOST);
+				bid.setQuantity(quantity);
+			} else {
+				bid.setState(BidState.LOST);
+			}
+		}
+		
+		//SI NO HAY PUJAS - SE COMPRUEBA CON EL PRECIO MINIMO?
+
+		//Update se hace solo.
+		
+		bidDao.save(bid);
+		
+		//Cambiar estado bids y buscar la bid que va ganando para poner que ha perdido 
 		/*Comparamos con el precio inicial que sea mayor
 		 * Un señor no puede pujar sobre si mismo
 		 * Fecha expirada que ya la tenemos*/
-		bidDao.save(bid);
 		
 		//tiempo que dura la puja pero cuando empieza/acaba?
 		//version en prod

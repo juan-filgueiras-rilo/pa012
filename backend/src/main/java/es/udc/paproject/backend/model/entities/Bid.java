@@ -1,6 +1,7 @@
 package es.udc.paproject.backend.model.entities;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -21,15 +22,13 @@ public class Bid {
 	private BidState state;
 	private LocalDateTime date;
 	
-	
-	
 	public Bid() {}
 	
-	public Bid(Float quantity, BidState state, LocalDateTime date, User user, Product product) {
+	public Bid(Float quantity, BidState state, User user, Product product) {
 		
 		this.quantity = quantity;
 		this.state = state;
-		this.date = date;
+		this.date = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
 		this.user = user;
 		this.product = product; 
 	}
@@ -88,4 +87,5 @@ public class Bid {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
+	
 }

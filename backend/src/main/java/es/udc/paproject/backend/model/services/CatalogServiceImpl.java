@@ -31,10 +31,10 @@ public class CatalogServiceImpl implements CatalogService{
 	private CategoryDao categoryDao;
 	
 	@Override
-	public Product addProduct(Long id, String name, String descriptionProduct, Long bidTime, Float initialPrice, String shipmentInfo, Category category) throws InstanceNotFoundException {
+	public Product addProduct(Long userId, String name, String descriptionProduct, Long bidTime, Float initialPrice, String shipmentInfo, Category category) throws InstanceNotFoundException {
 		
-		User user = permissionChecker.checkUser(id);
-		Product product = new Product(id, name, descriptionProduct, bidTime, initialPrice, shipmentInfo, category, user);
+		User user = permissionChecker.checkUser(userId);
+		Product product = new Product(name, descriptionProduct, bidTime, initialPrice, shipmentInfo, category, user);
 		
 		product = productDao.save(product);
 		return product;
