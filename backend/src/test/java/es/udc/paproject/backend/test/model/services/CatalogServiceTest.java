@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 
 import javax.transaction.Transactional;
 
@@ -20,6 +21,7 @@ import es.udc.paproject.backend.model.entities.CategoryDao;
 import es.udc.paproject.backend.model.entities.Product;
 import es.udc.paproject.backend.model.entities.ProductDao;
 import es.udc.paproject.backend.model.entities.User;
+import es.udc.paproject.backend.model.services.Block;
 import es.udc.paproject.backend.model.services.CatalogService;
 
 @RunWith(SpringRunner.class)
@@ -81,47 +83,92 @@ public class CatalogServiceTest {
 		
 	}
 	
-	//Insertar mal un producto
-	/*@Test (expected = InstanceNotFoundException.class)
-	public void addProductTestException() throws InstanceNotFoundException {
-		Category category1 = new Category("category 1");
-		User user1 = createUser("juanluispm", "123456", "Juan", "Boquete", "juan@udc.es");
-		
-		Product product = createProduct("Product 1", 180, 10, category1, user1);
-
-		catalogService.addProduct(NON_EXISTENT_ID, product);
-	}*/
+	//Buscar un producto por ID que no exista
+	@Test(expected = InstanceNotFoundException.class)
+	public void testFindNonExistentProduct() throws InstanceNotFoundException {
+		catalogService.findProducts(NON_EXISTENT_ID, "", 1, 1);
+	}
 	
-	//Buscar el producto por ID
+	//Buscar el producto por Keywords
 	@Test
-	public void testFindProducts() throws InstanceNotFoundException {
+	public void testFindProductsByKeywords() throws InstanceNotFoundException {
 		
-		Category category1 = new Category("category 1");
+		Category category = new Category("category 1");
 		User user1 = createUser("juanluispm", "123456", "Juan", "Boquete", "juan@udc.es");
-		
-		Category category2 = new Category("category 2");
-		User user2 = createUser("nombre", "2002125", "Pablo", "Rodriguez", "pablo@udc.es");
-
-		
-		
 		Product product1 = createProduct("Product 1", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
-				10, 10, category1, user1);
-		Product product2 = createProduct("Product 2", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
-				12, 12, category2, user2);
+				10, 10, category, user1);
+
+		User user2 = createUser("nombre", "2002125", "Pablo", "Rodriguez", "pablo@udc.es");
+		Product product2 = createProduct("Product X", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
+				12, 12, category, user2);
 		
+		User user3 = createUser("nombre", "2002125", "Juaneyer", "Reina", "juanreina@udc.es");
+		Product product3 = createProduct("Another", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
+				12, 12, category, user3);
+		
+		categoryDao.save(category);
 		productDao.save(product1);
 		productDao.save(product2);
+		productDao.save(product3);
 		
-		catalogService.findProducts(product1.getId(), "", 1, 2);
-		catalogService.findProducts(product2.getId(), " ", 1, 2);
+		Block<Product> expectedBlock = new Block<>(Arrays.asList(product1, product2), false);
 		
-
-		
+		assertEquals(expectedBlock, catalogService.findProducts(null, "PrOdu", 0, 2));
 		
 	}
 	
-	//Buscar un producto por ID y por keywords
-	//Buscar un producto un producto y que no se encuentre
+	//Buscar un producto un producto por categorias
+	@Test
+	public void testFindProductsByCategory() throws InstanceNotFoundException {
+		
+		Category category1 = new Category("category 1");
+		Category category2 = new Category("category 2");
+		User user1 = createUser("juanluispm", "123456", "Juan", "Boquete", "juan@udc.es");
+		Product product1 = createProduct("Product 1", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
+				10, 10, category1, user1);
+
+		User user2 = createUser("nombre", "2002125", "Pablo", "Rodriguez", "pablo@udc.es");
+		Product product2 = createProduct("Product X", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
+				12, 12, category2, user2);
+		
+		
+		categoryDao.save(category1);
+		categoryDao.save(category2);
+		productDao.save(product1);
+		productDao.save(product2);
+		
+		Block<Product> expectedBlock = new Block<>(Arrays.asList(product1), false);
+		
+		assertEquals(expectedBlock, catalogService.findProducts(category1.getId(), null, 0, 1));
+	}
+	
+	//Si buscamos producto y no ponemos ni keywords ni categoria nos muestra todos los productos
+	@Test
+	public void testFindAllProducts() throws InstanceNotFoundException {
+		
+		Category category1 = new Category("category 1");
+		Category category2 = new Category("category 2");
+		User user1 = createUser("juanluispm", "123456", "Juan", "Boquete", "juan@udc.es");
+		Product product1 = createProduct("Product 1", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
+				10, 10, category1, user1);
+
+		User user2 = createUser("nombre", "2002125", "Pablo", "Rodriguez", "pablo@udc.es");
+		Product product2 = createProduct("Product X", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
+				12, 12, category2, user2);
+		
+		categoryDao.save(category1);
+		categoryDao.save(category2);
+		productDao.save(product1);
+		productDao.save(product2);
+		
+		Block<Product> expectedBlock = new Block<>(Arrays.asList(product1, product2), false);
+		
+		assertEquals(expectedBlock, catalogService.findProducts(null, null, 0, 2));
+		assertEquals(expectedBlock, catalogService.findProducts(null, "", 0, 2));
+
+	}
+	
+	
 	//Obtener las categorias
 	@Test 
 	public void testGetCategories() {
@@ -139,5 +186,21 @@ public class CatalogServiceTest {
 	 
 	
 	//Obtener el detalle de los productos
-	
+	@Test
+	public void testGetProductDetail() {
+		Category category1 = new Category("category 1");
+		User user1 = createUser("juanluispm", "123456", "Juan", "Boquete", "juan@udc.es");
+		Product product1 = createProduct("Product 1", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
+				10, 10, category1, user1);
+		
+		productDao.save(product1);
+		
+		Product expectedProduct = catalogService.getProductDetail(product1.getId());
+		
+		assertEquals(product1, expectedProduct);
+		assertEquals(product1.getName(), expectedProduct.getName());
+		assertEquals(product1.getCategory(), expectedProduct.getCategory());
+		assertEquals(product1.getDescriptionProduct(), expectedProduct.getDescriptionProduct());
+		
+	}
 }
