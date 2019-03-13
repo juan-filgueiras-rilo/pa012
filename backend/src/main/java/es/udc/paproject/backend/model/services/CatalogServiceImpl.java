@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundException;
+import es.udc.paproject.backend.model.entities.Bid;
 import es.udc.paproject.backend.model.entities.Category;
 import es.udc.paproject.backend.model.entities.CategoryDao;
 import es.udc.paproject.backend.model.entities.Product;
@@ -68,6 +69,17 @@ public class CatalogServiceImpl implements CatalogService{
 		optProduct = productDao.findById(productId);
 		
 		return optProduct.get();
+	}
+
+	@Override
+	public Block<Product> getUserProducts(Long userId) throws InstanceNotFoundException {
+		
+		permissionChecker.checkUserExists(userId);
+		
+		Slice<Product> slice = productDao.findProductsByUserIdOrderByCreationTimeDesc(userId);
+		
+		return new Block<>(slice.getContent(), slice.hasNext());
+	
 	}
 	
 }

@@ -6,6 +6,8 @@ import es.udc.paproject.backend.model.entities.Product;
 
 public interface BidService {
 	
-	Bid findBid(Long id, Bid bid);
-	Bid createBid(Long id, Long productId, Float quantity) throws ExpiratedBidDateException, InstanceNotFoundException;
+	Bid createBid(Long id, Long productId, Float quantity) throws ExpiratedProductDateException, InstanceNotFoundException;
+	
+	Block<Bid> getUserBids(Long userId) throws InstanceNotFoundException;
+	
 }

@@ -2,6 +2,8 @@ package es.udc.paproject.backend.model.entities;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,7 +24,8 @@ public class Product {
 	private String shipmentInfo;
 	private Category category;
 	private User user;
-
+	private Optional<Bid> winningBid;
+		
 	public Product() {}
 	
 	public Product(String name, String descriptionProduct, 
@@ -36,6 +39,7 @@ public class Product {
 		this.shipmentInfo = shipmentInfo;
 		this.category = category;
 		this.user = user;
+		this.winningBid = Optional.empty();
 	}
 
 	@Id
@@ -125,7 +129,13 @@ public class Product {
 	public boolean isActive() {
 		return (this.creationTime.plusMinutes(this.duration).isAfter(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS)));
 	}
-	
-	
+
+	public Optional<Bid> getWinningBid() {
+		return winningBid;
+	}
+
+	public void setWinningBid(Bid winningBid) {
+		this.winningBid = Optional.of(winningBid);
+	}
 	
 }
