@@ -57,15 +57,28 @@ public class BidServiceImpl implements BidService {
 
 		Optional<Bid> optWinningBid = bidDao.findByState(BidState.WINNING);
 		if (optWinningBid.isPresent()) {
+			
 			winningBid = optWinningBid.get();
+			Float productCurrentPrice = product.getCurrentPrice();
 			Float winningQuantity = winningBid.getQuantity();
-			if (quantity > (winningQuantity+0.5)) {
-				winningBid.setState(BidState.LOST);
-				bid.setQuantity(winningQuantity+(float)0.5);
-				winningQuantity = bid.getQuantity();
-			} else if (quantity > winningQuantity) {
-				winningBid.setState(BidState.LOST);
-				bid.setQuantity(quantity);
+			
+			if (bid.getQuantity() > (productCurrentPrice+0.5)) {
+				if (bid.getQuantity() > winningQuantity) { 
+					winningBid.setState(BidState.LOST);
+					bid.getProduct().setCurrentPrice(winningQuantity+(float)0.5);
+				} else {
+					bid.setState(BidState.LOST);
+					productCurrentPrice = bid.getQuantity()+(float)0.5;
+				}
+			//TODO si pujo lo mismo?!?!??!?!?!?!?!?!??!?!
+			} else if (bid.getQuantity() >= productCurrentPrice) {
+				if (bid.getQuantity() > winningQuantity) {
+					winningBid.setState(BidState.LOST);
+					bid.getProduct().setCurrentPrice(quantity);
+				} else {
+					bid.setState(BidState.LOST);
+					productCurrentPrice = bid.getQuantity()+(float)0.5;
+				}
 			} else {
 				bid.setState(BidState.LOST);
 			}
@@ -74,9 +87,10 @@ public class BidServiceImpl implements BidService {
 		//SI NO HAY PUJAS - SE COMPRUEBA CON EL PRECIO MINIMO?
 
 		//Update se hace solo.
-		
-		bidDao.save(bid);
-		
+	
+		if (bid.getState()==BidState.WINNING || (bid.getState()==BidState.LOST && bid.getQuantity()>product.getCurrentPrice())) {
+			bidDao.save(bid);
+		}
 		//Cambiar estado bids y buscar la bid que va ganando para poner que ha perdido 
 		/*Comparamos con el precio inicial que sea mayor
 		 * Un señor no puede pujar sobre si mismo
@@ -85,10 +99,6 @@ public class BidServiceImpl implements BidService {
 		//tiempo que dura la puja pero cuando empieza/acaba?
 		//version en prod
 		//que puja gana? como era esto? lo tengo anotado estado den puja
-		
-		
-		
-		
 		
 		return null;
 	}

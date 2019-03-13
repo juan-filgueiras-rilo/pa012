@@ -10,8 +10,7 @@ import es.udc.paproject.backend.model.entities.User;
 public class BidTest {
 
 	private Product createProduct(long id, String name, long bidTime, float initialPrice) {	
-		return new Product(id, name, "descriptionProduct", bidTime, initialPrice,
-				"shipmentInfo", new Category(), new User());
+		return new Product();
 	}
 	
 	@Test

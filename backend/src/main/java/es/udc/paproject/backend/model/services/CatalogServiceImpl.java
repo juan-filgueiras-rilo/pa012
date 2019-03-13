@@ -1,5 +1,6 @@
 package es.udc.paproject.backend.model.services;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 
@@ -31,19 +32,19 @@ public class CatalogServiceImpl implements CatalogService{
 	private CategoryDao categoryDao;
 	
 	@Override
-	public Product addProduct(Long userId, String name, String descriptionProduct, Long bidTime, Float initialPrice, String shipmentInfo, Category category) throws InstanceNotFoundException {
+	public Product addProduct(Long userId, String name, String descriptionProduct, LocalDateTime creationTime, Float currentPrice, Float initialPrice, String shipmentInfo, Category category) throws InstanceNotFoundException {
 		
 		User user = permissionChecker.checkUser(userId);
-		Product product = new Product(name, descriptionProduct, bidTime, initialPrice, shipmentInfo, category, user);
+		Product product = new Product(name, descriptionProduct, creationTime, currentPrice, initialPrice,  shipmentInfo, category, user);
 		
 		product = productDao.save(product);
 		return product;
 	}
 
 	@Override
-	public Block<Product> findProducts(Long id, String keywords, int page, int size) {
+	public Block<Product> findProducts(Long categoryId, String keywords, int page, int size) throws InstanceNotFoundException {
 		
-		Slice<Product> slice = productDao.find(id, keywords, page, size);
+		Slice<Product> slice = productDao.find(categoryId, keywords, page, size);
 		
 		return new Block<>(slice.getContent(), slice.hasNext());
 	}
