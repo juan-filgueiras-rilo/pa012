@@ -28,11 +28,12 @@ public class Product {
 		
 	public Product() {}
 	
-	public Product(String name, String descriptionProduct, 
+	public Product(String name, String descriptionProduct, long duration, 
 			LocalDateTime creationTime,float currentPrice, float initialPrice, String shipmentInfo,
 			Category category, User user) {
 		this.name = name;
 		this.descriptionProduct = descriptionProduct; 
+		this.duration = duration; 
 		this.creationTime = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
 		this.currentPrice = currentPrice;
 		this.initialPrice = initialPrice;
@@ -137,5 +138,7 @@ public class Product {
 	public void setWinningBid(Bid winningBid) {
 		this.winningBid = Optional.of(winningBid);
 	}
+	
+	
 	
 }

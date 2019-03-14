@@ -12,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundException;
-import es.udc.paproject.backend.model.entities.Bid;
 import es.udc.paproject.backend.model.entities.Category;
 import es.udc.paproject.backend.model.entities.CategoryDao;
 import es.udc.paproject.backend.model.entities.Product;
@@ -33,10 +32,10 @@ public class CatalogServiceImpl implements CatalogService{
 	private CategoryDao categoryDao;
 	
 	@Override
-	public Product addProduct(Long userId, String name, String descriptionProduct, LocalDateTime creationTime, Float currentPrice, Float initialPrice, String shipmentInfo, Category category) throws InstanceNotFoundException {
+	public Product addProduct(Long userId, String name, String descriptionProduct, Long duration, LocalDateTime creationTime, Float currentPrice, Float initialPrice, String shipmentInfo, Category category) throws InstanceNotFoundException {
 		
 		User user = permissionChecker.checkUser(userId);
-		Product product = new Product(name, descriptionProduct, creationTime, currentPrice, initialPrice,  shipmentInfo, category, user);
+		Product product = new Product(name, descriptionProduct, duration, creationTime, currentPrice, initialPrice,  shipmentInfo, category, user);
 		
 		product = productDao.save(product);
 		return product;

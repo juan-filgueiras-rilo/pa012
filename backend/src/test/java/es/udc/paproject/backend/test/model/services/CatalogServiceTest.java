@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -16,13 +17,17 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundException;
+import es.udc.paproject.backend.model.entities.Bid;
+import es.udc.paproject.backend.model.entities.BidDao;
 import es.udc.paproject.backend.model.entities.Category;
 import es.udc.paproject.backend.model.entities.CategoryDao;
 import es.udc.paproject.backend.model.entities.Product;
 import es.udc.paproject.backend.model.entities.ProductDao;
 import es.udc.paproject.backend.model.entities.User;
+import es.udc.paproject.backend.model.services.BidService;
 import es.udc.paproject.backend.model.services.Block;
 import es.udc.paproject.backend.model.services.CatalogService;
+import es.udc.paproject.backend.model.services.ExpiratedProductDateException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -40,10 +45,13 @@ public class CatalogServiceTest {
 	
 	@Autowired
 	private CatalogService catalogService;
+	
+	@Autowired
+	private BidService bidService;
 
-	private Product createProduct(String name, LocalDateTime creationTime, float currentPrice, float initialPrice,
+	private Product createProduct(String name, long duration, LocalDateTime creationTime, float currentPrice, float initialPrice,
 			Category category, User user) {	
-		return new Product(name, "descriptionProduct", creationTime, initialPrice,
+		return new Product(name, "descriptionProduct", duration, creationTime, initialPrice,
 				currentPrice, "shipmentInfo", category, user);
 	}
 	
@@ -64,21 +72,21 @@ public class CatalogServiceTest {
 
 		
 		
-		Product product1 = createProduct("Product 1", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
+		Product product1 = createProduct("Product 1", 10,LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
 				10, 10, category1, user1);
-		Product product2 = createProduct("Product 2", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
+		Product product2 = createProduct("Product 2",10, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
 				12, 12, category2, user2);
 		
 		productDao.save(product1);
 		productDao.save(product2);
 			
 		assertEquals(product1, catalogService.addProduct(product1.getId(), product1.getName(),
-				product1.getDescriptionProduct(), product1.getCreationTime(), product1.getInitialPrice(), 
+				product1.getDescriptionProduct(), product1.getDuration(), product1.getCreationTime(), product1.getInitialPrice(), 
 				product1.getCurrentPrice(), product1.getShipmentInfo(), product1.getCategory()));
 		
 		
 		assertEquals(product2, catalogService.addProduct(product2.getId(), product2.getName(),
-				product2.getDescriptionProduct(), product2.getCreationTime(), product2.getInitialPrice(), 
+				product2.getDescriptionProduct(), product2.getDuration(), product2.getCreationTime(), product2.getInitialPrice(), 
 				product2.getCurrentPrice(), product2.getShipmentInfo(), product2.getCategory()));
 		
 	}
@@ -95,15 +103,15 @@ public class CatalogServiceTest {
 		
 		Category category = new Category("category 1");
 		User user1 = createUser("juanluispm", "123456", "Juan", "Boquete", "juan@udc.es");
-		Product product1 = createProduct("Product 1", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
+		Product product1 = createProduct("Product 1", 50,LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
 				10, 10, category, user1);
 
 		User user2 = createUser("nombre", "2002125", "Pablo", "Rodriguez", "pablo@udc.es");
-		Product product2 = createProduct("Product X", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
+		Product product2 = createProduct("Product X", 60,LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
 				12, 12, category, user2);
 		
 		User user3 = createUser("nombre", "2002125", "Juaneyer", "Reina", "juanreina@udc.es");
-		Product product3 = createProduct("Another", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
+		Product product3 = createProduct("Another", 70, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
 				12, 12, category, user3);
 		
 		categoryDao.save(category);
@@ -124,11 +132,11 @@ public class CatalogServiceTest {
 		Category category1 = new Category("category 1");
 		Category category2 = new Category("category 2");
 		User user1 = createUser("juanluispm", "123456", "Juan", "Boquete", "juan@udc.es");
-		Product product1 = createProduct("Product 1", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
+		Product product1 = createProduct("Product 1", 80, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
 				10, 10, category1, user1);
 
 		User user2 = createUser("nombre", "2002125", "Pablo", "Rodriguez", "pablo@udc.es");
-		Product product2 = createProduct("Product X", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
+		Product product2 = createProduct("Product X", 90, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
 				12, 12, category2, user2);
 		
 		
@@ -149,11 +157,11 @@ public class CatalogServiceTest {
 		Category category1 = new Category("category 1");
 		Category category2 = new Category("category 2");
 		User user1 = createUser("juanluispm", "123456", "Juan", "Boquete", "juan@udc.es");
-		Product product1 = createProduct("Product 1", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
+		Product product1 = createProduct("Product 1", 100, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
 				10, 10, category1, user1);
 
 		User user2 = createUser("nombre", "2002125", "Pablo", "Rodriguez", "pablo@udc.es");
-		Product product2 = createProduct("Product X", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
+		Product product2 = createProduct("Product X", 101, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
 				12, 12, category2, user2);
 		
 		categoryDao.save(category1);
@@ -190,7 +198,7 @@ public class CatalogServiceTest {
 	public void testGetProductDetail() {
 		Category category1 = new Category("category 1");
 		User user1 = createUser("juanluispm", "123456", "Juan", "Boquete", "juan@udc.es");
-		Product product1 = createProduct("Product 1", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
+		Product product1 = createProduct("Product 1", 200, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
 				10, 10, category1, user1);
 		
 		productDao.save(product1);
@@ -201,6 +209,61 @@ public class CatalogServiceTest {
 		assertEquals(product1.getName(), expectedProduct.getName());
 		assertEquals(product1.getCategory(), expectedProduct.getCategory());
 		assertEquals(product1.getDescriptionProduct(), expectedProduct.getDescriptionProduct());
+		
+	}
+	
+	//Consultar los productos anunciados 
+	@Test
+	public void testGetUserProducts() throws InstanceNotFoundException {
+		
+		Category category1 = new Category("category 1");
+		Category category2 = new Category("category 2");
+		
+		User user1 = createUser("juanluispm", "123456", "Juan", "Boquete", "juan@udc.es");
+		Product product1 = createProduct("Product 1", 120, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 10, 10, category1, user1);
+		Product product2 = createProduct("Product X", 110, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 12, 12, category2, user1);
+		
+		categoryDao.save(category1);
+		categoryDao.save(category2);
+		
+		catalogService.addProduct(product1.getId(), product1.getName(),
+				product1.getDescriptionProduct(), product1.getDuration(), product1.getCreationTime(), product1.getInitialPrice(), 
+				product1.getCurrentPrice(), product1.getShipmentInfo(), product1.getCategory());
+		
+		catalogService.addProduct(product2.getId(), product2.getName(),
+				product2.getDescriptionProduct(), product2.getDuration(), product2.getCreationTime(), product2.getInitialPrice(), 
+				product2.getCurrentPrice(), product2.getShipmentInfo(), product2.getCategory());
+		
+		Block<Product> catalogS = catalogService.getUserProducts(user1.getId());
+		
+		assertEquals(product1, catalogS.getItems().get(0));
+	}
+	
+	@Test
+	public void testGetUserProductsEmail() throws InstanceNotFoundException, ExpiratedProductDateException {
+
+		Category category1 = new Category("category 1");
+		
+		User user1 = createUser("juanluispm", "123456", "Juan", "Boquete", "juan@udc.es");
+		User user2 = createUser("Pablo", "Mara123", "Pablo", "Regueiro", "super10pablo@udc.es");
+		User user3 = createUser("Juan", "Mara123", "Juan", "Regueiro", "matriculas@udc.es");
+		
+		Product product1 = createProduct("Product 1", 120, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 10, 10, category1, user1);
+		
+		
+		catalogService.addProduct(product1.getId(), product1.getName(),
+				product1.getDescriptionProduct(), product1.getDuration(), product1.getCreationTime(), product1.getInitialPrice(), 
+				product1.getCurrentPrice(), product1.getShipmentInfo(), product1.getCategory());
+		
+		bidService.createBid(user3.getId(), product1.getId(), (float)50);
+		bidService.createBid(user2.getId(), product1.getId(), (float)60);
+		
+		Block<Product> catalogS = catalogService.getUserProducts(user1.getId());
+		
+		Optional<Bid> bidGanadora = catalogS.getItems().get(0).getWinningBid();
+		
+		assertEquals(bidService.getUserBids(user2.getId()), bidGanadora.get().getUser().getEmail());
+		
 		
 	}
 }
