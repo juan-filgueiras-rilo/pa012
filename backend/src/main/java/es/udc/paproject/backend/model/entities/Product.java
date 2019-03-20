@@ -1,5 +1,7 @@
 package es.udc.paproject.backend.model.entities;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
@@ -19,8 +21,8 @@ public class Product {
 	private String descriptionProduct;
 	private long duration;
 	private LocalDateTime creationTime;
-	private float currentPrice;
-	private float initialPrice;
+	private BigDecimal currentPrice;
+	private BigDecimal initialPrice;
 	private String shipmentInfo;
 	private Category category;
 	private User user;
@@ -29,14 +31,14 @@ public class Product {
 	public Product() {}
 	
 	public Product(String name, String descriptionProduct, long duration, 
-			LocalDateTime creationTime,float currentPrice, float initialPrice, String shipmentInfo,
+			LocalDateTime creationTime, BigDecimal initialPrice, String shipmentInfo,
 			Category category, User user) {
 		this.name = name;
 		this.descriptionProduct = descriptionProduct; 
 		this.duration = duration; 
 		this.creationTime = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
-		this.currentPrice = currentPrice;
 		this.initialPrice = initialPrice;
+		this.initialPrice = currentPrice; 
 		this.shipmentInfo = shipmentInfo;
 		this.category = category;
 		this.user = user;
@@ -84,21 +86,19 @@ public class Product {
 	public void setCreationTime(LocalDateTime creationTime) {
 		this.creationTime = creationTime;
 	}
-
-	public float getCurrentPrice() {
+	public BigDecimal getCurrentPrince() {
 		return currentPrice;
 	}
 
-	public void setCurrentPrice(float currentPrice) {
-		this.currentPrice = currentPrice;
+	public void setCurrentPrice(BigDecimal currentPrice) {
+		this.currentPrice = currentPrice.setScale(2, RoundingMode.HALF_EVEN);
 	}
-	
-	public float getInitialPrice() {
+	public BigDecimal getInitialPrice() {
 		return initialPrice;
 	}
 
-	public void setInitialPrice(float initialPrice) {
-		this.initialPrice = initialPrice;
+	public void setInitialPrice(BigDecimal initialPrice) {
+		this.initialPrice = initialPrice.setScale(2, RoundingMode.HALF_EVEN);
 	}
 
 	public String getShipmentInfo() {

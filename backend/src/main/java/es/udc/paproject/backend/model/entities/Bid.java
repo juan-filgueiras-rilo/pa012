@@ -1,5 +1,7 @@
 package es.udc.paproject.backend.model.entities;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -16,7 +18,7 @@ public class Bid {
 	public enum BidState {WON, LOST, WINNING};
 	
 	private long id;
-	private float quantity;
+	private BigDecimal quantity;
 	private Product product;
 	private User user;
 	private BidState state;
@@ -24,7 +26,7 @@ public class Bid {
 	
 	public Bid() {}
 	
-	public Bid(Float quantity, BidState state, User user, Product product) {
+	public Bid(BigDecimal quantity, BidState state, User user, Product product) {
 		
 		this.quantity = quantity;
 		this.state = state;
@@ -44,12 +46,12 @@ public class Bid {
 		this.id = id;
 	}
 	
-	public float getQuantity() {
+	public BigDecimal getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(float quantity) {
-		this.quantity = quantity;
+	public void setQuantity(BigDecimal quantity) {
+		this.quantity = quantity.setScale(2, RoundingMode.HALF_EVEN);
 	}
 
 	public BidState getState() {

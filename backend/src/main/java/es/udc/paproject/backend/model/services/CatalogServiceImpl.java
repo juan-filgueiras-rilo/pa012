@@ -1,5 +1,6 @@
 package es.udc.paproject.backend.model.services;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
@@ -32,10 +33,10 @@ public class CatalogServiceImpl implements CatalogService{
 	private CategoryDao categoryDao;
 	
 	@Override
-	public Product addProduct(Long userId, String name, String descriptionProduct, Long duration, LocalDateTime creationTime, Float currentPrice, Float initialPrice, String shipmentInfo, Category category) throws InstanceNotFoundException {
+	public Product addProduct(Long userId, String name, String descriptionProduct, Long duration, LocalDateTime creationTime, BigDecimal initialPrice, String shipmentInfo, Category category) throws InstanceNotFoundException {
 		
 		User user = permissionChecker.checkUser(userId);
-		Product product = new Product(name, descriptionProduct, duration, creationTime, currentPrice, initialPrice,  shipmentInfo, category, user);
+		Product product = new Product(name, descriptionProduct, duration, creationTime, initialPrice,  shipmentInfo, category, user);
 		
 		product = productDao.save(product);
 		return product;

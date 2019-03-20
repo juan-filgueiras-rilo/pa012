@@ -1,5 +1,6 @@
 package es.udc.paproject.backend.model.services;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 
@@ -9,7 +10,7 @@ import es.udc.paproject.backend.model.entities.Product;
 
 public interface CatalogService {
 		
-	Product addProduct(Long id, String name, String descriptionProduct, Long duration, LocalDateTime creationTime, Float initialPrice, Float currentPrice,
+	Product addProduct(Long id, String name, String descriptionProduct, Long duration, LocalDateTime creationTime, BigDecimal initialPrice,
 			String shipmentInfo, Category category) throws InstanceNotFoundException;
 	
 	Block<Product> findProducts(Long id, String keywords, int page, int size) throws InstanceNotFoundException;

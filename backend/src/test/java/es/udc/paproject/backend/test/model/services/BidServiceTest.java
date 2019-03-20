@@ -2,6 +2,7 @@ package es.udc.paproject.backend.test.model.services;
 
 import static org.junit.Assert.assertEquals;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.junit.Test;
@@ -31,10 +32,10 @@ public class BidServiceTest {
 	@Autowired
 	private BidService bidService;
 	
-	private Product createProduct(String name, long duration, LocalDateTime creationTime, float currentPrice, float initialPrice,
+	private Product createProduct(String name, long duration, LocalDateTime creationTime, BigDecimal initialPrice,
 			Category category, User user) {	
 		return new Product(name, "descriptionProduct", duration, creationTime, initialPrice,
-				currentPrice, "shipmentInfo", category, user);
+				"shipmentInfo", category, user);
 	}
 	
 	private User createUser (String userName, String password, String firstName, 
@@ -55,12 +56,132 @@ public class BidServiceTest {
 		Category category1 = new Category("Category");
 		User user = createUser("Carmen", "password134!", "Carmen", "Fernandez", "c.fernandez@gmail.com");
 		
-		Product producto = createProduct("Producto", 120, LocalDateTime.of(2000, 1, 1, 10, 20), 10, 10, category1, user);
+		Product producto = createProduct("Producto", 120, LocalDateTime.of(2000, 1, 1, 10, 20), new BigDecimal(10), category1, user);
 		
-		bidService.createBid(user.getId(), producto.getId(), (float) 1);
+		bidService.createBid(user.getId(), producto.getId(), new BigDecimal(1));
 		
 	}
 	//Hacer test para cada caso del createBid
+	@Test
+	public void testCreateBid1() throws InstanceNotFoundException, ExpiratedProductDateException {
+		
+		Category category1 = new Category("Category");
+		User user = createUser("Carmen", "password134!", "Carmen", "Fernandez", "c.fernandez@gmail.com");
+		User user2 = createUser("Pablo", "545654", "Pablo", "Lopez", "pablolopez@udc.es");
+		User user3 = createUser("Julia", "Geiaovfs", "Julia", "Alvarez", "julia@udc.es");
+		
+		Product producto = createProduct("Producto", 120, LocalDateTime.of(2000, 1, 1, 10, 20), new BigDecimal(10), category1, user);
+
+		Bid bid1 = bidService.createBid(user2.getId(), producto.getId(), new BigDecimal(10));
+		Bid bid2 = bidService.createBid(user3.getId(), producto.getId(), new BigDecimal(12));
+		
+		
+		assertEquals(producto.getCurrentPrince(), new BigDecimal(10.5));
+		assertEquals(bid2.getState(), Bid.BidState.WINNING);
+		assertEquals(bid1.getState(), Bid.BidState.LOST);
+		
+	}
+	
+	@Test
+	public void testCreateBid2() throws InstanceNotFoundException, ExpiratedProductDateException {
+		
+		Category category1 = new Category("Category");
+		User user = createUser("Carmen", "password134!", "Carmen", "Fernandez", "c.fernandez@gmail.com");
+		User user2 = createUser("Pablo", "545654", "Pablo", "Lopez", "pablolopez@udc.es");
+		User user3 = createUser("Julia", "Geiaovfs", "Julia", "Alvarez", "julia@udc.es");
+		
+		Product producto = createProduct("Producto", 120, LocalDateTime.of(2000, 1, 1, 10, 20), new BigDecimal(10), category1, user);
+
+		bidService.createBid(user2.getId(), producto.getId(), new BigDecimal(12));
+		
+		assertEquals(producto.getCurrentPrince(), new BigDecimal(10));
+		
+	}
+	
+	@Test
+	public void testCreateBid3() throws InstanceNotFoundException, ExpiratedProductDateException {
+		
+		Category category1 = new Category("Category");
+		User user = createUser("Carmen", "password134!", "Carmen", "Fernandez", "c.fernandez@gmail.com");
+		User user2 = createUser("Pablo", "545654", "Pablo", "Lopez", "pablolopez@udc.es");
+		User user3 = createUser("Julia", "Geiaovfs", "Julia", "Alvarez", "julia@udc.es");
+		User user4 = createUser("Antonio", "joseerberb", "anthony","marc", "famoso@udc.es");
+		
+		Product producto = createProduct("Producto", 120, LocalDateTime.of(2000, 1, 1, 10, 20), new BigDecimal(10), category1, user);
+
+		bidService.createBid(user2.getId(), producto.getId(), new BigDecimal(12));
+		bidService.createBid(user3.getId(), producto.getId(), new BigDecimal(1000));
+		bidService.createBid(user4.getId(), producto.getId(), new BigDecimal(500));
+		
+		assertEquals(producto.getCurrentPrince(), new BigDecimal(500.5));
+		
+	}
+	
+	@Test
+	public void testCreateBid4() throws InstanceNotFoundException, ExpiratedProductDateException {
+		
+		Category category1 = new Category("Category");
+		User user = createUser("Carmen", "password134!", "Carmen", "Fernandez", "c.fernandez@gmail.com");
+		User user2 = createUser("Pablo", "545654", "Pablo", "Lopez", "pablolopez@udc.es");
+		User user3 = createUser("Julia", "Geiaovfs", "Julia", "Alvarez", "julia@udc.es");
+		
+		Product producto = createProduct("Producto", 120, LocalDateTime.of(2000, 1, 1, 10, 20), new BigDecimal(10), category1, user);
+
+		bidService.createBid(user2.getId(), producto.getId(), new BigDecimal(12));
+		bidService.createBid(user3.getId(), producto.getId(), new BigDecimal(12.3));
+		
+		assertEquals(producto.getCurrentPrince(), new BigDecimal(12.3));
+		
+	}
+	
+	@Test
+	public void testCreateBid5() throws InstanceNotFoundException, ExpiratedProductDateException {
+		
+		Category category1 = new Category("Category");
+		User user = createUser("Carmen", "password134!", "Carmen", "Fernandez", "c.fernandez@gmail.com");
+		User user2 = createUser("Pablo", "545654", "Pablo", "Lopez", "pablolopez@udc.es");
+		User user3 = createUser("Julia", "Geiaovfs", "Julia", "Alvarez", "julia@udc.es");
+		User user4 = createUser("Antonio", "joseerberb", "anthony","marc", "famoso@udc.es");
+		
+		Product producto = createProduct("Producto", 120, LocalDateTime.of(2000, 1, 1, 10, 20), new BigDecimal(10), category1, user);
+
+		Bid bid1 = bidService.createBid(user2.getId(), producto.getId(), new BigDecimal(12));
+		Bid bid2 = bidService.createBid(user3.getId(), producto.getId(), new BigDecimal(12.3));
+		Bid bid3 = bidService.createBid(user4.getId(), producto.getId(), new BigDecimal(15));
+		
+		assertEquals(producto.getCurrentPrince(), new BigDecimal(12.8));
+		assertEquals(producto.getWinningBid().get().getUser(), user4);
+		assertEquals(bid1.getState(), Bid.BidState.LOST);
+		assertEquals(bid2.getState(), Bid.BidState.LOST);
+	}
+	
+	@Test
+	public void testCreateBid6() throws InstanceNotFoundException, ExpiratedProductDateException {
+		
+		Category category1 = new Category("Category");
+		User user = createUser("Carmen", "password134!", "Carmen", "Fernandez", "c.fernandez@gmail.com");
+		User user2 = createUser("Pablo", "545654", "Pablo", "Lopez", "pablolopez@udc.es");
+		User user3 = createUser("Julia", "Geiaovfs", "Julia", "Alvarez", "julia@udc.es");
+		User user4 = createUser("Antonio", "joseerberb", "anthony","marc", "famoso@udc.es");
+		
+		Product producto = createProduct("Producto", 120, LocalDateTime.of(2000, 1, 1, 10, 20), new BigDecimal(10), category1, user);
+
+		Bid bid1 = bidService.createBid(user2.getId(), producto.getId(), new BigDecimal(12));
+		Bid bid2 = bidService.createBid(user3.getId(), producto.getId(), new BigDecimal(12));
+		
+		assertEquals(producto.getWinningBid().get().getUser(), user2);
+		assertEquals(bid1.getState(), Bid.BidState.WINNING);
+	}
+	
+	//excepcion
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//Consultar las pujas realizadas por un usuario (getUserBids)
 	@Test 

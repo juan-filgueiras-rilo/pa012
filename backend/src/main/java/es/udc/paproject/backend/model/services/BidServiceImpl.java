@@ -1,5 +1,6 @@
 package es.udc.paproject.backend.model.services;
 
+import java.math.BigDecimal;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -30,7 +31,7 @@ public class BidServiceImpl implements BidService {
 	private BidDao bidDao;
 	
 	@Override
-	public Bid createBid(Long userId, Long productId, Float quantity) throws ExpiratedProductDateException, InstanceNotFoundException {
+	public Bid createBid(Long userId, Long productId, BigDecimal quantity) throws ExpiratedProductDateException, InstanceNotFoundException {
 		
 		User user = permissionChecker.checkUser(userId);		
 		Optional<Product> optProduct;
@@ -59,16 +60,16 @@ public class BidServiceImpl implements BidService {
 			
 			winningBid = optWinningBid.get();
 			
-			Float productCurrentPrice = product.getCurrentPrice();
-			Float winningQuantity = winningBid.getQuantity();
-			Float newQuantity = newBid.getQuantity();
+			BigDecimal productCurrentPrice = product.getCurrentPrince();
+			BigDecimal winningQuantity = winningBid.getQuantity();
+			BigDecimal newQuantity = newBid.getQuantity();
 			
-			if (newQuantity > productCurrentPrice) {
-				if (newQuantity > winningQuantity) { 
+			if (newQuantity.max(productCurrentPrice) != null) {
+				if (newQuantity.max(winningQuantity) != null) { 
 					winningBid.setState(BidState.LOST);
 					product.setWinningBid(newBid);
-					if(newQuantity > winningQuantity+(float)0.5) {
-						product.setCurrentPrice(winningQuantity+(float)0.5);
+					if(newQuantity.max(winningQuantity.add(new BigDecimal(0.5))) != null) {
+						product.setCurrentPrice(winningQuantity.add(new BigDecimal(0.5)));
 					} else {
 						product.setCurrentPrice(newQuantity);
 					}
@@ -77,7 +78,7 @@ public class BidServiceImpl implements BidService {
 					if(newQuantity == productCurrentPrice) {
 						productCurrentPrice = newBid.getQuantity();
 					} else {
-						productCurrentPrice = newBid.getQuantity()+(float)0.5;
+						productCurrentPrice = newBid.getQuantity().add(new BigDecimal(0.5));
 					}
 				}
 			} else {

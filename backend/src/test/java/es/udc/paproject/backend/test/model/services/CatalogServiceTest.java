@@ -2,6 +2,7 @@ package es.udc.paproject.backend.test.model.services;
 
 import static org.junit.Assert.assertEquals;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -48,7 +49,7 @@ public class CatalogServiceTest {
 	@Autowired
 	private BidService bidService;
 
-	private Product createProduct(String name, long duration, LocalDateTime creationTime, float currentPrice, float initialPrice,
+	private Product createProduct(String name, long duration, LocalDateTime creationTime, BigDecimal currentPrice, BigDecimal initialPrice,
 			Category category, User user) {	
 		return new Product(name, "descriptionProduct", duration, creationTime, initialPrice,
 				currentPrice, "shipmentInfo", category, user);
