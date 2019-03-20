@@ -21,7 +21,7 @@ import es.udc.paproject.backend.model.entities.User;
 
 @Service
 @Transactional
-public class CatalogServiceImpl implements CatalogService{
+public class ProductServiceImpl implements ProductService{
 	
 	@Autowired
 	private PermissionChecker permissionChecker;

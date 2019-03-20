@@ -43,7 +43,7 @@ public class BidServiceTest {
 		return new User(userName, password, firstName, lastName, email);
 	}
 	
-	//Intentar hacer una puja con un producto que no exite
+	//Intentar hacer una puja con un producto que no existe
 	@Test(expected = InstanceNotFoundException.class)
 	public void testNotFoundException() throws InstanceNotFoundException, ExpiratedProductDateException {
 		bidService.createBid(NON_EXISTENT_ID, null, null);

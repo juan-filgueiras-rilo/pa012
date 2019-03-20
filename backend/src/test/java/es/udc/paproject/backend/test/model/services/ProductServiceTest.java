@@ -26,14 +26,14 @@ import es.udc.paproject.backend.model.entities.ProductDao;
 import es.udc.paproject.backend.model.entities.User;
 import es.udc.paproject.backend.model.services.BidService;
 import es.udc.paproject.backend.model.services.Block;
-import es.udc.paproject.backend.model.services.CatalogService;
+import es.udc.paproject.backend.model.services.ProductService;
 import es.udc.paproject.backend.model.services.ExpiratedProductDateException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional
-public class CatalogServiceTest {
+public class ProductServiceTest {
 	
 	private final Long NON_EXISTENT_ID = new Long(-1);
 	
@@ -44,7 +44,7 @@ public class CatalogServiceTest {
 	private CategoryDao categoryDao;
 	
 	@Autowired
-	private CatalogService catalogService;
+	private ProductService productService;
 	
 	@Autowired
 	private BidService bidService;
@@ -80,12 +80,12 @@ public class CatalogServiceTest {
 		productDao.save(product1);
 		productDao.save(product2);
 			
-		assertEquals(product1, catalogService.addProduct(product1.getId(), product1.getName(),
+		assertEquals(product1, productService.addProduct(product1.getId(), product1.getName(),
 				product1.getDescriptionProduct(), product1.getDuration(), product1.getCreationTime(), product1.getInitialPrice(), 
 				product1.getCurrentPrice(), product1.getShipmentInfo(), product1.getCategory()));
 		
 		
-		assertEquals(product2, catalogService.addProduct(product2.getId(), product2.getName(),
+		assertEquals(product2, productService.addProduct(product2.getId(), product2.getName(),
 				product2.getDescriptionProduct(), product2.getDuration(), product2.getCreationTime(), product2.getInitialPrice(), 
 				product2.getCurrentPrice(), product2.getShipmentInfo(), product2.getCategory()));
 		
@@ -94,7 +94,7 @@ public class CatalogServiceTest {
 	//Buscar un producto por ID que no exista
 	@Test(expected = InstanceNotFoundException.class)
 	public void testFindNonExistentProduct() throws InstanceNotFoundException {
-		catalogService.findProducts(NON_EXISTENT_ID, "", 1, 1);
+		productService.findProducts(NON_EXISTENT_ID, "", 1, 1);
 	}
 	
 	//Buscar el producto por Keywords
@@ -121,7 +121,7 @@ public class CatalogServiceTest {
 		
 		Block<Product> expectedBlock = new Block<>(Arrays.asList(product1, product2), false);
 		
-		assertEquals(expectedBlock, catalogService.findProducts(null, "PrOdu", 0, 2));
+		assertEquals(expectedBlock, productService.findProducts(null, "PrOdu", 0, 2));
 		
 	}
 	
@@ -147,7 +147,7 @@ public class CatalogServiceTest {
 		
 		Block<Product> expectedBlock = new Block<>(Arrays.asList(product1), false);
 		
-		assertEquals(expectedBlock, catalogService.findProducts(category1.getId(), null, 0, 1));
+		assertEquals(expectedBlock, productService.findProducts(category1.getId(), null, 0, 1));
 	}
 	
 	//Si buscamos producto y no ponemos ni keywords ni categoria nos muestra todos los productos
@@ -171,8 +171,8 @@ public class CatalogServiceTest {
 		
 		Block<Product> expectedBlock = new Block<>(Arrays.asList(product1, product2), false);
 		
-		assertEquals(expectedBlock, catalogService.findProducts(null, null, 0, 2));
-		assertEquals(expectedBlock, catalogService.findProducts(null, "", 0, 2));
+		assertEquals(expectedBlock, productService.findProducts(null, null, 0, 2));
+		assertEquals(expectedBlock, productService.findProducts(null, "", 0, 2));
 
 	}
 	
@@ -187,8 +187,8 @@ public class CatalogServiceTest {
 		categoryDao.save(category1);
 		categoryDao.save(category2);
 		
-		assertEquals(category1, catalogService.getCategories(category1));
-		assertEquals(category2, catalogService.getCategories(category2));
+		assertEquals(category1, productService.getCategories(category1));
+		assertEquals(category2, productService.getCategories(category2));
 	}
 	
 	 
@@ -203,7 +203,7 @@ public class CatalogServiceTest {
 		
 		productDao.save(product1);
 		
-		Product expectedProduct = catalogService.getProductDetail(product1.getId());
+		Product expectedProduct = productService.getProductDetail(product1.getId());
 		
 		assertEquals(product1, expectedProduct);
 		assertEquals(product1.getName(), expectedProduct.getName());
@@ -226,15 +226,15 @@ public class CatalogServiceTest {
 		categoryDao.save(category1);
 		categoryDao.save(category2);
 		
-		catalogService.addProduct(product1.getId(), product1.getName(),
+		productService.addProduct(product1.getId(), product1.getName(),
 				product1.getDescriptionProduct(), product1.getDuration(), product1.getCreationTime(), product1.getInitialPrice(), 
 				product1.getCurrentPrice(), product1.getShipmentInfo(), product1.getCategory());
 		
-		catalogService.addProduct(product2.getId(), product2.getName(),
+		productService.addProduct(product2.getId(), product2.getName(),
 				product2.getDescriptionProduct(), product2.getDuration(), product2.getCreationTime(), product2.getInitialPrice(), 
 				product2.getCurrentPrice(), product2.getShipmentInfo(), product2.getCategory());
 		
-		Block<Product> catalogS = catalogService.getUserProducts(user1.getId());
+		Block<Product> catalogS = productService.getUserProducts(user1.getId());
 		
 		assertEquals(product1, catalogS.getItems().get(0));
 	}
@@ -251,14 +251,14 @@ public class CatalogServiceTest {
 		Product product1 = createProduct("Product 1", 120, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 10, 10, category1, user1);
 		
 		
-		catalogService.addProduct(product1.getId(), product1.getName(),
+		productService.addProduct(product1.getId(), product1.getName(),
 				product1.getDescriptionProduct(), product1.getDuration(), product1.getCreationTime(), product1.getInitialPrice(), 
 				product1.getCurrentPrice(), product1.getShipmentInfo(), product1.getCategory());
 		
 		bidService.createBid(user3.getId(), product1.getId(), (float)50);
 		bidService.createBid(user2.getId(), product1.getId(), (float)60);
 		
-		Block<Product> catalogS = catalogService.getUserProducts(user1.getId());
+		Block<Product> catalogS = productService.getUserProducts(user1.getId());
 		
 		Optional<Bid> bidGanadora = catalogS.getItems().get(0).getWinningBid();
 		
