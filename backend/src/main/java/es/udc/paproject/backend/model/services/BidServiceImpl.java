@@ -31,7 +31,7 @@ public class BidServiceImpl implements BidService {
 	private BidDao bidDao;
 	
 	@Override
-	public Bid createBid(Long userId, Long productId, BigDecimal quantity) throws ExpiratedProductDateException, InstanceNotFoundException {
+	public Bid createBid(Long userId, Long productId, BigDecimal quantity) throws ExpiratedProductDateException, InstanceNotFoundException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser {
 		
 		User user = permissionChecker.checkUser(userId);		
 		Optional<Product> optProduct;
@@ -50,8 +50,11 @@ public class BidServiceImpl implements BidService {
 		}
 		
 		if(product.getUser() == user) {
-			//throw new 
+			//Si eres el propietario del producto no puedes pujar sobre él
+			//Tb sirve para que no puedas pujar sobre tu propia puja
+			throw new UnauthorizedBidException(productId);
 		}
+		
 
 		newBid = new Bid(quantity, BidState.WINNING, user, product);
 
@@ -59,30 +62,29 @@ public class BidServiceImpl implements BidService {
 		if (optWinningBid.isPresent()) {
 			
 			winningBid = optWinningBid.get();
-			
+			if (winningBid.getUser() == user) {
+				throw new UnauthorizedWinningUser(winningBid.getId());
+			}
 			BigDecimal productCurrentPrice = product.getCurrentPrince();
 			BigDecimal winningQuantity = winningBid.getQuantity();
 			BigDecimal newQuantity = newBid.getQuantity();
 			
-			if (newQuantity.max(productCurrentPrice) != null) {
-				if (newQuantity.max(winningQuantity) != null) { 
+			if (newQuantity.compareTo(productCurrentPrice) == 1) {
+				if (newQuantity.compareTo(winningQuantity) == 1) { 
 					winningBid.setState(BidState.LOST);
 					product.setWinningBid(newBid);
-					if(newQuantity.max(winningQuantity.add(new BigDecimal(0.5))) != null) {
+					if(newQuantity.compareTo(winningQuantity.add(new BigDecimal(0.5))) == 1) {
 						product.setCurrentPrice(winningQuantity.add(new BigDecimal(0.5)));
 					} else {
 						product.setCurrentPrice(newQuantity);
 					}
 				} else {
 					newBid.setState(BidState.LOST);
-					if(newQuantity == productCurrentPrice) {
-						productCurrentPrice = newBid.getQuantity();
-					} else {
-						productCurrentPrice = newBid.getQuantity().add(new BigDecimal(0.5));
-					}
+					BigDecimal newPrice = newBid.getQuantity().min(newBid.getQuantity().add(new BigDecimal(0.5)));
+					productCurrentPrice = newPrice;
 				}
 			} else {
-				//EXCEPCIÓ
+				throw new InsufficientBidQuantityException(productCurrentPrice);
 			}
 		} else {
 			product.setWinningBid(newBid);
