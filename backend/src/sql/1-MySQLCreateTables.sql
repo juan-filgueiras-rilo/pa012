@@ -1,9 +1,9 @@
 -- Indexes for primary keys have been explicitly created.
 
-DROP TABLE User;
 DROP TABLE Bid;
-DROP TABLE Category;
 DROP TABLE Product;
+DROP TABLE Category;
+DROP TABLE User;
 
 CREATE TABLE User (
     id BIGINT NOT NULL AUTO_INCREMENT,
@@ -19,23 +19,10 @@ CREATE TABLE User (
 
 CREATE INDEX UserIndexByUserName ON User (userName);
 
-CREATE TABLE Bid (
-	id BIGINT NOT NULL AUTO_INCREMENT,
-	quantity DECIMAL(11, 2) NOT NULL,
-	productId BIGINT NOT NULL, 
-	userId BIGINT NOT NULL,
-	date DATETIME NOT NULL, 
-	CONSTRAINT BidPK PRIMARY KEY (id),
-	CONSTRAINT BidProductIdFK FOREING KEY (productId)
-		REFERENCES Product (id),
-	CONSTRAINT BidUserIdFK FOREING KEY (userId)
-		REFERENCES User (id)
-) ENGINE = InnoDB;
-
 CREATE TABLE Category (
-	categoryId BIGINT NOT NULL AUTO_INCREMENT,
+	id BIGINT NOT NULL AUTO_INCREMENT,
 	name VARCHAR(60) NOT NULL,
-	CONSTRAINT CategoryPK PRIMARY KEY (categoryId)
+	CONSTRAINT CategoryPK PRIMARY KEY (id),
 	CONSTRAINT CategoryNameUniqueKey UNIQUE (name)
 ) ENGINE = InnoDB;
 
@@ -53,8 +40,25 @@ CREATE TABLE Product (
 	categoryId BIGINT NOT NULL, 
 	userId BIGINT NOT NULL,
 	CONSTRAINT ProductPK PRIMARY KEY (id),
-	CONSTRAINT ProductCategoryIdFK FOREING KEY (categoryId)
-		REFERENCES Category (categoryId),
-	CONSTRAINT ProductUserIdFK FOREING KEY (userId)
+	CONSTRAINT ProductCategoryIdFK FOREIGN KEY(categoryId)
+		REFERENCES Category (id),
+	CONSTRAINT ProductUserIdFK FOREIGN KEY(userId)
 		REFERENCES User (id)
 ) ENGINE = InnoDB;
+
+CREATE TABLE Bid (
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	quantity DECIMAL(11, 2) NOT NULL,
+	productId BIGINT NOT NULL, 
+	userId BIGINT NOT NULL,
+	date DATETIME NOT NULL, 
+	CONSTRAINT BidPK PRIMARY KEY (id),
+	CONSTRAINT BidProductIdFK FOREIGN KEY(productId)
+		REFERENCES Product (id),
+	CONSTRAINT BidUserIdFK FOREIGN KEY(userId)
+		REFERENCES User (id)
+) ENGINE = InnoDB;
+
+
+
+
