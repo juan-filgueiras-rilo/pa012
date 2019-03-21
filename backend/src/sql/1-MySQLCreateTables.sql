@@ -39,6 +39,7 @@ CREATE TABLE Product (
 	shipmentInfo VARCHAR(2000) NOT NULL,
 	categoryId BIGINT NOT NULL, 
 	userId BIGINT NOT NULL,
+	winningBidId BIGINT NOT NULL,
 	CONSTRAINT ProductPK PRIMARY KEY (id),
 	CONSTRAINT ProductCategoryIdFK FOREIGN KEY(categoryId)
 		REFERENCES Category (id),

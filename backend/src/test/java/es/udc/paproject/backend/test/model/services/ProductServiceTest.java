@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -18,19 +17,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundException;
-import es.udc.paproject.backend.model.entities.Bid;
 import es.udc.paproject.backend.model.entities.Category;
 import es.udc.paproject.backend.model.entities.CategoryDao;
 import es.udc.paproject.backend.model.entities.Product;
 import es.udc.paproject.backend.model.entities.ProductDao;
 import es.udc.paproject.backend.model.entities.User;
-import es.udc.paproject.backend.model.services.BidService;
 import es.udc.paproject.backend.model.services.Block;
 import es.udc.paproject.backend.model.services.ProductService;
-import es.udc.paproject.backend.model.services.UnauthorizedBidException;
-import es.udc.paproject.backend.model.services.UnauthorizedWinningUser;
-import es.udc.paproject.backend.model.services.ExpiratedProductDateException;
-import es.udc.paproject.backend.model.services.InsufficientBidQuantityException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -49,8 +42,6 @@ public class ProductServiceTest {
 	@Autowired
 	private ProductService productService;
 	
-	@Autowired
-	private BidService bidService;
 
 	private Product createProduct(String name, long duration, LocalDateTime creationTime, BigDecimal initialPrice,
 			Category category, User user) {	
@@ -80,8 +71,8 @@ public class ProductServiceTest {
 		Product product2 = createProduct("Product 2",10, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
 				new BigDecimal(10), category2, user2);
 		
-		productDao.save(product1);
-		productDao.save(product2);
+		//productDao.save(product1);
+		//productDao.save(product2);
 			
 		assertEquals(product1, productService.addProduct(product1.getId(), product1.getName(),
 				product1.getDescriptionProduct(), product1.getDuration(), product1.getCreationTime(), product1.getInitialPrice(), 
@@ -97,7 +88,7 @@ public class ProductServiceTest {
 	//Buscar un producto por ID que no exista
 	@Test(expected = InstanceNotFoundException.class)
 	public void testFindNonExistentProduct() throws InstanceNotFoundException {
-		productService.findProducts(NON_EXISTENT_ID, "", 1, 1);
+		productService.findProducts(NON_EXISTENT_ID, "wefwe", 0, 0);
 	}
 	
 	//Buscar el producto por Keywords
@@ -118,12 +109,11 @@ public class ProductServiceTest {
 				new BigDecimal(12), category, user3);
 		
 		categoryDao.save(category);
-		productDao.save(product1);
-		productDao.save(product2);
-		productDao.save(product3);
+		//productDao.save(product1);
+		//productDao.save(product2);
+		//productDao.save(product3);
 		
 		Block<Product> expectedBlock = new Block<>(Arrays.asList(product1, product2), false);
-		
 		assertEquals(expectedBlock, productService.findProducts(null, "PrOdu", 0, 2));
 		
 	}
@@ -137,16 +127,15 @@ public class ProductServiceTest {
 		User user1 = createUser("juanluispm", "123456", "Juan", "Boquete", "juan@udc.es");
 		Product product1 = createProduct("Product 1", 80, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
 				new BigDecimal(10), category1, user1);
-
-		User user2 = createUser("nombre", "2002125", "Pablo", "Rodriguez", "pablo@udc.es");
-		Product product2 = createProduct("Product X", 90, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
-				new BigDecimal(12), category2, user2);
-		
 		
 		categoryDao.save(category1);
 		categoryDao.save(category2);
-		productDao.save(product1);
-		productDao.save(product2);
+		//productDao.save(product1);
+		
+		User user2 = createUser("nombre", "2002125", "Pablo", "Rodriguez", "pablo@udc.es");
+		Product product2 = createProduct("Product X", 90, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
+				new BigDecimal(12), category2, user2);
+		//productDao.save(product2);
 		
 		Block<Product> expectedBlock = new Block<>(Arrays.asList(product1), false);
 		
@@ -169,12 +158,11 @@ public class ProductServiceTest {
 		
 		categoryDao.save(category1);
 		categoryDao.save(category2);
-		productDao.save(product1);
-		productDao.save(product2);
+		//productDao.save(product1);
+		//productDao.save(product2);
 		
 		Block<Product> expectedBlock = new Block<>(Arrays.asList(product1, product2), false);
 		
-		assertEquals(expectedBlock, productService.findProducts(null, null, 0, 2));
 		assertEquals(expectedBlock, productService.findProducts(null, "", 0, 2));
 
 	}
@@ -204,9 +192,7 @@ public class ProductServiceTest {
 		User user1 = createUser("juanluispm", "123456", "Juan", "Boquete", "juan@udc.es");
 		Product product1 = createProduct("Product 1", 200, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
 				new BigDecimal(10), category1, user1);
-		
-		productDao.save(product1);
-		
+				
 		Product expectedProduct = productService.getProductDetail(product1.getId());
 		
 		assertEquals(product1, expectedProduct);
@@ -243,31 +229,4 @@ public class ProductServiceTest {
 		assertEquals(product1, catalogS.getItems().get(0));
 	}
 	
-	@Test
-	public void testGetUserProductsEmail() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser {
-
-		Category category1 = new Category("category 1");
-		
-		User user1 = createUser("juanluispm", "123456", "Juan", "Boquete", "juan@udc.es");
-		User user2 = createUser("Pablo", "Mara123", "Pablo", "Regueiro", "super10pablo@udc.es");
-		User user3 = createUser("Juan", "Mara123", "Juan", "Regueiro", "matriculas@udc.es");
-		
-		Product product1 = createProduct("Product 1", 120, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), new BigDecimal(10), category1, user1);
-		
-		
-		productService.addProduct(product1.getId(), product1.getName(),
-				product1.getDescriptionProduct(), product1.getDuration(), product1.getCreationTime(), product1.getInitialPrice(), 
-				product1.getShipmentInfo(), product1.getCategory());
-		
-		bidService.createBid(user3.getId(), product1.getId(), new BigDecimal(50));
-		bidService.createBid(user2.getId(), product1.getId(), new BigDecimal(60));
-		
-		Block<Product> catalogS = productService.getUserProducts(user1.getId());
-		
-		Optional<Bid> bidGanadora = catalogS.getItems().get(0).getWinningBid();
-		
-		assertEquals(bidService.getUserBids(user2.getId()), bidGanadora.get().getUser().getEmail());
-		
-		
-	}
 }

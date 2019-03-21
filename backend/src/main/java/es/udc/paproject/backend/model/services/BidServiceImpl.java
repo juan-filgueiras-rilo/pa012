@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Slice;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundException;
 import es.udc.paproject.backend.model.entities.Bid;
@@ -16,6 +18,8 @@ import es.udc.paproject.backend.model.entities.ProductDao;
 import es.udc.paproject.backend.model.entities.User;
 import es.udc.paproject.backend.model.entities.UserDao;
 
+@Service
+@Transactional
 public class BidServiceImpl implements BidService {
 
 	@Autowired
@@ -58,14 +62,14 @@ public class BidServiceImpl implements BidService {
 
 		newBid = new Bid(quantity, BidState.WINNING, user, product);
 
-		Optional<Bid> optWinningBid = product.getWinningBid();
-		if (optWinningBid.isPresent()) {
+		Bid optWinningBid = product.getWinningBid();
+		if (optWinningBid != null) {
 			
-			winningBid = optWinningBid.get();
+			winningBid = optWinningBid;
 			if (winningBid.getUser() == user) {
 				throw new UnauthorizedWinningUser(winningBid.getId());
 			}
-			BigDecimal productCurrentPrice = product.getCurrentPrince();
+			BigDecimal productCurrentPrice = product.getCurrentPrice();
 			BigDecimal winningQuantity = winningBid.getQuantity();
 			BigDecimal newQuantity = newBid.getQuantity();
 			
