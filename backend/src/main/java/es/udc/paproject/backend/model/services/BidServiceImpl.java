@@ -16,7 +16,6 @@ import es.udc.paproject.backend.model.entities.BidDao;
 import es.udc.paproject.backend.model.entities.Product;
 import es.udc.paproject.backend.model.entities.ProductDao;
 import es.udc.paproject.backend.model.entities.User;
-import es.udc.paproject.backend.model.entities.UserDao;
 
 @Service
 @Transactional
@@ -29,13 +28,13 @@ public class BidServiceImpl implements BidService {
 	private ProductDao productDao;
 	
 	@Autowired
-	private UserDao userDao;
-	
-	@Autowired
 	private BidDao bidDao;
 	
 	@Override
-	public Bid createBid(Long userId, Long productId, BigDecimal quantity) throws ExpiratedProductDateException, InstanceNotFoundException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser {
+	public Bid createBid(Long userId, Long productId, BigDecimal quantity) 
+			throws ExpiratedProductDateException, InstanceNotFoundException,
+			UnauthorizedBidException, InsufficientBidQuantityException,
+			UnauthorizedWinningUser {
 		
 		User user = permissionChecker.checkUser(userId);		
 		Optional<Product> optProduct;
@@ -64,7 +63,6 @@ public class BidServiceImpl implements BidService {
 
 		Bid optWinningBid = product.getWinningBid();
 		if (optWinningBid != null) {
-			
 			winningBid = optWinningBid;
 			if (winningBid.getUser() == user) {
 				throw new UnauthorizedWinningUser(winningBid.getId());

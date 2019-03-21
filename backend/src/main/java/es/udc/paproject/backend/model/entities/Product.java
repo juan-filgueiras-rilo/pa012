@@ -3,6 +3,7 @@ package es.udc.paproject.backend.model.entities;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 
 import javax.persistence.Entity;
@@ -18,10 +19,10 @@ import javax.persistence.Transient;
 @Entity
 public class Product {
 	
-	private long id;
+	private Long id;
 	private String name;
 	private String descriptionProduct;
-	private long duration;
+	private Long duration;
 	private LocalDateTime creationTime;
 	private BigDecimal currentPrice;
 	private BigDecimal initialPrice;
@@ -32,8 +33,8 @@ public class Product {
 		
 	public Product() {}
 	
-	public Product(String name, String descriptionProduct, long duration, 
-			LocalDateTime creationTime, BigDecimal initialPrice, String shipmentInfo,
+	public Product(String name, String descriptionProduct, Long duration, 
+			BigDecimal initialPrice, String shipmentInfo,
 			Category category, User user) {
 		this.name = name;
 		this.descriptionProduct = descriptionProduct; 
@@ -88,6 +89,7 @@ public class Product {
 	public void setCreationTime(LocalDateTime creationTime) {
 		this.creationTime = creationTime;
 	}
+
 	public BigDecimal getCurrentPrice() {
 		return currentPrice;
 	}
@@ -130,12 +132,7 @@ public class Product {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
-	@Transient
-	public boolean isActive() {
-		return (this.creationTime.plusMinutes(this.duration).isAfter(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS)));
-	}
-	
+
 	@OneToOne(optional=true, fetch=FetchType.LAZY)
 	@JoinColumn(name="winningBidId")
 	public Bid getWinningBid() {
@@ -146,6 +143,15 @@ public class Product {
 		this.winningBid = winningBid;
 	}
 	
+	@Transient
+	public boolean isActive() {
+		return (this.creationTime.plusMinutes(this.duration).isAfter(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS)));
+	}
 	
+	@Transient
+	public Long getRemainingTime() {
+		return this.creationTime.plusMinutes(this.duration).truncatedTo(ChronoUnit.MINUTES).
+				atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli();
+	}
 	
 }

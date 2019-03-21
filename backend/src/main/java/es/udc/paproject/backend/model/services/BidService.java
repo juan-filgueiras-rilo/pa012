@@ -7,7 +7,10 @@ import es.udc.paproject.backend.model.entities.Bid;
 
 public interface BidService {
 	
-	Bid createBid(Long id, Long productId, BigDecimal quantity) throws ExpiratedProductDateException, InstanceNotFoundException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser;
+	Bid createBid(Long id, Long productId, BigDecimal quantity) 
+			throws ExpiratedProductDateException, InstanceNotFoundException,
+			UnauthorizedBidException, InsufficientBidQuantityException,
+			UnauthorizedWinningUser;
 	
 	Block<Bid> getUserBids(Long userId) throws InstanceNotFoundException;
 	

@@ -36,7 +36,7 @@ import es.udc.paproject.backend.model.services.UserService;
 @Transactional
 public class BidServiceTest {
 	
-	private final Long NON_EXISTENT_ID = new Long(-1);
+	private final Category NON_EXISTENT_ID = new Category(-1);
 	
 
 	@Autowired

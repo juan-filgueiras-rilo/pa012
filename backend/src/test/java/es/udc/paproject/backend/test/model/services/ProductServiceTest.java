@@ -31,7 +31,7 @@ import es.udc.paproject.backend.model.services.ProductService;
 @Transactional
 public class ProductServiceTest {
 	
-	private final Long NON_EXISTENT_ID = new Long(-1);
+	private final Category NON_EXISTENT_ID = new Category(-1);
 	
 	@Autowired 
 	private ProductDao productDao;
@@ -179,8 +179,8 @@ public class ProductServiceTest {
 		categoryDao.save(category1);
 		categoryDao.save(category2);
 		
-		assertEquals(category1, productService.getCategories(category1));
-		assertEquals(category2, productService.getCategories(category2));
+		assertEquals(category1, productService.findAllCategories());
+		assertEquals(category2, productService.findAllCategories());
 	}
 	
 	 
