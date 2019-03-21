@@ -19,11 +19,8 @@ import es.udc.paproject.backend.model.common.exceptions.DuplicateInstanceExcepti
 import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundException;
 import es.udc.paproject.backend.model.entities.Bid;
 import es.udc.paproject.backend.model.entities.Category;
-import es.udc.paproject.backend.model.entities.CategoryDao;
 import es.udc.paproject.backend.model.entities.Product;
-import es.udc.paproject.backend.model.entities.ProductDao;
 import es.udc.paproject.backend.model.entities.User;
-import es.udc.paproject.backend.model.entities.UserDao;
 import es.udc.paproject.backend.model.services.BidService;
 import es.udc.paproject.backend.model.services.Block;
 import es.udc.paproject.backend.model.services.ExpiratedProductDateException;
