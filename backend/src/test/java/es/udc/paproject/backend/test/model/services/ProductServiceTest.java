@@ -27,7 +27,10 @@ import es.udc.paproject.backend.model.entities.User;
 import es.udc.paproject.backend.model.services.BidService;
 import es.udc.paproject.backend.model.services.Block;
 import es.udc.paproject.backend.model.services.ProductService;
+import es.udc.paproject.backend.model.services.UnauthorizedBidException;
+import es.udc.paproject.backend.model.services.UnauthorizedWinningUser;
 import es.udc.paproject.backend.model.services.ExpiratedProductDateException;
+import es.udc.paproject.backend.model.services.InsufficientBidQuantityException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -49,10 +52,10 @@ public class ProductServiceTest {
 	@Autowired
 	private BidService bidService;
 
-	private Product createProduct(String name, long duration, LocalDateTime creationTime, BigDecimal currentPrice, BigDecimal initialPrice,
+	private Product createProduct(String name, long duration, LocalDateTime creationTime, BigDecimal initialPrice,
 			Category category, User user) {	
 		return new Product(name, "descriptionProduct", duration, creationTime, initialPrice,
-				currentPrice, "shipmentInfo", category, user);
+			"shipmentInfo", category, user);
 	}
 	
 	private User createUser (String userName, String password, String firstName, 
@@ -73,21 +76,21 @@ public class ProductServiceTest {
 		
 		
 		Product product1 = createProduct("Product 1", 10,LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
-				10, 10, category1, user1);
+				 new BigDecimal(10), category1, user1);
 		Product product2 = createProduct("Product 2",10, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
-				12, 12, category2, user2);
+				new BigDecimal(10), category2, user2);
 		
 		productDao.save(product1);
 		productDao.save(product2);
 			
 		assertEquals(product1, productService.addProduct(product1.getId(), product1.getName(),
 				product1.getDescriptionProduct(), product1.getDuration(), product1.getCreationTime(), product1.getInitialPrice(), 
-				product1.getCurrentPrice(), product1.getShipmentInfo(), product1.getCategory()));
+				product1.getShipmentInfo(), product1.getCategory()));
 		
 		
 		assertEquals(product2, productService.addProduct(product2.getId(), product2.getName(),
 				product2.getDescriptionProduct(), product2.getDuration(), product2.getCreationTime(), product2.getInitialPrice(), 
-				product2.getCurrentPrice(), product2.getShipmentInfo(), product2.getCategory()));
+				product2.getShipmentInfo(), product2.getCategory()));
 		
 	}
 	
@@ -104,15 +107,15 @@ public class ProductServiceTest {
 		Category category = new Category("category 1");
 		User user1 = createUser("juanluispm", "123456", "Juan", "Boquete", "juan@udc.es");
 		Product product1 = createProduct("Product 1", 50,LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
-				10, 10, category, user1);
+				new BigDecimal(10), category, user1);
 
 		User user2 = createUser("nombre", "2002125", "Pablo", "Rodriguez", "pablo@udc.es");
 		Product product2 = createProduct("Product X", 60,LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
-				12, 12, category, user2);
+				new BigDecimal(12), category, user2);
 		
 		User user3 = createUser("nombre", "2002125", "Juaneyer", "Reina", "juanreina@udc.es");
 		Product product3 = createProduct("Another", 70, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
-				12, 12, category, user3);
+				new BigDecimal(12), category, user3);
 		
 		categoryDao.save(category);
 		productDao.save(product1);
@@ -133,11 +136,11 @@ public class ProductServiceTest {
 		Category category2 = new Category("category 2");
 		User user1 = createUser("juanluispm", "123456", "Juan", "Boquete", "juan@udc.es");
 		Product product1 = createProduct("Product 1", 80, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
-				10, 10, category1, user1);
+				new BigDecimal(10), category1, user1);
 
 		User user2 = createUser("nombre", "2002125", "Pablo", "Rodriguez", "pablo@udc.es");
 		Product product2 = createProduct("Product X", 90, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
-				12, 12, category2, user2);
+				new BigDecimal(12), category2, user2);
 		
 		
 		categoryDao.save(category1);
@@ -158,11 +161,11 @@ public class ProductServiceTest {
 		Category category2 = new Category("category 2");
 		User user1 = createUser("juanluispm", "123456", "Juan", "Boquete", "juan@udc.es");
 		Product product1 = createProduct("Product 1", 100, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
-				10, 10, category1, user1);
+				new BigDecimal(10), category1, user1);
 
 		User user2 = createUser("nombre", "2002125", "Pablo", "Rodriguez", "pablo@udc.es");
 		Product product2 = createProduct("Product X", 101, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 
-				12, 12, category2, user2);
+				new BigDecimal(12), category2, user2);
 		
 		categoryDao.save(category1);
 		categoryDao.save(category2);
@@ -178,6 +181,7 @@ public class ProductServiceTest {
 	
 	
 	//Obtener las categorias
+	//Mirar!!
 	@Test 
 	public void testGetCategories() {
 		
@@ -199,7 +203,7 @@ public class ProductServiceTest {
 		Category category1 = new Category("category 1");
 		User user1 = createUser("juanluispm", "123456", "Juan", "Boquete", "juan@udc.es");
 		Product product1 = createProduct("Product 1", 200, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
-				10, 10, category1, user1);
+				new BigDecimal(10), category1, user1);
 		
 		productDao.save(product1);
 		
@@ -220,19 +224,19 @@ public class ProductServiceTest {
 		Category category2 = new Category("category 2");
 		
 		User user1 = createUser("juanluispm", "123456", "Juan", "Boquete", "juan@udc.es");
-		Product product1 = createProduct("Product 1", 120, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 10, 10, category1, user1);
-		Product product2 = createProduct("Product X", 110, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 12, 12, category2, user1);
+		Product product1 = createProduct("Product 1", 120, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), new BigDecimal(10), category1, user1);
+		Product product2 = createProduct("Product X", 110, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), new BigDecimal(12), category2, user1);
 		
 		categoryDao.save(category1);
 		categoryDao.save(category2);
 		
 		productService.addProduct(product1.getId(), product1.getName(),
 				product1.getDescriptionProduct(), product1.getDuration(), product1.getCreationTime(), product1.getInitialPrice(), 
-				product1.getCurrentPrice(), product1.getShipmentInfo(), product1.getCategory());
+				product1.getShipmentInfo(), product1.getCategory());
 		
 		productService.addProduct(product2.getId(), product2.getName(),
 				product2.getDescriptionProduct(), product2.getDuration(), product2.getCreationTime(), product2.getInitialPrice(), 
-				product2.getCurrentPrice(), product2.getShipmentInfo(), product2.getCategory());
+				product2.getShipmentInfo(), product2.getCategory());
 		
 		Block<Product> catalogS = productService.getUserProducts(user1.getId());
 		
@@ -240,7 +244,7 @@ public class ProductServiceTest {
 	}
 	
 	@Test
-	public void testGetUserProductsEmail() throws InstanceNotFoundException, ExpiratedProductDateException {
+	public void testGetUserProductsEmail() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser {
 
 		Category category1 = new Category("category 1");
 		
@@ -248,15 +252,15 @@ public class ProductServiceTest {
 		User user2 = createUser("Pablo", "Mara123", "Pablo", "Regueiro", "super10pablo@udc.es");
 		User user3 = createUser("Juan", "Mara123", "Juan", "Regueiro", "matriculas@udc.es");
 		
-		Product product1 = createProduct("Product 1", 120, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), 10, 10, category1, user1);
+		Product product1 = createProduct("Product 1", 120, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), new BigDecimal(10), category1, user1);
 		
 		
 		productService.addProduct(product1.getId(), product1.getName(),
 				product1.getDescriptionProduct(), product1.getDuration(), product1.getCreationTime(), product1.getInitialPrice(), 
-				product1.getCurrentPrice(), product1.getShipmentInfo(), product1.getCategory());
+				product1.getShipmentInfo(), product1.getCategory());
 		
-		bidService.createBid(user3.getId(), product1.getId(), (float)50);
-		bidService.createBid(user2.getId(), product1.getId(), (float)60);
+		bidService.createBid(user3.getId(), product1.getId(), new BigDecimal(50));
+		bidService.createBid(user2.getId(), product1.getId(), new BigDecimal(60));
 		
 		Block<Product> catalogS = productService.getUserProducts(user1.getId());
 		

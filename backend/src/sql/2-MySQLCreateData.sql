@@ -3,3 +3,5 @@
 -- in the "pa-project" database.
 -------------------------------------------------------------------------------
 
+INSERT INTO Category (name) VALUES ('Movies');
+INSERT INTO Category (name) VALUES ('Music');
