@@ -3,6 +3,7 @@ package es.udc.paproject.backend.model.entities;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
@@ -13,13 +14,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.springframework.data.annotation.Transient;
+
 @Entity
 public class Product {
 	
-	private long id;
+	private Long id;
 	private String name;
 	private String descriptionProduct;
-	private long duration;
+	private Long duration;
 	private LocalDateTime creationTime;
 	private BigDecimal currentPrice;
 	private BigDecimal initialPrice;
@@ -30,8 +33,8 @@ public class Product {
 		
 	public Product() {}
 	
-	public Product(String name, String descriptionProduct, long duration, 
-			LocalDateTime creationTime, BigDecimal initialPrice, String shipmentInfo,
+	public Product(String name, String descriptionProduct, Long duration, 
+			BigDecimal initialPrice, String shipmentInfo,
 			Category category, User user) {
 		this.name = name;
 		this.descriptionProduct = descriptionProduct; 
@@ -86,7 +89,8 @@ public class Product {
 	public void setCreationTime(LocalDateTime creationTime) {
 		this.creationTime = creationTime;
 	}
-	public BigDecimal getCurrentPrince() {
+	
+	public BigDecimal getCurrentPrice() {
 		return currentPrice;
 	}
 
@@ -126,10 +130,6 @@ public class Product {
 	public void setUser(User user) {
 		this.user = user;
 	}
-		
-	public boolean isActive() {
-		return (this.creationTime.plusMinutes(this.duration).isAfter(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS)));
-	}
 
 	public Optional<Bid> getWinningBid() {
 		return winningBid;
@@ -139,6 +139,14 @@ public class Product {
 		this.winningBid = Optional.of(winningBid);
 	}
 	
-	
+	public boolean isActive() {
+		return (this.creationTime.plusMinutes(this.duration).isAfter(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS)));
+	}
+
+	@Transient
+	public Long getRemainingTime() {
+		return this.creationTime.plusMinutes(this.duration).truncatedTo(ChronoUnit.MINUTES).
+				atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli();
+	}
 	
 }

@@ -31,7 +31,8 @@ public class BidServiceImpl implements BidService {
 	private BidDao bidDao;
 	
 	@Override
-	public Bid createBid(Long userId, Long productId, BigDecimal quantity) throws ExpiratedProductDateException, InstanceNotFoundException {
+	public Bid createBid(Long userId, Long productId, BigDecimal quantity)
+			throws ExpiratedProductDateException, InstanceNotFoundException {
 		
 		User user = permissionChecker.checkUser(userId);		
 		Optional<Product> optProduct;
@@ -60,7 +61,7 @@ public class BidServiceImpl implements BidService {
 			
 			winningBid = optWinningBid.get();
 			
-			BigDecimal productCurrentPrice = product.getCurrentPrince();
+			BigDecimal productCurrentPrice = product.getCurrentPrice();
 			BigDecimal winningQuantity = winningBid.getQuantity();
 			BigDecimal newQuantity = newBid.getQuantity();
 			

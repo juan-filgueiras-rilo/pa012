@@ -1,8 +1,9 @@
 package es.udc.paproject.backend.model.services;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -33,17 +34,25 @@ public class ProductServiceImpl implements ProductService{
 	private CategoryDao categoryDao;
 	
 	@Override
-	public Product addProduct(Long userId, String name, String descriptionProduct, Long duration, LocalDateTime creationTime, BigDecimal initialPrice, String shipmentInfo, Category category) throws InstanceNotFoundException {
+	public Product addProduct(Long userId, String name, 
+			String descriptionProduct, Long duration, 
+			BigDecimal initialPrice, String shipmentInfo,
+			Long categoryId) 
+			throws InstanceNotFoundException {
 		
 		User user = permissionChecker.checkUser(userId);
-		Product product = new Product(name, descriptionProduct, duration, creationTime, initialPrice,  shipmentInfo, category, user);
+		Optional<Category> optCategory = categoryDao.findById(categoryId);
+		if (!optCategory.isPresent()) {
+			throw new InstanceNotFoundException("Category not found with id: ", categoryId);
+		}
+		Product product = new Product(name, descriptionProduct, duration, initialPrice,  shipmentInfo, optCategory.get(), user);
 		
 		product = productDao.save(product);
 		return product;
 	}
 
 	@Override
-	public Block<Product> findProducts(Long categoryId, String keywords, int page, int size) throws InstanceNotFoundException {
+	public Block<Product> findProducts(Long categoryId, String keywords, int page, int size) {
 		
 		Slice<Product> slice = productDao.find(categoryId, keywords, page, size);
 		
@@ -51,10 +60,10 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public HashSet<Category> getCategories(Category category) {
+	public List<Category> findAllCategories() {
 
 		Iterable<Category> categories = categoryDao.findAll(new Sort(Sort.Direction.ASC, "name"));
-		HashSet<Category> categoriesAsList = new HashSet<>();
+		List<Category> categoriesAsList = new ArrayList<>();
 		
 		categories.forEach(c -> categoriesAsList.add(c));
 		

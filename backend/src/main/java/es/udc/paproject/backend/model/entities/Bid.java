@@ -15,7 +15,7 @@ import javax.persistence.Id;
 @Entity
 public class Bid {
 	
-	public enum BidState {WON, LOST, WINNING};
+	public enum BidState {LOST, WINNING};
 	
 	private long id;
 	private BigDecimal quantity;
@@ -40,7 +40,6 @@ public class Bid {
 	public long getId() {
 		return id;
 	}
-	
 
 	public void setId(long id) {
 		this.id = id;

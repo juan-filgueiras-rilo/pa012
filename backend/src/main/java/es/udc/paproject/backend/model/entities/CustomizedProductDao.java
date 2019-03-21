@@ -4,6 +4,6 @@ import org.springframework.data.domain.Slice;
 
 public interface CustomizedProductDao {
 	
-	Slice<Product> find(Long id, String text, int page, int size);
+	Slice<Product> find(Long categoryId, String text, int page, int size);
 
 }
