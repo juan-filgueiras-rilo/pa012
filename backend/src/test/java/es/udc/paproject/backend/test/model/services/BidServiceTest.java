@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import javax.transaction.Transactional;
 
@@ -14,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import es.udc.paproject.backend.model.common.exceptions.DuplicateInstanceException;
 import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundException;
 import es.udc.paproject.backend.model.entities.Bid;
 import es.udc.paproject.backend.model.entities.Category;
@@ -21,12 +23,15 @@ import es.udc.paproject.backend.model.entities.CategoryDao;
 import es.udc.paproject.backend.model.entities.Product;
 import es.udc.paproject.backend.model.entities.ProductDao;
 import es.udc.paproject.backend.model.entities.User;
+import es.udc.paproject.backend.model.entities.UserDao;
 import es.udc.paproject.backend.model.services.BidService;
 import es.udc.paproject.backend.model.services.Block;
 import es.udc.paproject.backend.model.services.ExpiratedProductDateException;
 import es.udc.paproject.backend.model.services.InsufficientBidQuantityException;
+import es.udc.paproject.backend.model.services.ProductService;
 import es.udc.paproject.backend.model.services.UnauthorizedBidException;
 import es.udc.paproject.backend.model.services.UnauthorizedWinningUser;
+import es.udc.paproject.backend.model.services.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -40,6 +45,12 @@ public class BidServiceTest {
 	@Autowired
 	private BidService bidService;
 	
+	@Autowired
+	private ProductService productService; 
+	
+	@Autowired
+	private UserService userService;
+	
 	private Product createProduct(String name, long duration, LocalDateTime creationTime, BigDecimal initialPrice,
 			Category category, User user) {	
 		return new Product(name, "descriptionProduct", duration, creationTime, initialPrice,
@@ -49,6 +60,47 @@ public class BidServiceTest {
 	private User createUser (String userName, String password, String firstName, 
 			String lastName, String email) {
 		return new User(userName, password, firstName, lastName, email);
+	}
+	
+	private User signUpUser(String userName) {
+		
+		User user = new User(userName, "password", "firstName", "lastName", userName + "@" + userName + ".com");
+		
+		try {
+			userService.signUp(user);
+		} catch (DuplicateInstanceException e) {
+			throw new RuntimeException(e);
+		}
+		
+		return user;
+		
+	}
+
+	@Test
+	public void testGetUserProductsEmail() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser, DuplicateInstanceException {
+
+		Category category1 = new Category("category 1");
+		
+		User user1 = signUpUser("user1");
+		User user2 = signUpUser("user2");
+		User user3 = signUpUser("user3");
+		
+		Product product1 = createProduct("Product 1", 120, LocalDateTime.now(), new BigDecimal(10), category1, user1);
+		
+		product1 = productService.addProduct(user1.getId(), product1.getName(),
+				product1.getDescriptionProduct(), product1.getDuration(), product1.getCreationTime(), product1.getInitialPrice(), 
+				product1.getShipmentInfo(), product1.getCategory());
+		
+		bidService.createBid(user3.getId(), product1.getId(), new BigDecimal(50));
+		bidService.createBid(user2.getId(), product1.getId(), new BigDecimal(60));
+		
+		Block<Product> catalogS = productService.getUserProducts(user1.getId());
+		
+		Bid bidGanadora = catalogS.getItems().get(0).getWinningBid();
+		
+		assertEquals(bidService.getUserBids(user2.getId()), bidGanadora.getUser().getEmail());
+		
+		
 	}
 	
 	//Intentar hacer una puja con un producto que no existe
@@ -64,7 +116,7 @@ public class BidServiceTest {
 		Category category1 = new Category("Category");
 		User user = createUser("Carmen", "password134!", "Carmen", "Fernandez", "c.fernandez@gmail.com");
 		
-		Product producto = createProduct("Producto", 120, LocalDateTime.of(2000, 1, 1, 10, 20), new BigDecimal(10), category1, user);
+		Product producto = createProduct("Producto", 120, LocalDateTime.now(), new BigDecimal(10), category1, user);
 		
 		bidService.createBid(user.getId(), producto.getId(), new BigDecimal(1));
 		
@@ -74,17 +126,18 @@ public class BidServiceTest {
 	public void testCreateBid1() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser {
 		
 		Category category1 = new Category("Category");
-		User user = createUser("Carmen", "password134!", "Carmen", "Fernandez", "c.fernandez@gmail.com");
-		User user2 = createUser("Pablo", "545654", "Pablo", "Lopez", "pablolopez@udc.es");
-		User user3 = createUser("Julia", "Geiaovfs", "Julia", "Alvarez", "julia@udc.es");
 		
-		Product producto = createProduct("Producto", 120, LocalDateTime.of(2000, 1, 1, 10, 20), new BigDecimal(10), category1, user);
-
+		User user1 = signUpUser("user1");
+		User user2 = signUpUser("user2");
+		User user3 = signUpUser("user3");	
+		Product producto = createProduct("Producto", 120, LocalDateTime.now(), new BigDecimal(10), category1, user1);
+		producto = productService.addProduct(user1.getId(), "name", "reger",(long) 120, LocalDateTime.now(), new BigDecimal(10), "pergv", category1); 
+				
 		Bid bid1 = bidService.createBid(user2.getId(), producto.getId(), new BigDecimal(10));
 		Bid bid2 = bidService.createBid(user3.getId(), producto.getId(), new BigDecimal(12));
 		
 		
-		assertEquals(producto.getCurrentPrince(), new BigDecimal(10.5));
+		assertEquals(producto.getCurrentPrice(), new BigDecimal(10.5));
 		assertEquals(bid2.getState(), Bid.BidState.WINNING);
 		assertEquals(bid1.getState(), Bid.BidState.LOST);
 		
@@ -97,11 +150,11 @@ public class BidServiceTest {
 		User user = createUser("Carmen", "password134!", "Carmen", "Fernandez", "c.fernandez@gmail.com");
 		User user2 = createUser("Pablo", "545654", "Pablo", "Lopez", "pablolopez@udc.es");
 		
-		Product producto = createProduct("Producto", 120, LocalDateTime.of(2000, 1, 1, 10, 20), new BigDecimal(10), category1, user);
+		Product producto = createProduct("Producto", 120,LocalDateTime.now(), new BigDecimal(10), category1, user);
 
 		bidService.createBid(user2.getId(), producto.getId(), new BigDecimal(12));
 		
-		assertEquals(producto.getCurrentPrince(), new BigDecimal(10));
+		assertEquals(producto.getCurrentPrice(), new BigDecimal(10));
 		
 	}
 	
@@ -114,13 +167,13 @@ public class BidServiceTest {
 		User user3 = createUser("Julia", "Geiaovfs", "Julia", "Alvarez", "julia@udc.es");
 		User user4 = createUser("Antonio", "joseerberb", "anthony","marc", "famoso@udc.es");
 		
-		Product producto = createProduct("Producto", 120, LocalDateTime.of(2000, 1, 1, 10, 20), new BigDecimal(10), category1, user);
+		Product producto = createProduct("Producto", 120, LocalDateTime.now(), new BigDecimal(10), category1, user);
 
 		bidService.createBid(user2.getId(), producto.getId(), new BigDecimal(12));
 		bidService.createBid(user3.getId(), producto.getId(), new BigDecimal(1000));
 		bidService.createBid(user4.getId(), producto.getId(), new BigDecimal(500));
 		
-		assertEquals(producto.getCurrentPrince(), new BigDecimal(500.5));
+		assertEquals(producto.getCurrentPrice(), new BigDecimal(500.5));
 		
 	}
 	
@@ -132,12 +185,12 @@ public class BidServiceTest {
 		User user2 = createUser("Pablo", "545654", "Pablo", "Lopez", "pablolopez@udc.es");
 		User user3 = createUser("Julia", "Geiaovfs", "Julia", "Alvarez", "julia@udc.es");
 		
-		Product producto = createProduct("Producto", 120, LocalDateTime.of(2000, 1, 1, 10, 20), new BigDecimal(10), category1, user);
+		Product producto = createProduct("Producto", 120, LocalDateTime.now(), new BigDecimal(10), category1, user);
 
 		bidService.createBid(user2.getId(), producto.getId(), new BigDecimal(12));
 		bidService.createBid(user3.getId(), producto.getId(), new BigDecimal(12.3));
 		
-		assertEquals(producto.getCurrentPrince(), new BigDecimal(12.3));
+		assertEquals(producto.getCurrentPrice(), new BigDecimal(12.3));
 		
 	}
 	
@@ -150,14 +203,14 @@ public class BidServiceTest {
 		User user3 = createUser("Julia", "Geiaovfs", "Julia", "Alvarez", "julia@udc.es");
 		User user4 = createUser("Antonio", "joseerberb", "anthony","marc", "famoso@udc.es");
 		
-		Product producto = createProduct("Producto", 120, LocalDateTime.of(2000, 1, 1, 10, 20), new BigDecimal(10), category1, user);
+		Product producto = createProduct("Producto", 120, LocalDateTime.now(), new BigDecimal(10), category1, user);
 
 		Bid bid1 = bidService.createBid(user2.getId(), producto.getId(), new BigDecimal(12));
 		Bid bid2 = bidService.createBid(user3.getId(), producto.getId(), new BigDecimal(12.3));
 		Bid bid3 = bidService.createBid(user4.getId(), producto.getId(), new BigDecimal(15));
 		
-		assertEquals(producto.getCurrentPrince(), new BigDecimal(12.8));
-		assertEquals(producto.getWinningBid().get().getUser(), user4);
+		assertEquals(producto.getCurrentPrice(), new BigDecimal(12.8));
+		assertEquals(producto.getWinningBid().getUser(), user4);
 		assertEquals(bid1.getState(), Bid.BidState.LOST);
 		assertEquals(bid2.getState(), Bid.BidState.LOST);
 	}
@@ -171,12 +224,12 @@ public class BidServiceTest {
 		User user3 = createUser("Julia", "Geiaovfs", "Julia", "Alvarez", "julia@udc.es");
 		User user4 = createUser("Antonio", "joseerberb", "anthony","marc", "famoso@udc.es");
 		
-		Product producto = createProduct("Producto", 120, LocalDateTime.of(2000, 1, 1, 10, 20), new BigDecimal(10), category1, user);
+		Product producto = createProduct("Producto", 120, LocalDateTime.now(), new BigDecimal(10), category1, user);
 
 		Bid bid1 = bidService.createBid(user2.getId(), producto.getId(), new BigDecimal(12));
 		Bid bid2 = bidService.createBid(user3.getId(), producto.getId(), new BigDecimal(12));
 		
-		assertEquals(producto.getWinningBid().get().getUser(), user2);
+		assertEquals(producto.getWinningBid().getUser(), user2);
 		assertEquals(bid1.getState(), Bid.BidState.WINNING);
 	}
 	
@@ -189,12 +242,12 @@ public class BidServiceTest {
 		User user3 = createUser("Julia", "Geiaovfs", "Julia", "Alvarez", "julia@udc.es");
 		User user4 = createUser("Antonio", "joseerberb", "anthony","marc", "famoso@udc.es");
 		
-		Product producto = createProduct("Producto", 120, LocalDateTime.of(2000, 1, 1, 10, 20), new BigDecimal(10), category1, user);
+		Product producto = createProduct("Producto", 120, LocalDateTime.now(), new BigDecimal(10), category1, user);
 
 		bidService.createBid(user2.getId(), producto.getId(), new BigDecimal(14));
 		bidService.createBid(user3.getId(), producto.getId(), new BigDecimal(13.7));
 		
-		assertEquals(producto.getCurrentPrince(), new BigDecimal(14));
+		assertEquals(producto.getCurrentPrice(), new BigDecimal(14));
 	}
 	
 	//excepcion
@@ -204,7 +257,7 @@ public class BidServiceTest {
 		Category category1 = new Category("Category");
 		User user = createUser("Carmen", "password134!", "Carmen", "Fernandez", "c.fernandez@gmail.com");
 		
-		Product producto = createProduct("Producto", 120, LocalDateTime.of(2000, 1, 1, 10, 20), new BigDecimal(10), category1, user);
+		Product producto = createProduct("Producto", 120, LocalDateTime.now(), new BigDecimal(10), category1, user);
 		bidService.createBid(user.getId(), producto.getId(), new BigDecimal(10));
 	}
 	
@@ -216,7 +269,7 @@ public class BidServiceTest {
 		User user2 = createUser("Pablo", "545654", "Pablo", "Lopez", "pablolopez@udc.es");
 		User user3 = createUser("Julia", "Geiaovfs", "Julia", "Alvarez", "julia@udc.es");
 
-		Product producto = createProduct("Producto", 120, LocalDateTime.of(2000, 1, 1, 10, 20), new BigDecimal(10), category1, user);
+		Product producto = createProduct("Producto", 120, LocalDateTime.now(), new BigDecimal(10), category1, user);
 		bidService.createBid(user2.getId(), producto.getId(), new BigDecimal(15));
 		bidService.createBid(user3.getId(), producto.getId(), new BigDecimal(2));
 
@@ -228,7 +281,7 @@ public class BidServiceTest {
 		User user = createUser("Carmen", "password134!", "Carmen", "Fernandez", "c.fernandez@gmail.com");
 		User user2 = createUser("Pablo", "545654", "Pablo", "Lopez", "pablolopez@udc.es");
 	
-		Product producto = createProduct("Producto", 120, LocalDateTime.of(2000, 1, 1, 10, 20), new BigDecimal(10), category1, user);
+		Product producto = createProduct("Producto", 120, LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), new BigDecimal(10), category1, user);
 		bidService.createBid(user2.getId(), producto.getId(), new BigDecimal(15));
 		bidService.createBid(user2.getId(), producto.getId(), new BigDecimal(20));
 

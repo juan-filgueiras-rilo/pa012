@@ -8,6 +8,7 @@ import java.time.temporal.ChronoUnit;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -69,7 +70,7 @@ public class Bid {
 		this.date = date;
 	}
 
-	@ManyToOne(optional=false)
+	@ManyToOne(optional=false, fetch=FetchType.LAZY)
 	@JoinColumn(name="userId")
 	public User getUser() {
 		return user;
@@ -79,7 +80,7 @@ public class Bid {
 		this.user = user;
 	}
 
-	@ManyToOne(optional=false)
+	@ManyToOne(optional=false, fetch=FetchType.LAZY)
 	@JoinColumn(name="productId")
 	public Product getProduct() {
 		return product;

@@ -5,16 +5,16 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
-import java.util.Optional;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import org.springframework.data.annotation.Transient;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 @Entity
 public class Product {
@@ -29,7 +29,7 @@ public class Product {
 	private String shipmentInfo;
 	private Category category;
 	private User user;
-	private Optional<Bid> winningBid;
+	private Bid winningBid;
 		
 	public Product() {}
 	
@@ -45,7 +45,7 @@ public class Product {
 		this.shipmentInfo = shipmentInfo;
 		this.category = category;
 		this.user = user;
-		this.winningBid = Optional.empty();
+		this.winningBid = null;
 	}
 
 	@Id
@@ -89,7 +89,7 @@ public class Product {
 	public void setCreationTime(LocalDateTime creationTime) {
 		this.creationTime = creationTime;
 	}
-	
+
 	public BigDecimal getCurrentPrice() {
 		return currentPrice;
 	}
@@ -112,7 +112,9 @@ public class Product {
 	public void setShipmentInfo(String shipmentInfo) {
 		this.shipmentInfo = shipmentInfo;
 	}
-
+	
+	@ManyToOne(optional=false, fetch=FetchType.LAZY)
+	@JoinColumn(name="categoryId")
 	public Category getCategory() {
 		return category;
 	}
@@ -121,7 +123,7 @@ public class Product {
 		this.category = category;
 	}
 
-	@ManyToOne(optional=false)
+	@ManyToOne(optional=false, fetch=FetchType.LAZY)
 	@JoinColumn(name="userId")
 	public User getUser() {
 		return user;
@@ -131,18 +133,21 @@ public class Product {
 		this.user = user;
 	}
 
-	public Optional<Bid> getWinningBid() {
+	@OneToOne(optional=true, fetch=FetchType.LAZY)
+	@JoinColumn(name="winningBidId")
+	public Bid getWinningBid() {
 		return winningBid;
 	}
 
 	public void setWinningBid(Bid winningBid) {
-		this.winningBid = Optional.of(winningBid);
+		this.winningBid = winningBid;
 	}
 	
+	@Transient
 	public boolean isActive() {
 		return (this.creationTime.plusMinutes(this.duration).isAfter(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS)));
 	}
-
+	
 	@Transient
 	public Long getRemainingTime() {
 		return this.creationTime.plusMinutes(this.duration).truncatedTo(ChronoUnit.MINUTES).
