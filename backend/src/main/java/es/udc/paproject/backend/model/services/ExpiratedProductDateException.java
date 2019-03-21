@@ -3,18 +3,18 @@ package es.udc.paproject.backend.model.services;
 @SuppressWarnings("serial")
 public class ExpiratedProductDateException extends Exception {
 	
-	private long id;
+	private Long id;
 
-	public ExpiratedProductDateException(long id) {
+	public ExpiratedProductDateException(Long id) {
 		super("Bid isn't possible because bid with ID " + id + " has already expired");
 		this.id = id;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

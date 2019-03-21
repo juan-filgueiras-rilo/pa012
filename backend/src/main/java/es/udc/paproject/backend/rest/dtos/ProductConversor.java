@@ -12,6 +12,10 @@ public class ProductConversor {
 	
 	private ProductConversor() {}
 	
+	public final static List<UserProductDto> toUserProductDtos(List<Product> products) {
+		return products.stream().map(p -> toUserProductDto(p)).collect(Collectors.toList());
+	}
+	
 	public final static UserProductDto toUserProductDto(Product product) {
 		
 		return new UserProductDto(product.getId(), product.getName(), 

@@ -9,6 +9,8 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -81,11 +83,11 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public Block<Product> getUserProducts(Long userId) throws InstanceNotFoundException {
+	public Block<Product> getUserProducts(Long userId, int page, int size) throws InstanceNotFoundException {
 		
 		permissionChecker.checkUserExists(userId);
 		
-		Slice<Product> slice = productDao.findProductsByUserIdOrderByCreationTimeDesc(userId);
+		Slice<Product> slice = productDao.findByUserIdOrderByCreationTimeDesc(userId, PageRequest.of(page, size));
 		
 		return new Block<>(slice.getContent(), slice.hasNext());
 	

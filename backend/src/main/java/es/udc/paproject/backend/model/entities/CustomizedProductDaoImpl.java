@@ -19,22 +19,22 @@ public class CustomizedProductDaoImpl implements CustomizedProductDao {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Slice<Product> find(Long id, String text, int page, int size) {
+	public Slice<Product> find(Long categoryId, String text, int page, int size) {
 		
 		String[] keywords = text == null ? new String[0] : text.split("\\s");
 		String queryString = "SELECT p FROM Product p";
 		
-		if (id != null || keywords.length > 0) {
+		if (categoryId != null || keywords.length > 0) {
 			queryString += " WHERE ";
 		}
 		
-		if (id != null) {
-			queryString += "p.category.id = :id";
+		if (categoryId != null) {
+			queryString += "p.category.id = :categoryId";
 		}
 		
 		if (keywords.length != 0) {
 			
-			if (id != null) {
+			if (categoryId != null) {
 				queryString += " AND ";
 			}
 			
@@ -50,8 +50,8 @@ public class CustomizedProductDaoImpl implements CustomizedProductDao {
 		
 		Query query = entityManager.createQuery(queryString).setFirstResult(page*size).setMaxResults(size+1);
 		
-		if (id != null) {
-			query.setParameter("categoryId", id);
+		if (categoryId != null) {
+			query.setParameter("categoryId", categoryId);
 		}
 		
 		if (keywords.length != 0) {

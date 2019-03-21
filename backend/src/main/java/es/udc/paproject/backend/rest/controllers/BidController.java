@@ -31,7 +31,7 @@ public class BidController {
 	@Autowired
 	private BidService bidService;
 	
-	@PostMapping("/bids")
+	@PostMapping("/bids/{bidId}")
 	public BidDetailDto createBid(@RequestAttribute Long userId, 
 			@Validated @RequestBody BidParamsDto params) 
 			throws ExpiratedProductDateException, InstanceNotFoundException,

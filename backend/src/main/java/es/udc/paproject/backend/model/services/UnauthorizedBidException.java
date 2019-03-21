@@ -3,18 +3,18 @@ package es.udc.paproject.backend.model.services;
 @SuppressWarnings("serial")
 public class UnauthorizedBidException extends Exception {
 	
-	private long id;
+	private Long id;
 	
-	public UnauthorizedBidException(long id) {
+	public UnauthorizedBidException(Long id) {
 		super("Bid rejected because product with id: " + id +" is yours.");
 		this.id = id;
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 	
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

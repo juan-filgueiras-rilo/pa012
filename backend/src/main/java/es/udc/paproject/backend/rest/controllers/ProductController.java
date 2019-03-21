@@ -22,10 +22,12 @@ import es.udc.paproject.backend.rest.dtos.BlockDto;
 import es.udc.paproject.backend.rest.dtos.CategoryDto;
 import es.udc.paproject.backend.rest.dtos.ProductDetailDto;
 import es.udc.paproject.backend.rest.dtos.ProductSummaryDto;
+import es.udc.paproject.backend.rest.dtos.UserProductDto;
 
 import static es.udc.paproject.backend.rest.dtos.CategoryConversor.toCategoryDtos;
 import static es.udc.paproject.backend.rest.dtos.ProductConversor.toProductDetailDto;
 import static es.udc.paproject.backend.rest.dtos.ProductConversor.toProductSummaryDtos;
+import static es.udc.paproject.backend.rest.dtos.ProductConversor.toUserProductDtos;
 
 @RestController
 @RequestMapping("/product")
@@ -57,17 +59,17 @@ public class ProductController {
 		return toProductDetailDto(productService.getProductDetail(productId));
 	}
 	
-	@GetMapping("/products")
-	public BlockDto<ProductSummaryDto> getUserProducts(@RequestAttribute Long userId) 
+	@GetMapping("/userProducts")
+	public BlockDto<UserProductDto> getUserProducts(@RequestAttribute Long userId) 
 			throws InstanceNotFoundException {
 		
 		Block<Product> productBlock = productService.getUserProducts(userId);
 		
-		return new BlockDto<>(toProductSummaryDtos(productBlock.getItems()),
+		return new BlockDto<>(toUserProductDtos(productBlock.getItems()),
 				productBlock.getExistMoreItems());
 	}
 	
-	@PostMapping("/products")
+	@PostMapping("/{productId}")
 	public ProductDetailDto addProduct(@RequestAttribute Long userId, 
 			@Validated @RequestBody AddProductParamsDto params) 
 					throws InstanceNotFoundException {

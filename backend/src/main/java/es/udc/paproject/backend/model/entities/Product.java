@@ -41,7 +41,7 @@ public class Product {
 		this.duration = duration; 
 		this.creationTime = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
 		this.initialPrice = initialPrice;
-		this.initialPrice = currentPrice; 
+		this.currentPrice = this.initialPrice.add(BigDecimal.ZERO);
 		this.shipmentInfo = shipmentInfo;
 		this.category = category;
 		this.user = user;
@@ -50,11 +50,11 @@ public class Product {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

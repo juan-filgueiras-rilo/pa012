@@ -3,19 +3,19 @@ package es.udc.paproject.backend.model.services;
 @SuppressWarnings("serial")
 public class UnauthorizedWinningUser extends Exception {
 
-	private long id;
+	private Long id;
 	
-	public UnauthorizedWinningUser(long id) {
+	public UnauthorizedWinningUser(Long id) {
 		super("Bid with id: " +id+ "can't be made because the user already has the winning bid");
 		this.id = id;
 	}
 	
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 	
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
