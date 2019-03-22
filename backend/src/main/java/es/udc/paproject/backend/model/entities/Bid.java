@@ -8,6 +8,8 @@ import java.time.temporal.ChronoUnit;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,6 +24,7 @@ public class Bid {
 	private BigDecimal quantity;
 	private Product product;
 	private User user;
+	@Enumerated(EnumType.ORDINAL)
 	private BidState state;
 	private LocalDateTime date;
 	

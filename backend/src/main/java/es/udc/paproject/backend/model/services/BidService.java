@@ -12,6 +12,5 @@ public interface BidService {
 			UnauthorizedBidException, InsufficientBidQuantityException,
 			UnauthorizedWinningUser;
 	
-	Block<Bid> getUserBids(Long userId) throws InstanceNotFoundException;
-	
+	Block<Bid> getUserBids(Long userId, int page, int size) throws InstanceNotFoundException;
 }

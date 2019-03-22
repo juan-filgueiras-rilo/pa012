@@ -45,12 +45,6 @@ public class ProductServiceTest {
 	@Autowired
 	private UserService userService;
 	
-
-	private Product createProduct(String name, long duration, BigDecimal initialPrice,
-			Category category, User user) {	
-		return new Product(name, "descriptionProduct", duration, initialPrice,
-			"shipmentInfo", category, user);
-	}
 	
 	private User signUpUser(String userName) {
 		

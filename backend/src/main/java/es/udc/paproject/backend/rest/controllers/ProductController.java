@@ -60,10 +60,11 @@ public class ProductController {
 	}
 	
 	@GetMapping("/userProducts")
-	public BlockDto<UserProductDto> getUserProducts(@RequestAttribute Long userId) 
+	public BlockDto<UserProductDto> getUserProducts(@RequestAttribute Long userId,
+			@RequestParam(defaultValue="0") int page) 
 			throws InstanceNotFoundException {
 		
-		Block<Product> productBlock = productService.getUserProducts(userId);
+		Block<Product> productBlock = productService.getUserProducts(userId,page,10);
 		
 		return new BlockDto<>(toUserProductDtos(productBlock.getItems()),
 				productBlock.getExistMoreItems());

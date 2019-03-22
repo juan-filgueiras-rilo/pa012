@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundException;
@@ -43,10 +44,11 @@ public class BidController {
 	}
 	
 	@PostMapping("/bids")
-	public BlockDto<BidDto> getUserBids(@RequestAttribute Long userId) 
+	public BlockDto<BidDto> getUserBids(@RequestAttribute Long userId,
+			@RequestParam(defaultValue="0") int page) 
 			throws InstanceNotFoundException {
 		
-		Block<Bid> bidBlock = bidService.getUserBids(userId);
+		Block<Bid> bidBlock = bidService.getUserBids(userId, page, 10);
 		
 		return new BlockDto<>(toBidDtos(bidBlock.getItems()),bidBlock.getExistMoreItems());
 	}

@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,8 +57,7 @@ public class BidServiceImpl implements BidService {
 			//Si eres el propietario del producto no puedes pujar sobre él
 			//Tb sirve para que no puedas pujar sobre tu propia puja
 			throw new UnauthorizedBidException(productId);
-		}
-		
+		}		
 
 		newBid = new Bid(quantity, BidState.WINNING, user, product);
 
@@ -82,8 +82,16 @@ public class BidServiceImpl implements BidService {
 					}
 				} else {
 					newBid.setState(BidState.LOST);
-					BigDecimal newPrice = newBid.getQuantity().min(newBid.getQuantity().add(new BigDecimal(0.5)));
-					productCurrentPrice = newPrice;
+					//BigDecimal newPrice = newBid.getQuantity().min(newBid.getQuantity().add(new BigDecimal(0.5)));
+					BigDecimal newPrice = newBid.getQuantity().add(new BigDecimal(0.5));
+					
+					if(winningQuantity.compareTo(newPrice) == 1) {
+						product.setCurrentPrice(newPrice);
+					} else {
+						product.setCurrentPrice(winningQuantity);
+					}
+									
+					
 				}
 			} else {
 				throw new InsufficientBidQuantityException(productCurrentPrice);
@@ -112,11 +120,11 @@ public class BidServiceImpl implements BidService {
 	}
 
 	@Override
-	public Block<Bid> getUserBids(Long userId) throws InstanceNotFoundException {
+	public Block<Bid> getUserBids(Long userId, int page, int size) throws InstanceNotFoundException {
 
 		permissionChecker.checkUserExists(userId);
 		
-		Slice<Bid> slice = bidDao.findBidsByUserId(userId);
+		Slice<Bid> slice = bidDao.findByUserId(userId, PageRequest.of(page, size));
 		
 		return new Block<>(slice.getContent(), slice.hasNext());
 	}
