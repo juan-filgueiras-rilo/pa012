@@ -80,12 +80,6 @@ public class ProductServiceTest {
 		
 	}
 	
-	//Buscar un producto por ID que no exista
-	/*@Test(expected = InstanceNotFoundException.class)
-	public void testFindNonExistentProduct() throws InstanceNotFoundException {
-		productService.findProducts(NON_EXISTENT_ID, "wefwe", 0, 10);
-	}*/
-	
 	//Buscar el producto por Keywords
 	@Test
 	public void testFindProductsByKeywords() throws InstanceNotFoundException {
