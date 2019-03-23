@@ -4,4 +4,4 @@
 -------------------------------------------------------------------------------
 
 INSERT INTO Category (name) VALUES ('Movies');
-INSERT INTO Category (name) VALUES ('Music');
+INSERT INTO Category (name) VALUES ('Technology');

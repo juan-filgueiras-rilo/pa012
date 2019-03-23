@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 public class AddProductParamsDto {
 
-	private Long productId;
+	
 	private String name;
 	private String description;
 	private Long duration;
@@ -17,15 +17,6 @@ public class AddProductParamsDto {
 	private Long categoryId;
 	
 	public AddProductParamsDto() {}
-
-	@NotNull
-	public Long getProductId() {
-		return productId;
-	}
-
-	public void setProductId(Long productId) {
-		this.productId = productId;
-	}
 	
 	@NotNull
 	public String getName() {
