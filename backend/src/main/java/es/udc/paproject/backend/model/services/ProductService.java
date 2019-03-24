@@ -16,7 +16,7 @@ public interface ProductService {
 	
 	List<Category> findAllCategories();
 	
-	Product getProductDetail(Long productId);
+	Product getProductDetail(Long productId) throws InstanceNotFoundException;
 	
 	Block<Product> getUserProducts(Long userId, int page, int size) throws InstanceNotFoundException;
 }

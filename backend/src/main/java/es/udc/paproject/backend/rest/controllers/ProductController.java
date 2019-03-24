@@ -54,7 +54,7 @@ public class ProductController {
 	}
 
 	@GetMapping("/{productId}")
-	public ProductDetailDto getProductDetail(@PathVariable Long productId) {
+	public ProductDetailDto getProductDetail(@PathVariable Long productId) throws InstanceNotFoundException {
 		
 		return toProductDetailDto(productService.getProductDetail(productId));
 	}
@@ -70,7 +70,7 @@ public class ProductController {
 				productBlock.getExistMoreItems());
 	}
 	
-	@PostMapping("/{productId}")
+	@PostMapping("/products")
 	public ProductDetailDto addProduct(@RequestAttribute Long userId, 
 			@Validated @RequestBody AddProductParamsDto params) 
 					throws InstanceNotFoundException {

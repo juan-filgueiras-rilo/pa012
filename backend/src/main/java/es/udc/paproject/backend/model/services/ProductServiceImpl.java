@@ -71,11 +71,15 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public Product getProductDetail(Long productId) {
+	public Product getProductDetail(Long id) throws InstanceNotFoundException {
 		 
 		Optional<Product> optProduct;
 		
-		optProduct = productDao.findById(productId);
+		optProduct = productDao.findById(id);
+		
+		if (!optProduct.isPresent()) {
+			throw new InstanceNotFoundException("project.entities.product", id);
+		}
 		
 		return optProduct.get();
 	}
