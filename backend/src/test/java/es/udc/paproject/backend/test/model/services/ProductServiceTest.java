@@ -31,8 +31,6 @@ import es.udc.paproject.backend.model.services.UserService;
 @Transactional
 public class ProductServiceTest {
 	
-	private final Long NON_EXISTENT_ID = new Long(-1);
-	
 	@Autowired 
 	private ProductDao productDao;
 	
@@ -97,7 +95,7 @@ public class ProductServiceTest {
 		Product product2 = productService.addProduct(user2.getId(), "X Product", "descripcion 2", (long)10, 
 				new BigDecimal(10), "Info", category1.getId());
 	
-		Product product3 = productService.addProduct(user3.getId(), "another", "descripcion 3", (long)10, 
+		productService.addProduct(user3.getId(), "another", "descripcion 3", (long)10, 
 				new BigDecimal(10), "Info", category1.getId());
 
 		
@@ -120,7 +118,7 @@ public class ProductServiceTest {
 		Product product = productService.addProduct(user1.getId(), "product1", "descripcion", (long)10, 
 				new BigDecimal(10), "Info", category1.getId());
 		
-		Product product2 = productService.addProduct(user1.getId(), "product2", "descripcion 2", (long)10, 
+		productService.addProduct(user1.getId(), "product2", "descripcion 2", (long)10, 
 				new BigDecimal(10), "Info", category2.getId());
 		
 		Block<Product> expectedBlock = new Block<>(Arrays.asList(product), false);

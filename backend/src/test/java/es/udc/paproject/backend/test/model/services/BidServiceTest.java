@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 
 import javax.transaction.Transactional;
@@ -20,7 +19,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import es.udc.paproject.backend.model.common.exceptions.DuplicateInstanceException;
 import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundException;
 import es.udc.paproject.backend.model.entities.Bid;
-import es.udc.paproject.backend.model.entities.BidDao;
 import es.udc.paproject.backend.model.entities.Category;
 import es.udc.paproject.backend.model.entities.CategoryDao;
 import es.udc.paproject.backend.model.entities.Product;
@@ -128,7 +126,7 @@ public class BidServiceTest {
 		Product product = productService.addProduct(user1.getId(), "name", "reger",
 				(long) 120, new BigDecimal(10), "pergv", category1.getId()); 
 
-		Bid bid = bidService.createBid(user2.getId(), product.getId(), new BigDecimal(12));
+		bidService.createBid(user2.getId(), product.getId(), new BigDecimal(12));
 
 		assertEquals(product.getCurrentPrice(), new BigDecimal(10));
 		
@@ -148,9 +146,9 @@ public class BidServiceTest {
 		Product product = productService.addProduct(user1.getId(), "name", "reger",
 				(long) 120, new BigDecimal(10), "pergv", category1.getId());
 		
-		Bid bid1 = bidService.createBid(user2.getId(), product.getId(), new BigDecimal(12));
-		Bid bid2 = bidService.createBid(user3.getId(), product.getId(), new BigDecimal(1000));
-		Bid bid3 = bidService.createBid(user4.getId(), product.getId(), new BigDecimal(500));
+		bidService.createBid(user2.getId(), product.getId(), new BigDecimal(12));
+		bidService.createBid(user3.getId(), product.getId(), new BigDecimal(1000));
+		bidService.createBid(user4.getId(), product.getId(), new BigDecimal(500));
 		
 		assertEquals(new BigDecimal(500.5).setScale(2, RoundingMode.HALF_EVEN), product.getCurrentPrice());
 		
@@ -170,9 +168,9 @@ public class BidServiceTest {
 		Product product = productService.addProduct(user1.getId(), "name", "reger",
 				(long) 120, new BigDecimal(10), "pergv", category1.getId());
 		
-		Bid bid1 = bidService.createBid(user2.getId(), product.getId(), new BigDecimal(20));
-		Bid bid2 = bidService.createBid(user3.getId(), product.getId(), new BigDecimal(2000));
-		Bid bid3 = bidService.createBid(user4.getId(), product.getId(), new BigDecimal(650.3));
+		bidService.createBid(user2.getId(), product.getId(), new BigDecimal(20));
+		bidService.createBid(user3.getId(), product.getId(), new BigDecimal(2000));
+		bidService.createBid(user4.getId(), product.getId(), new BigDecimal(650.3));
 		
 		assertEquals(new BigDecimal(650.8).setScale(2, RoundingMode.HALF_EVEN), product.getCurrentPrice());
 		
@@ -214,7 +212,7 @@ public class BidServiceTest {
 		
 		Bid bid1 = bidService.createBid(user2.getId(), product.getId(), new BigDecimal(12));
 		Bid bid2 = bidService.createBid(user3.getId(), product.getId(), new BigDecimal(12.3));
-		Bid bid3 = bidService.createBid(user4.getId(), product.getId(), new BigDecimal(15));
+		bidService.createBid(user4.getId(), product.getId(), new BigDecimal(15));
 		
 		assertEquals(product.getCurrentPrice(), new BigDecimal(12.80).setScale(2, RoundingMode.HALF_EVEN));
 		assertEquals(product.getWinningBid().getUser(), user4);
@@ -231,13 +229,12 @@ public class BidServiceTest {
 		User user1 = signUpUser("user1");
 		User user2 = signUpUser("user2");
 		User user3 = signUpUser("user3");	
-		User user4 = signUpUser("user4");
 		
 		Product product = productService.addProduct(user1.getId(), "name", "reger",
 				(long) 120, new BigDecimal(10), "pergv", category1.getId());
 		
 		Bid bid1 = bidService.createBid(user2.getId(), product.getId(), new BigDecimal(12));
-		Bid bid2 = bidService.createBid(user3.getId(), product.getId(), new BigDecimal(12));
+		bidService.createBid(user3.getId(), product.getId(), new BigDecimal(12));
 		
 		assertEquals(product.getWinningBid().getUser(), user2);
 		assertEquals(bid1.getState(), Bid.BidState.WINNING);

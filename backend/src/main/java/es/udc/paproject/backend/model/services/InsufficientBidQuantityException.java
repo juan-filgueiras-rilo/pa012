@@ -1,8 +1,5 @@
 package es.udc.paproject.backend.model.services;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 @SuppressWarnings("serial")
 public class InsufficientBidQuantityException extends Exception {
 	
