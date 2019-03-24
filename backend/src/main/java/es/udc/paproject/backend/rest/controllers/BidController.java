@@ -2,6 +2,7 @@ package es.udc.paproject.backend.rest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,7 +44,7 @@ public class BidController {
 				params.getProductId(), params.getQuantity()));
 	}
 	
-	@PostMapping("/bids")
+	@GetMapping("/bids")
 	public BlockDto<BidDto> getUserBids(@RequestAttribute Long userId,
 			@RequestParam(defaultValue="0") int page) 
 			throws InstanceNotFoundException {
