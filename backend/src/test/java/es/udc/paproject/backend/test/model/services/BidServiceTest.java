@@ -30,7 +30,7 @@ import es.udc.paproject.backend.model.services.ExpiratedProductDateException;
 import es.udc.paproject.backend.model.services.InsufficientBidQuantityException;
 import es.udc.paproject.backend.model.services.ProductService;
 import es.udc.paproject.backend.model.services.UnauthorizedBidException;
-import es.udc.paproject.backend.model.services.UnauthorizedWinningUser;
+import es.udc.paproject.backend.model.services.UnauthorizedWinningUserException;
 import es.udc.paproject.backend.model.services.UserService;
 
 @RunWith(SpringRunner.class)
@@ -70,7 +70,7 @@ public class BidServiceTest {
 		
 	//Intentar hacer una puja con un producto que no existe
 	@Test(expected = InstanceNotFoundException.class)
-	public void testNotFoundException() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser {
+	public void testNotFoundException() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUserException {
 		bidService.createBid(NON_EXISTENT_ID, null, null);
 	}
 	
@@ -90,7 +90,7 @@ public class BidServiceTest {
 	
 	//Hacer test para cada caso del createBid
 	@Test
-	public void testCreateBidNewIncrement() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser {
+	public void testCreateBidNewIncrement() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUserException {
 		
 		Category category1 = new Category("Category");
 		categoryDao.save(category1);
@@ -114,7 +114,7 @@ public class BidServiceTest {
 	
 	@Test
 	public void testFirstBid() throws InstanceNotFoundException, ExpiratedProductDateException, 
-	UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser {
+	UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUserException {
 		
 		Category category1 = new Category("Category");
 		categoryDao.save(category1);
@@ -132,7 +132,7 @@ public class BidServiceTest {
 	}
 	
 	@Test
-	public void testLowerThanBigQuantity() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser {
+	public void testLowerThanBigQuantity() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUserException {
 		
 		Category category1 = new Category("Category");
 		categoryDao.save(category1);
@@ -154,7 +154,7 @@ public class BidServiceTest {
 	}
 	
 	@Test
-	public void testLowerThanBigQuantity2() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser {
+	public void testLowerThanBigQuantity2() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUserException {
 		
 		Category category1 = new Category("Category");
 		categoryDao.save(category1);
@@ -176,7 +176,7 @@ public class BidServiceTest {
 	}
 	
 	@Test
-	public void testPriceLowerThanIncrement() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser {
+	public void testPriceLowerThanIncrement() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUserException {
 		
 		Category category1 = new Category("Category");
 		categoryDao.save(category1);
@@ -196,7 +196,7 @@ public class BidServiceTest {
 	}
 	
 	@Test
-	public void testIrregularIncrement() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser {
+	public void testIrregularIncrement() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUserException {
 		
 		Category category1 = new Category("Category");
 		categoryDao.save(category1);
@@ -220,7 +220,7 @@ public class BidServiceTest {
 	}
 	
 	@Test
-	public void testOlderWinner() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser {
+	public void testOlderWinner() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUserException {
 		
 		Category category1 = new Category("Category");
 		categoryDao.save(category1);
@@ -241,7 +241,7 @@ public class BidServiceTest {
 	}
 	
 	@Test
-	public void testNotEnoughQuantityToIncrement() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser {
+	public void testNotEnoughQuantityToIncrement() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUserException {
 		
 		Category category1 = new Category("Category");
 		categoryDao.save(category1);
@@ -262,7 +262,7 @@ public class BidServiceTest {
 	//excepcion
 	//El propietario del producto no puede pujar sobre él 
 	@Test(expected = UnauthorizedBidException.class)
-	public void testUnauthorizedBidException() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser {
+	public void testUnauthorizedBidException() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUserException {
 		Category category1 = new Category("Category");
 		categoryDao.save(category1);
 		
@@ -276,7 +276,7 @@ public class BidServiceTest {
 	
 	//Si se puja menos que la puja que va ganando salta excepción
 	@Test(expected = InsufficientBidQuantityException.class)
-	public void testInsufficientBidQuantityException() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser {
+	public void testInsufficientBidQuantityException() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUserException {
 		Category category1 = new Category("Category");
 		categoryDao.save(category1);
 		
@@ -292,8 +292,8 @@ public class BidServiceTest {
 
 	}
 	
-	@Test(expected = UnauthorizedWinningUser.class)
-	public void testUnauthorizedWinningUser() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser {
+	@Test(expected = UnauthorizedWinningUserException.class)
+	public void testUnauthorizedWinningUser() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUserException {
 		Category category1 = new Category("Category");
 		categoryDao.save(category1);
 		
@@ -311,7 +311,7 @@ public class BidServiceTest {
 	
 	//Consultar las pujas realizadas por un usuario (getUserBids)
 	@Test
-	public void testGetUserBids() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser, DuplicateInstanceException {
+	public void testGetUserBids() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUserException, DuplicateInstanceException {
 
 		Category category1 = new Category("category1");
 		

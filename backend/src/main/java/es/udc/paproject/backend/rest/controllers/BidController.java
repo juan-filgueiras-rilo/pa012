@@ -16,7 +16,7 @@ import es.udc.paproject.backend.model.services.Block;
 import es.udc.paproject.backend.model.services.ExpiratedProductDateException;
 import es.udc.paproject.backend.model.services.InsufficientBidQuantityException;
 import es.udc.paproject.backend.model.services.UnauthorizedBidException;
-import es.udc.paproject.backend.model.services.UnauthorizedWinningUser;
+import es.udc.paproject.backend.model.services.UnauthorizedWinningUserException;
 import es.udc.paproject.backend.rest.dtos.BidDetailDto;
 import es.udc.paproject.backend.rest.dtos.BidDto;
 import es.udc.paproject.backend.rest.dtos.BidParamsDto;
@@ -37,7 +37,7 @@ public class BidController {
 			@Validated @RequestBody BidParamsDto params) 
 			throws ExpiratedProductDateException, InstanceNotFoundException,
 			UnauthorizedBidException, InsufficientBidQuantityException,
-			UnauthorizedWinningUser {
+			UnauthorizedWinningUserException {
 		
 		return toBidDetailDto(bidService.createBid(userId, 
 				params.getProductId(), params.getQuantity()));
