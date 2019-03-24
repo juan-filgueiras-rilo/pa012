@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import es.udc.paproject.backend.model.common.exceptions.DuplicateInstanceException;
 import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundException;
 import es.udc.paproject.backend.model.entities.Bid;
+import es.udc.paproject.backend.model.entities.BidDao;
 import es.udc.paproject.backend.model.entities.Category;
 import es.udc.paproject.backend.model.entities.CategoryDao;
 import es.udc.paproject.backend.model.entities.Product;
@@ -75,18 +76,20 @@ public class BidServiceTest {
 	}
 	
 	//Intentar hacer una puja de un producto que ya ha expirado
-	/*@Test(expected = ExpiratedProductDateException.class)
-	public void testExpirateProductException() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUser {
+	@Test(expected = ExpiratedProductDateException.class)
+	public void testExpirateProductException() throws InstanceNotFoundException, ExpiratedProductDateException, UnauthorizedBidException, InsufficientBidQuantityException, UnauthorizedWinningUserException {
 		
 		Category category1 = new Category("Category");
 		categoryDao.save(category1);
 		User user = signUpUser("user");
 		
-		Product producto = createProduct("Producto", 120, new BigDecimal(10), category1, user);
+		Product product = productService.addProduct(user.getId(), "product1", "descripcion", (long)10, 
+				new BigDecimal(10), "Info", category1.getId());
+		product.setCreationTime(LocalDateTime.now().minusMinutes(11));
 		
-		bidService.createBid(user.getId(), producto.getId(), new BigDecimal(1));
+		bidService.createBid(user.getId(), product.getId(), new BigDecimal(1));
 		
-	}*/
+	}
 	
 	//Hacer test para cada caso del createBid
 	@Test

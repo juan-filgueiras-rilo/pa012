@@ -150,8 +150,10 @@ public class Product {
 	
 	@Transient
 	public Long getRemainingTime() {
-		return this.creationTime.plusMinutes(this.duration).truncatedTo(ChronoUnit.MINUTES).
-				atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli();
+		LocalDateTime pastMinutes = this.creationTime.plusMinutes(this.duration);
+		
+		return pastMinutes.minusSeconds(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES).atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli() / 1000)
+				.truncatedTo(ChronoUnit.MINUTES).atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli();
 	}
 	
 }
