@@ -30,7 +30,7 @@ public class ProductConversor {
 	private final static ProductSummaryDto toProductSummaryDto(Product product) {
 		
 		return new ProductSummaryDto(product.getId(), product.getCategory().getId(), product.getName(), 
-				product.getCurrentPrice(), Math.floorDiv(product.getRemainingTime(), (long)60000));
+				product.getCurrentPrice(), product.getRemainingTime());
 	}
 	
 	public final static ProductDetailDto toProductDetailDto(Product product) {

@@ -1,6 +1,7 @@
 package es.udc.paproject.backend.model.services;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -67,6 +68,7 @@ public class BidServiceImpl implements BidService {
 			if (winningBid.getUser() == user) {
 				throw new UnauthorizedWinningUserException(winningBid.getId());
 			}
+			
 			BigDecimal productCurrentPrice = product.getCurrentPrice();
 			BigDecimal winningQuantity = winningBid.getQuantity();
 			BigDecimal newQuantity = newBid.getQuantity();
@@ -90,32 +92,16 @@ public class BidServiceImpl implements BidService {
 					} else {
 						product.setCurrentPrice(winningQuantity);
 					}
-									
-					
 				}
 			} else {
-				throw new InsufficientBidQuantityException(productCurrentPrice);
+				throw new InsufficientBidQuantityException(productCurrentPrice.setScale(2, RoundingMode.HALF_EVEN).doubleValue());
 			}
 		} else {
 			product.setWinningBid(newBid);
 		}
 		
-		//SI NO HAY PUJAS - SE COMPRUEBA CON EL PRECIO MINIMO?
-
-		//Update se hace solo.
-	
-		//if (newBid.getState()==BidState.WINNING || (newBid.getState()==BidState.LOST && newBid.getQuantity()>product.getCurrentPrice())) {
 		bidDao.save(newBid);
-		//}
-		//Cambiar estado bids y buscar la bid que va ganando para poner que ha perdido 
-		/*Comparamos con el precio inicial que sea mayor
-		 * Un señor no puede pujar sobre si mismo
-		 * Fecha expirada que ya la tenemos*/
-		
-		//tiempo que dura la puja pero cuando empieza/acaba?
-		//version en prod
-		//que puja gana? como era esto? lo tengo anotado estado den puja
-		
+
 		return newBid;
 	}
 

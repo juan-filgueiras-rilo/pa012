@@ -6,18 +6,19 @@ import java.math.RoundingMode;
 @SuppressWarnings("serial")
 public class InsufficientBidQuantityException extends Exception {
 	
-	private BigDecimal quantity; 
+	private double quantity; 
 	
-	public InsufficientBidQuantityException(BigDecimal quantity) {
+	public InsufficientBidQuantityException(double quantity) {
 		super("Bid's price must be more than " + quantity + "€");
+		this.quantity = quantity;
 	}
 	
-	public BigDecimal getQuantity() {
+	public double getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(BigDecimal quantity) {
-		this.quantity = quantity.setScale(2, RoundingMode.HALF_EVEN);
+	public void setQuantity(double quantity) {
+		this.quantity = quantity;
 	}
 
 }
