@@ -42,7 +42,7 @@ public class BidController {
 	private final static String EXPIRATED_PRODUCT_DATE_EXCEPTION_CODE = "project.exceptions.ExpiratedProductDateException";
 	private final static String UNAUTHORIZED_BID_EXCEPTION_CODE = "project.exceptions.UnauthorizedBidException";
 	private final static String INSUFFICIENT_BID_QUANTITY_EXCEPTION_CODE = "project.exceptions.InsufficientBidQuantityException";
-	private final static String UNAUTHORIZED_WINNING_USER_EXCEPTION_CODE = "project.exceptions.UnauthorizedWinningUser";
+	private final static String UNAUTHORIZED_WINNING_USER_EXCEPTION_CODE = "project.exceptions.UnauthorizedWinningUserException";
 
 	@Autowired
 	private MessageSource messageSource;
