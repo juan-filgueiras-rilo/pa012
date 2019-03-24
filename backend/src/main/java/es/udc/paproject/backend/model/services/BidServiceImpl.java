@@ -35,7 +35,7 @@ public class BidServiceImpl implements BidService {
 	public Bid createBid(Long userId, Long productId, BigDecimal quantity) 
 			throws ExpiratedProductDateException, InstanceNotFoundException,
 			UnauthorizedBidException, InsufficientBidQuantityException,
-			UnauthorizedWinningUser {
+			UnauthorizedWinningUserException {
 		
 		User user = permissionChecker.checkUser(userId);		
 		Optional<Product> optProduct;
@@ -65,7 +65,7 @@ public class BidServiceImpl implements BidService {
 		if (optWinningBid != null) {
 			winningBid = optWinningBid;
 			if (winningBid.getUser() == user) {
-				throw new UnauthorizedWinningUser(winningBid.getId());
+				throw new UnauthorizedWinningUserException(winningBid.getId());
 			}
 			BigDecimal productCurrentPrice = product.getCurrentPrice();
 			BigDecimal winningQuantity = winningBid.getQuantity();

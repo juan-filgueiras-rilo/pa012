@@ -10,7 +10,7 @@ public interface BidService {
 	Bid createBid(Long id, Long productId, BigDecimal quantity) 
 			throws ExpiratedProductDateException, InstanceNotFoundException,
 			UnauthorizedBidException, InsufficientBidQuantityException,
-			UnauthorizedWinningUser;
+			UnauthorizedWinningUserException;
 	
 	Block<Bid> getUserBids(Long userId, int page, int size) throws InstanceNotFoundException;
 }

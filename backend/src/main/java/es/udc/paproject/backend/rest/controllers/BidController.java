@@ -22,7 +22,7 @@ import es.udc.paproject.backend.model.services.Block;
 import es.udc.paproject.backend.model.services.ExpiratedProductDateException;
 import es.udc.paproject.backend.model.services.InsufficientBidQuantityException;
 import es.udc.paproject.backend.model.services.UnauthorizedBidException;
-import es.udc.paproject.backend.model.services.UnauthorizedWinningUser;
+import es.udc.paproject.backend.model.services.UnauthorizedWinningUserException;
 import es.udc.paproject.backend.rest.common.ErrorsDto;
 import es.udc.paproject.backend.rest.dtos.BidDetailDto;
 import es.udc.paproject.backend.rest.dtos.BidDto;
@@ -86,10 +86,10 @@ public class BidController {
 		
 	}
 	
-	@ExceptionHandler(UnauthorizedWinningUser.class)
+	@ExceptionHandler(UnauthorizedWinningUserException.class)
 	@ResponseStatus(HttpStatus.FORBIDDEN)
 	@ResponseBody
-	public ErrorsDto handleUnauthorizedWinningUser(UnauthorizedWinningUser exception, Locale locale) {
+	public ErrorsDto handleUnauthorizedWinningUser(UnauthorizedWinningUserException exception, Locale locale) {
 		
 		String errorMessage = messageSource.getMessage(UNAUTHORIZED_WINNING_USER_EXCEPTION_CODE,
 			new Object[] {exception.getId()}, UNAUTHORIZED_WINNING_USER_EXCEPTION_CODE, locale);
@@ -103,7 +103,7 @@ public class BidController {
 			@Validated @RequestBody BidParamsDto params) 
 			throws ExpiratedProductDateException, InstanceNotFoundException,
 			UnauthorizedBidException, InsufficientBidQuantityException,
-			UnauthorizedWinningUser {
+			UnauthorizedWinningUserException {
 		
 		return toBidDetailDto(bidService.createBid(userId, 
 				params.getProductId(), params.getQuantity()));
