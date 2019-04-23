@@ -85,7 +85,7 @@ public class BidServiceTest {
 				new BigDecimal(10), "Info", category1.getId());
 		
 		Product productDetail = productService.getProductDetail(product);	
-		productDetail.setCreationTime(LocalDateTime.now().minusMinutes(11));
+		productDetail.setCreationTime(LocalDateTime.now().minusMinutes(1000));
 		
 		bidService.createBid(user.getId(), product, new BigDecimal(1));
 		
@@ -133,7 +133,7 @@ public class BidServiceTest {
 		
 		bidService.createBid(user2.getId(), product, new BigDecimal(12));
 
-		assertEquals(productDetail.getCurrentPrice(), new BigDecimal(10));
+		assertEquals(productDetail.getCurrentPrice(), new BigDecimal(10).setScale(2, RoundingMode.HALF_EVEN));
 		
 	}
 	

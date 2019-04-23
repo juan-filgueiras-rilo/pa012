@@ -75,7 +75,7 @@ public class ProductServiceTest {
 		
 		Product productD = productDao.save(productDetail);
 		//productDao.save(product2);
-		assertEquals(productD, product);
+		assertEquals(productD, productDetail);
 		
 	}
 	
@@ -184,10 +184,11 @@ public class ProductServiceTest {
 		
 		Long product1 = productService.addProduct(user1.getId(), "product1", "descripcion", (long)10, 
 				new BigDecimal(10), "Info", category1.getId());
+		Product productDetail = productService.getProductDetail(product1);
 		
 		Product expectedProduct = productService.getProductDetail(product1);
 		
-		assertEquals(product1,expectedProduct);
+		assertEquals(productDetail,expectedProduct);
 		
 		//assertEquals(product1, expectedProduct);
 		//assertEquals(product1.getName(), expectedProduct.getName());
