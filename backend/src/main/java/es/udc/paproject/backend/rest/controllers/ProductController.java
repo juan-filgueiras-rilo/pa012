@@ -30,7 +30,7 @@ import static es.udc.paproject.backend.rest.dtos.ProductConversor.toProductSumma
 import static es.udc.paproject.backend.rest.dtos.ProductConversor.toUserProductDtos;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/catalog")
 public class ProductController {
 
 	@Autowired
@@ -53,7 +53,7 @@ public class ProductController {
 				productBlock.getExistMoreItems());
 	}
 
-	@GetMapping("/{productId}")
+	@GetMapping("/products/{productId}")
 	public ProductDetailDto getProductDetail(@PathVariable Long productId) throws InstanceNotFoundException {
 		
 		return toProductDetailDto(productService.getProductDetail(productId));
@@ -71,13 +71,15 @@ public class ProductController {
 	}
 	
 	@PostMapping("/products")
-	public ProductDetailDto addProduct(@RequestAttribute Long userId, 
+	public IdDto addProduct(@RequestAttribute Long userId, 
 			@Validated @RequestBody AddProductParamsDto params) 
 					throws InstanceNotFoundException {
-		return toProductDetailDto(productService.addProduct(userId, params.getName(),
+		Long productId = productService.addProduct(userId, params.getName(),
 				params.getDescription(), params.getDuration(), 
 				params.getInitialPrice(), params.getShipmentInfo(), 
-				params.getCategoryId()));
+				params.getCategoryId());
+		
+		return new IdDto(productId);
 	}
 	
 }

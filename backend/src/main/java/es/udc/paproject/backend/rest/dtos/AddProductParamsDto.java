@@ -2,6 +2,7 @@ package es.udc.paproject.backend.rest.dtos;
 
 import java.math.BigDecimal;
 
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -56,7 +57,7 @@ public class AddProductParamsDto {
 	}
 
 	@NotNull
-	@Min(value=(long)0.1)
+	@DecimalMin(value="0.1")
 	public BigDecimal getInitialPrice() {
 		return initialPrice;
 	}

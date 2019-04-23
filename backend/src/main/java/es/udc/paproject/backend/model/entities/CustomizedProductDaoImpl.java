@@ -24,6 +24,8 @@ public class CustomizedProductDaoImpl implements CustomizedProductDao {
 		String[] keywords = text == null ? new String[0] : text.split("\\s");
 		String queryString = "SELECT p FROM Product p";
 		
+		//queryString += " WHERE endDate";
+		
 		if (categoryId != null || keywords.length > 0) {
 			queryString += " WHERE ";
 		}

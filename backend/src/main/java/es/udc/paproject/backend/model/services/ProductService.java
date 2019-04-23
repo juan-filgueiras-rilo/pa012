@@ -9,7 +9,7 @@ import es.udc.paproject.backend.model.entities.Product;
 
 public interface ProductService {
 		
-	Product addProduct(Long userId, String name, String descriptionProduct, Long duration, BigDecimal initialPrice, String shipmentInfo,
+	Long addProduct(Long userId, String name, String descriptionProduct, Long duration, BigDecimal initialPrice, String shipmentInfo,
 			Long categoryId) throws InstanceNotFoundException;
 	
 	Block<Product> findProducts(Long categoryId, String keywords, int page, int size);

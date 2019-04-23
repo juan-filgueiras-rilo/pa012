@@ -13,6 +13,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Transient;
 import javax.persistence.Id;
 
 @Entity
@@ -91,6 +92,11 @@ public class Bid {
 
 	public void setProduct(Product product) {
 		this.product = product;
+	}
+	
+	@Transient
+	public boolean isWinning() {
+		return this.product.getWinningBid().getId() == this.id;
 	}
 	
 }

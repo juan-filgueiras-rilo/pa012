@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService{
 	private CategoryDao categoryDao;
 	
 	@Override
-	public Product addProduct(Long userId, String name, 
+	public Long addProduct(Long userId, String name, 
 			String descriptionProduct, Long duration, 
 			BigDecimal initialPrice, String shipmentInfo,
 			Long categoryId) 
@@ -48,7 +48,7 @@ public class ProductServiceImpl implements ProductService{
 		Product product = new Product(name, descriptionProduct, duration, initialPrice,  shipmentInfo, optCategory.get(), user);
 		
 		product = productDao.save(product);
-		return product;
+		return product.getId();
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class ProductServiceImpl implements ProductService{
 		
 		permissionChecker.checkUserExists(userId);
 		
-		Slice<Product> slice = productDao.findByUserIdOrderByCreationTimeDesc(userId, PageRequest.of(page, size));
+		Slice<Product> slice = productDao.findByUserIdOrderByEndDateDesc(userId, PageRequest.of(page, size));
 		
 		return new Block<>(slice.getContent(), slice.hasNext());
 	

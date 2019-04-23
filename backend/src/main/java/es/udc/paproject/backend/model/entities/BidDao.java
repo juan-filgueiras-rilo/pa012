@@ -6,5 +6,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface BidDao extends PagingAndSortingRepository<Bid, Long> {
 
-	public Slice<Bid> findByUserId(Long userId,Pageable pageable);
+	public Slice<Bid> findByUserIdOrderByDateDesc(Long userId,Pageable pageable);
 }

@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 
 @Entity
 public class Product {
@@ -24,12 +25,14 @@ public class Product {
 	private String descriptionProduct;
 	private Long duration;
 	private LocalDateTime creationTime;
+	private LocalDateTime endDate;
 	private BigDecimal currentPrice;
 	private BigDecimal initialPrice;
 	private String shipmentInfo;
 	private Category category;
 	private User user;
 	private Bid winningBid;
+	private Long version;
 		
 	public Product() {}
 	
@@ -40,12 +43,12 @@ public class Product {
 		this.descriptionProduct = descriptionProduct; 
 		this.duration = duration; 
 		this.creationTime = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
+		this.endDate = creationTime.plusMinutes(duration).truncatedTo(ChronoUnit.MILLIS);
 		this.initialPrice = initialPrice;
 		this.currentPrice = this.initialPrice.add(BigDecimal.ZERO);
 		this.shipmentInfo = shipmentInfo;
 		this.category = category;
 		this.user = user;
-		this.winningBid = null;
 	}
 
 	@Id
@@ -74,14 +77,22 @@ public class Product {
 		this.descriptionProduct = descriptionProduct;
 	}
 
-	public long getDuration() {
+	public Long getDuration() {
 		return duration;
 	}
 
-	public void setDuration(long duration) {
+	public void setDuration(Long duration) {
 		this.duration = duration;
 	}
 	
+	public LocalDateTime getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(LocalDateTime endDate) {
+		this.endDate = endDate;
+	}
+
 	public LocalDateTime getCreationTime() {
 		return creationTime;
 	}
@@ -142,15 +153,29 @@ public class Product {
 	public void setWinningBid(Bid winningBid) {
 		this.winningBid = winningBid;
 	}
+
+	@Version
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+
+	@Transient
+	public BigDecimal getMinPrice() {
+		return this.currentPrice.add(new BigDecimal(0.01));
+	}
 	
 	@Transient
 	public boolean isActive() {
-		return (this.creationTime.plusMinutes(this.duration).isAfter(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS)));
+		return (this.endDate.isAfter(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS)));
 	}
 	
 	@Transient
 	public Long getRemainingTime() {
-		LocalDateTime pastMinutes = this.creationTime.plusMinutes(this.duration);
+		LocalDateTime pastMinutes = this.endDate;
 		
 		return pastMinutes.minusSeconds(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES).atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli() / 1000)
 				.truncatedTo(ChronoUnit.MINUTES).atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli();

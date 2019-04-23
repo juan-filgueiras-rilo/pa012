@@ -110,7 +110,7 @@ public class BidServiceImpl implements BidService {
 
 		permissionChecker.checkUserExists(userId);
 		
-		Slice<Bid> slice = bidDao.findByUserId(userId, PageRequest.of(page, size));
+		Slice<Bid> slice = bidDao.findByUserIdOrderByDateDesc(userId, PageRequest.of(page, size));
 		
 		return new Block<>(slice.getContent(), slice.hasNext());
 	}
