@@ -68,11 +68,12 @@ public class ProductServiceTest {
 		
 		User user1 = signUpUser("user1");
 
-		Product product = productService.addProduct(user1.getId(), "nombre", "descripcion", (long)10, 
+		Long product = productService.addProduct(user1.getId(), "nombre", "descripcion", (long)10, 
 				new BigDecimal(10), "Info", category1.getId());
+		Product productDetail = productService.getProductDetail(product);
 		
 		
-		Product productD = productDao.save(product);
+		Product productD = productDao.save(productDetail);
 		//productDao.save(product2);
 		assertEquals(productD, product);
 		
@@ -89,17 +90,20 @@ public class ProductServiceTest {
 		User user2 = signUpUser("user2");
 		User user3 = signUpUser("user3");
 		
-		Product product = productService.addProduct(user1.getId(), "product 1", "descripcion", (long)10, 
+		Long product = productService.addProduct(user1.getId(), "product 1", "descripcion", (long)10, 
 				new BigDecimal(10), "Info", category1.getId());
+		Product productDetail = productService.getProductDetail(product);
 	
-		Product product2 = productService.addProduct(user2.getId(), "X Product", "descripcion 2", (long)10, 
+		Long product2 = productService.addProduct(user2.getId(), "X Product", "descripcion 2", (long)10, 
 				new BigDecimal(10), "Info", category1.getId());
+		Product productDetail2 = productService.getProductDetail(product2);
+		
 	
 		productService.addProduct(user3.getId(), "another", "descripcion 3", (long)10, 
 				new BigDecimal(10), "Info", category1.getId());
 
 		
-		Block<Product> expectedBlock = new Block<>(Arrays.asList(product, product2), false);
+		Block<Product> expectedBlock = new Block<>(Arrays.asList(productDetail, productDetail2), false);
 		assertEquals(expectedBlock, productService.findProducts(null, "PrOdu", 0, 2));
 		
 	}
@@ -115,13 +119,14 @@ public class ProductServiceTest {
 		
 		User user1 = signUpUser("user1");
 
-		Product product = productService.addProduct(user1.getId(), "product1", "descripcion", (long)10, 
+		Long product = productService.addProduct(user1.getId(), "product1", "descripcion", (long)10, 
 				new BigDecimal(10), "Info", category1.getId());
+		Product productDetail = productService.getProductDetail(product);
 		
 		productService.addProduct(user1.getId(), "product2", "descripcion 2", (long)10, 
 				new BigDecimal(10), "Info", category2.getId());
 		
-		Block<Product> expectedBlock = new Block<>(Arrays.asList(product), false);
+		Block<Product> expectedBlock = new Block<>(Arrays.asList(productDetail), false);
 		
 		assertEquals(expectedBlock, productService.findProducts(category1.getId(), null, 0, 1));
 	}
@@ -137,13 +142,15 @@ public class ProductServiceTest {
 		
 		User user1 = signUpUser("user1");
 		
-		Product product = productService.addProduct(user1.getId(), "product1", "descripcion", (long)10, 
+		Long product = productService.addProduct(user1.getId(), "product1", "descripcion", (long)10, 
 				new BigDecimal(10), "Info", category1.getId());
-	
-		Product product2 = productService.addProduct(user1.getId(), "product2", "descripcion 2", (long)10, 
-				new BigDecimal(10), "Info", category2.getId());
+		Product productDetail = productService.getProductDetail(product);
 		
-		Block<Product> expectedBlock = new Block<>(Arrays.asList(product, product2), false);
+		Long product2 = productService.addProduct(user1.getId(), "product2", "descripcion 2", (long)10, 
+				new BigDecimal(10), "Info", category2.getId());
+		Product productDetail2 = productService.getProductDetail(product2);
+		
+		Block<Product> expectedBlock = new Block<>(Arrays.asList(productDetail, productDetail2), false);
 		
 		assertEquals(expectedBlock, productService.findProducts(null, "", 0, 2));
 		assertEquals(expectedBlock, productService.findProducts(null, null, 0, 2));
@@ -175,10 +182,10 @@ public class ProductServiceTest {
 		
 		User user1 = signUpUser("user1");
 		
-		Product product1 = productService.addProduct(user1.getId(), "product1", "descripcion", (long)10, 
+		Long product1 = productService.addProduct(user1.getId(), "product1", "descripcion", (long)10, 
 				new BigDecimal(10), "Info", category1.getId());
 		
-		Product expectedProduct = productService.getProductDetail(product1.getId());
+		Product expectedProduct = productService.getProductDetail(product1);
 		
 		assertEquals(product1,expectedProduct);
 		
@@ -198,13 +205,15 @@ public class ProductServiceTest {
 		
 		User user1 = signUpUser("user1");
 
-		Product product1 = productService.addProduct(user1.getId(), "product1", "descripcion", (long)10, 
+		Long product1 = productService.addProduct(user1.getId(), "product1", "descripcion", (long)10, 
 				new BigDecimal(10), "Info", category1.getId());
+		Product productDetail = productService.getProductDetail(product1);
 		
-		Product product2 = productService.addProduct(user1.getId(), "product2", "descripcion", (long)10, 
+		Long product2 = productService.addProduct(user1.getId(), "product2", "descripcion", (long)10, 
 				new BigDecimal(10), "Info", category1.getId());
+		Product productDetail2 = productService.getProductDetail(product2);
 		
-		Block<Product> blockExpected = new Block<>(Arrays.asList(product1, product2), false);
+		Block<Product> blockExpected = new Block<>(Arrays.asList(productDetail, productDetail2), false);
 				
 		assertEquals(blockExpected, productService.getUserProducts(user1.getId(), 0, 2));
 	}
