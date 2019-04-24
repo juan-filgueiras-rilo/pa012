@@ -1,0 +1,489 @@
+From 6e4e55906fdbdf98c3950c69aaa2b6572b93e294 Mon Sep 17 00:00:00 2001
+From: Fernando Bellas Permuy <fbellas@udc.es>
+Date: Fri, 12 Apr 2019 14:28:40 +0200
+Subject: [PATCH] Frontend: se corrige un estilo CSS en SignUp.
+
+---
+ frontend/src/modules/users/components/SignUp.js | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/frontend/src/modules/users/components/SignUp.js b/frontend/src/modules/users/components/SignUp.js
+index e123a41..d5434d0 100644
+--- a/frontend/src/modules/users/components/SignUp.js
++++ b/frontend/src/modules/users/components/SignUp.js
+@@ -208,7 +208,7 @@ class SignUp extends React.Component {
+                                 </div>
+                             </div>
+                             <div className="form-group row">
+-                                <div className="offset-md-3 col-md-1">
++                                <div className="offset-md-3 col-md-2">
+                                     <button type="submit" className="btn btn-primary">
+                                         <FormattedMessage id="project.users.SignUp.title"/>
+                                     </button>
+-- 
+2.17.1
+
+From 2b7a79caf87b241892429736edeb53708eab36b5 Mon Sep 17 00:00:00 2001
+From: Fernando Bellas Permuy <fbellas@udc.es>
+Date: Sun, 14 Apr 2019 12:27:26 +0200
+Subject: [PATCH] Frontend: se elimina el uso de jquery de las validaciones de
+ los formularios (se usa el mecanismo de Refs de React).
+
+---
+ .../users/components/ChangePassword.js        | 18 ++++++++---------
+ .../src/modules/users/components/Login.js     | 10 +++++-----
+ .../src/modules/users/components/SignUp.js    | 20 +++++++++----------
+ .../modules/users/components/UpdateProfile.js | 10 ++++------
+ 4 files changed, 26 insertions(+), 32 deletions(-)
+
+diff --git a/frontend/src/modules/users/components/ChangePassword.js b/frontend/src/modules/users/components/ChangePassword.js
+index 37c27b6..e33e65d 100644
+--- a/frontend/src/modules/users/components/ChangePassword.js
++++ b/frontend/src/modules/users/components/ChangePassword.js
+@@ -1,7 +1,6 @@
+ import React from 'react';
+ import {connect} from 'react-redux';
+ import {FormattedMessage} from 'react-intl';
+-import $ from 'jquery';
+ 
+ import {Errors} from '../../common';
+ import * as actions from '../actions';
+@@ -35,8 +34,7 @@ class ChangePassword extends React.Component {
+ 
+     handleConfirmNewPasswordChange(event) {
+ 
+-        $('#confirmNewPassword').get(0).setCustomValidity('');
+-
++        this.confirmNewPasswordInput.setCustomValidity('');
+         this.setState({confirmNewPassword: event.target.value,
+             passwordsDoNotMatch: false});
+     
+@@ -46,13 +44,11 @@ class ChangePassword extends React.Component {
+ 
+         event.preventDefault();
+ 
+-        const form = $('#change-password-form').get(0);
+-
+-        if (form.checkValidity() && this.checkConfirmNewPassword()) {
++        if (this.form.checkValidity() && this.checkConfirmNewPassword()) {
+             this.changePasword();
+         } else {
+             this.setBackendErrors(null);
+-            form.classList.add('was-validated');
++            this.form.classList.add('was-validated');
+         }
+ 
+     }
+@@ -61,7 +57,7 @@ class ChangePassword extends React.Component {
+ 
+         if (this.state.newPassword !== this.state.confirmNewPassword) {
+ 
+-            $('#confirmNewPassword').get(0).setCustomValidity('error');
++            this.confirmNewPasswordInput.setCustomValidity('error');
+             this.setState({passwordsDoNotMatch: true});
+ 
+             return false;
+@@ -99,7 +95,8 @@ class ChangePassword extends React.Component {
+                         <FormattedMessage id="project.users.ChangePassword.title"/>
+                     </h5>
+                     <div className="card-body">
+-                        <form id="change-password-form" className="needs-validation" noValidate onSubmit={(e) => this.handleSubmit(e)}>
++                        <form ref={node => this.form = node} 
++                            className="needs-validation" noValidate onSubmit={(e) => this.handleSubmit(e)}>
+                             <div className="form-group row">
+                                 <label htmlFor="oldPassword" className="col-md-3 col-form-label">
+                                     <FormattedMessage id="project.users.ChangePassword.fields.oldPassword"/>
+@@ -134,7 +131,8 @@ class ChangePassword extends React.Component {
+                                     <FormattedMessage id="project.users.ChangePassword.fields.confirmNewPassword"/>
+                                 </label>
+                                 <div className="col-md-4">
+-                                    <input type="password" id="confirmNewPassword" className="form-control"
++                                    <input ref={node => this.confirmNewPasswordInput = node}
++                                        type="password" id="confirmNewPassword" className="form-control"
+                                         value={this.state.confirmPassword}
+                                         onChange={(e) => this.handleConfirmNewPasswordChange(e)}
+                                         required/>
+diff --git a/frontend/src/modules/users/components/Login.js b/frontend/src/modules/users/components/Login.js
+index a883ae0..0cabacb 100644
+--- a/frontend/src/modules/users/components/Login.js
++++ b/frontend/src/modules/users/components/Login.js
+@@ -41,13 +41,11 @@ class Login extends React.Component {
+ 
+         event.preventDefault();
+ 
+-        const form = $('#login-form');
+-
+-        if (form.get(0).checkValidity()) {
++        if (this.form.checkValidity()) {
+             this.login();
+         } else {
+             this.setBackendErrors(null);
+-            form.get(0).classList.add('was-validated');
++            this.form.classList.add('was-validated');
+         }
+ 
+     }
+@@ -88,7 +86,9 @@ class Login extends React.Component {
+                         <FormattedMessage id="project.users.Login.title"/>
+                     </h5>
+                     <div className="card-body">
+-                        <form id="login-form" className="needs-validation" noValidate onSubmit={(e) => this.handleSubmit(e)}>
++                        <form ref={node => this.form = node} 
++                            className="needs-validation" noValidate 
++                            onSubmit={(e) => this.handleSubmit(e)}>
+                             <div className="form-group row">
+                                 <label htmlFor="userName" className="col-md-3 col-form-label">
+                                     <FormattedMessage id="project.global.fields.userName"/>
+diff --git a/frontend/src/modules/users/components/SignUp.js b/frontend/src/modules/users/components/SignUp.js
+index d5434d0..977f985 100644
+--- a/frontend/src/modules/users/components/SignUp.js
++++ b/frontend/src/modules/users/components/SignUp.js
+@@ -1,7 +1,6 @@
+ import React from 'react';
+ import {connect} from 'react-redux';
+ import {FormattedMessage} from 'react-intl';
+-import $ from 'jquery';
+ 
+ import {Errors} from '../../common';
+ import * as actions from '../actions';
+@@ -37,8 +36,7 @@ class SignUp extends React.Component {
+ 
+     handleConfirmPasswordChange(event) {
+ 
+-        $('#confirmPassword').get(0).setCustomValidity('');
+-
++        this.confirmPasswordInput.setCustomValidity('');
+         this.setState({confirmPassword: event.target.value,
+             passwordsDoNotMatch: false});
+     
+@@ -60,13 +58,11 @@ class SignUp extends React.Component {
+ 
+         event.preventDefault();
+ 
+-        const form = $('#signup-form').get(0);
+-
+-        if (form.checkValidity() && this.checkConfirmPassword()) {
++        if (this.form.checkValidity() && this.checkConfirmPassword()) {
+             this.signUp();
+         } else {
+             this.setBackendErrors(null);
+-            form.classList.add('was-validated');
++            this.form.classList.add('was-validated');
+         }
+ 
+     }
+@@ -75,7 +71,7 @@ class SignUp extends React.Component {
+ 
+         if (this.state.password !== this.state.confirmPassword) {
+ 
+-            $('#confirmPassword').get(0).setCustomValidity('error');
++            this.confirmPasswordInput.setCustomValidity('error');
+             this.setState({passwordsDoNotMatch: true});
+ 
+             return false;
+@@ -118,7 +114,9 @@ class SignUp extends React.Component {
+                         <FormattedMessage id="project.users.SignUp.title"/>
+                     </h5>
+                     <div className="card-body">
+-                        <form id="signup-form" className="needs-validation" noValidate onSubmit={(e) => this.handleSubmit(e)}>
++                        <form ref={node => this.form = node}
++                            className="needs-validation" noValidate 
++                            onSubmit={(e) => this.handleSubmit(e)}>
+                             <div className="form-group row">
+                                 <label htmlFor="userName" className="col-md-3 col-form-label">
+                                     <FormattedMessage id="project.global.fields.userName"/>
+@@ -153,7 +151,8 @@ class SignUp extends React.Component {
+                                     <FormattedMessage id="project.users.SignUp.fields.confirmPassword"/>
+                                 </label>
+                                 <div className="col-md-4">
+-                                    <input type="password" id="confirmPassword" className="form-control"
++                                    <input ref={node => this.confirmPasswordInput = node}
++                                        type="password" id="confirmPassword" className="form-control"
+                                         value={this.state.confirmPassword}
+                                         onChange={(e) => this.handleConfirmPasswordChange(e)}
+                                         required/>
+@@ -161,7 +160,6 @@ class SignUp extends React.Component {
+                                         {this.state.passwordsDoNotMatch ?
+                                             <FormattedMessage id='project.global.validator.passwordsDoNotMatch'/> :
+                                             <FormattedMessage id='project.global.validator.required'/>}
+-                                        
+                                     </div>
+                                 </div>
+                             </div>
+diff --git a/frontend/src/modules/users/components/UpdateProfile.js b/frontend/src/modules/users/components/UpdateProfile.js
+index 4c19b07..0bcd348 100644
+--- a/frontend/src/modules/users/components/UpdateProfile.js
++++ b/frontend/src/modules/users/components/UpdateProfile.js
+@@ -1,7 +1,6 @@
+ import React from 'react';
+ import {connect} from 'react-redux';
+ import {FormattedMessage} from 'react-intl';
+-import $ from 'jquery';
+ 
+ import {Errors} from '../../common';
+ import * as actions from '../actions';
+@@ -39,13 +38,11 @@ class UpdateProfile extends React.Component {
+ 
+         event.preventDefault();
+ 
+-        const form = $('#update-profile-form');
+-
+-        if (form.get(0).checkValidity()) {
++        if (this.form.checkValidity()) {
+             this.updateProfile();
+         } else {
+             this.setBackendErrors(null);
+-            form.get(0).classList.add('was-validated');
++            this.form.classList.add('was-validated');
+         }
+ 
+     }
+@@ -80,7 +77,8 @@ class UpdateProfile extends React.Component {
+                         <FormattedMessage id="project.users.UpdateProfile.title"/>
+                     </h5>
+                     <div className="card-body">
+-                        <form id="update-profile-form" className="needs-validation" noValidate onSubmit={(e) => this.handleSubmit(e)}>
++                        <form ref={node => this.form = node} 
++                            className="needs-validation" noValidate onSubmit={(e) => this.handleSubmit(e)}>
+                             <div className="form-group row">
+                                 <label htmlFor="firstName" className="col-md-3 col-form-label">
+                                     <FormattedMessage id="project.global.fields.firstName"/>
+-- 
+2.17.1
+
+From eda602284f33e941d6da36b695d6aa3c4726bbe4 Mon Sep 17 00:00:00 2001
+From: Fernando Bellas Permuy <fbellas@udc.es>
+Date: Mon, 15 Apr 2019 19:57:52 +0200
+Subject: [PATCH] =?UTF-8?q?Frontend:=20se=20hace=20el=20mismo=20tratamient?=
+ =?UTF-8?q?o=20de=20reauthenticationCallback=20en=20Login=20que=20en=20Sig?=
+ =?UTF-8?q?nUp=20(anteriormente,=20no=20se=20establec=C3=ADa=20reauthentic?=
+ =?UTF-8?q?ationCallback=20en=20SignUp).?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ frontend/src/backend/userService.js             | 6 +++++-
+ frontend/src/modules/users/actions.js           | 5 +++--
+ frontend/src/modules/users/components/Login.js  | 9 +++------
+ frontend/src/modules/users/components/SignUp.js | 8 +++++++-
+ 4 files changed, 18 insertions(+), 10 deletions(-)
+
+diff --git a/frontend/src/backend/userService.js b/frontend/src/backend/userService.js
+index 2627c58..0d2b628 100644
+--- a/frontend/src/backend/userService.js
++++ b/frontend/src/backend/userService.js
+@@ -27,14 +27,18 @@ export const tryLoginFromServiceToken = (onSuccess, reauthenticationCallback) =>
+ 
+ }
+ 
+-export const signUp = (user, onSuccess, onErrors) => 
++export const signUp = (user, onSuccess, onErrors, reauthenticationCallback) => {
++
+     appFetch('/users/signUp', config('POST', user), 
+         authenticatedUser => {
+             setServiceToken(authenticatedUser.serviceToken);
++            setReauthenticationCallback(reauthenticationCallback);
+             onSuccess(authenticatedUser);
+         }, 
+         onErrors);
+ 
++}
++
+ export const logout = () => removeServiceToken();
+ 
+ export const updateProfile = (user, onSuccess, onErrors) =>
+diff --git a/frontend/src/modules/users/actions.js b/frontend/src/modules/users/actions.js
+index eed0cd6..24942a4 100644
+--- a/frontend/src/modules/users/actions.js
++++ b/frontend/src/modules/users/actions.js
+@@ -6,13 +6,14 @@ const signUpCompleted = authenticatedUser => ({
+     authenticatedUser
+ });
+ 
+-export const signUp = (user, onSuccess, onErrors) => dispatch =>
++export const signUp = (user, onSuccess, onErrors, reauthenticationCallback) => dispatch =>
+     backend.userService.signUp(user,
+         authenticatedUser => {
+             dispatch(signUpCompleted(authenticatedUser));
+             onSuccess();
+         },
+-        onErrors);
++        onErrors,
++        reauthenticationCallback);
+ 
+ const loginCompleted = authenticatedUser => ({
+     type: actionTypes.LOGIN_COMPLETED,
+diff --git a/frontend/src/modules/users/components/Login.js b/frontend/src/modules/users/components/Login.js
+index 0cabacb..ad84050 100644
+--- a/frontend/src/modules/users/components/Login.js
++++ b/frontend/src/modules/users/components/Login.js
+@@ -2,7 +2,6 @@ import React from 'react';
+ import {connect} from 'react-redux';
+ import {Link} from 'react-router-dom';
+ import {FormattedMessage} from 'react-intl';
+-import $ from 'jquery';
+ 
+ import {Errors} from '../../common';
+ import * as actions from '../actions';
+@@ -13,9 +12,8 @@ const initialState = {
+     backendErrors: null
+ };
+ 
+-const reauthenticationCallback = (dispatch, history, loginUrl) => () => {
+-    $('.modal').modal('hide');
+-    history.push(loginUrl);
++const reauthenticationCallback = (dispatch, history) => () => {
++    history.push('/users/login');
+     dispatch(actions.logout());
+ }
+ 
+@@ -57,8 +55,7 @@ class Login extends React.Component {
+             this.state.password,
+             () => this.props.history.push('/'),
+             errors => this.setBackendErrors(errors),
+-            reauthenticationCallback(this.props.dispatch, this.props.history,
+-                this.props.match.url)
++            reauthenticationCallback(this.props.dispatch, this.props.history)
+         ));
+         
+     }
+diff --git a/frontend/src/modules/users/components/SignUp.js b/frontend/src/modules/users/components/SignUp.js
+index 977f985..f09f3d3 100644
+--- a/frontend/src/modules/users/components/SignUp.js
++++ b/frontend/src/modules/users/components/SignUp.js
+@@ -16,6 +16,11 @@ const initialState = {
+     passwordsDoNotMatch: false
+ };
+ 
++const reauthenticationCallback = (dispatch, history) => () => {
++    history.push('/users/login');
++    dispatch(actions.logout());
++}
++
+ class SignUp extends React.Component {
+ 
+     constructor(props) {
+@@ -91,7 +96,8 @@ class SignUp extends React.Component {
+             lastName: this.state.lastName.trim(),
+             email: this.state.email.trim()},
+             () => this.props.history.push('/'),
+-            errors => this.setBackendErrors(errors)
++            errors => this.setBackendErrors(errors),
++            reauthenticationCallback(this.props.dispatch, this.props.history)
+         ));
+         
+     }
+-- 
+2.17.1
+
+From 07d8522efe44bb3a93f1660bb3070d34c85cace5 Mon Sep 17 00:00:00 2001
+From: Fernando Bellas Permuy <fbellas@udc.es>
+Date: Wed, 10 Apr 2019 19:03:22 +0200
+Subject: [PATCH] Frontend: se introduce el componente BackLink.
+
+---
+ .../src/modules/common/components/BackLink.js    | 16 ++++++++++++++++
+ frontend/src/modules/common/index.js             |  3 ++-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
+ create mode 100644 frontend/src/modules/common/components/BackLink.js
+
+diff --git a/frontend/src/modules/common/components/BackLink.js b/frontend/src/modules/common/components/BackLink.js
+new file mode 100644
+index 0000000..89f10b3
+--- /dev/null
++++ b/frontend/src/modules/common/components/BackLink.js
+@@ -0,0 +1,16 @@
++import React from 'react';
++import {withRouter} from 'react-router-dom';
++import {FormattedMessage} from 'react-intl';
++
++const BackLink = ({history}) => history.length > 2 && (
++
++    <button type="button" className="btn btn-link" 
++        onClick={() => history.goBack()}>
++
++        <FormattedMessage id='project.global.buttons.back'/>
++
++    </button>
++
++);
++
++export default withRouter(BackLink);
+diff --git a/frontend/src/modules/common/index.js b/frontend/src/modules/common/index.js
+index 143104a..3ef7f2b 100644
+--- a/frontend/src/modules/common/index.js
++++ b/frontend/src/modules/common/index.js
+@@ -3,4 +3,5 @@ export {default as ErrorDialog} from "./components/ErrorDialog";
+ export {default as Errors} from "./components/Errors";
+ export {default as Loader} from "./components/Loader";
+ export {default as Success} from "./components/Success";
+-export {default as Pager} from "./components/Pager";
+\ No newline at end of file
++export {default as Pager} from "./components/Pager";
++export {default as BackLink} from "./components/BackLink";
+\ No newline at end of file
+-- 
+2.17.1
+
+From bd492bd9b68b25c708bd68670abd81331cbadedc Mon Sep 17 00:00:00 2001
+From: Fernando Bellas Permuy <fbellas@udc.es>
+Date: Tue, 23 Apr 2019 15:08:23 +0200
+Subject: [PATCH] =?UTF-8?q?Frontend:=20se=20a=C3=B1aden=20mensajes=20de=20?=
+ =?UTF-8?q?claves=20que=20faltaban=20(afectaba=20a=20los=20componentes=20P?=
+ =?UTF-8?q?ager=20y=20BackLink).?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ frontend/src/i18n/messages/messages_en.js | 2 ++
+ frontend/src/i18n/messages/messages_es.js | 2 ++
+ frontend/src/i18n/messages/messages_gl.js | 2 ++
+ 3 files changed, 6 insertions(+)
+
+diff --git a/frontend/src/i18n/messages/messages_en.js b/frontend/src/i18n/messages/messages_en.js
+index f098431..66a4953 100644
+--- a/frontend/src/i18n/messages/messages_en.js
++++ b/frontend/src/i18n/messages/messages_en.js
+@@ -9,7 +9,9 @@ export default {
+ 
+     'project.global.buttons.cancel': 'Cancel',
+     'project.global.buttons.close': 'Close',
++    'project.global.buttons.next': 'Next',
+     'project.global.buttons.ok': 'OK',
++    'project.global.buttons.back': 'Back',
+     'project.global.buttons.save': 'Save',
+     'project.global.exceptions.NetworkError': 'Network error',
+     'project.global.fields.date': 'Date',
+diff --git a/frontend/src/i18n/messages/messages_es.js b/frontend/src/i18n/messages/messages_es.js
+index a8a3414..76e6b4e 100644
+--- a/frontend/src/i18n/messages/messages_es.js
++++ b/frontend/src/i18n/messages/messages_es.js
+@@ -9,7 +9,9 @@ export default {
+ 
+     'project.global.buttons.cancel': 'Cancelar',
+     'project.global.buttons.close': 'Cerrar',
++    'project.global.buttons.next': 'Siguiente',
+     'project.global.buttons.ok': 'OK',
++    'project.global.buttons.back': 'Anterior',
+     'project.global.buttons.save': 'Guardar',
+     'project.global.exceptions.NetworkError': 'Fallo de comunicación',
+     'project.global.fields.date': 'Fecha',
+diff --git a/frontend/src/i18n/messages/messages_gl.js b/frontend/src/i18n/messages/messages_gl.js
+index de03ae3..1d94f45 100644
+--- a/frontend/src/i18n/messages/messages_gl.js
++++ b/frontend/src/i18n/messages/messages_gl.js
+@@ -9,7 +9,9 @@ export default {
+ 
+     'project.global.buttons.cancel': 'Cancelar',
+     'project.global.buttons.close': 'Cerrar',
++    'project.global.buttons.next': 'Seguinte',
+     'project.global.buttons.ok': 'OK',
++    'project.global.buttons.back': 'Anterior',
+     'project.global.buttons.save': 'Gardar',
+     'project.global.exceptions.NetworkError': 'Erro de comunicación',
+     'project.global.fields.date': 'Data',
+-- 
+2.17.1
+

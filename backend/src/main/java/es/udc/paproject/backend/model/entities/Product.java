@@ -42,8 +42,8 @@ public class Product {
 		this.name = name;
 		this.descriptionProduct = descriptionProduct; 
 		this.duration = duration; 
-		this.creationTime = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
-		this.endDate = creationTime.plusMinutes(duration).truncatedTo(ChronoUnit.MILLIS);
+		this.creationTime = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+		this.endDate = creationTime.plusMinutes(duration).truncatedTo(ChronoUnit.SECONDS);
 		this.initialPrice = initialPrice;
 		this.currentPrice = this.initialPrice.add(BigDecimal.ZERO);
 		this.shipmentInfo = shipmentInfo;
@@ -175,10 +175,9 @@ public class Product {
 	
 	@Transient
 	public Long getRemainingTime() {
-		LocalDateTime pastMinutes = this.endDate;
-		
-		return pastMinutes.minusSeconds(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES).atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli() / 1000)
-				.truncatedTo(ChronoUnit.MINUTES).atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli();
+		return ChronoUnit.MINUTES.between(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), this.endDate);
+//		return this.endDate.(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli())
+//				.truncatedTo(ChronoUnit.SECONDS).atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli() / 60000;
 	}
 	
 }
