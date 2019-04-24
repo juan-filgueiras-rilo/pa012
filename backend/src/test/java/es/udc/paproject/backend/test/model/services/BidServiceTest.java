@@ -87,7 +87,7 @@ public class BidServiceTest {
 				new BigDecimal(10), "Info", category1.getId());
 		
 		Product productDetail = productService.getProductDetail(product);	
-		productDetail.setCreationTime(LocalDateTime.now().minusMinutes(1000));
+		productDetail.setEndDate(productDetail.getCreationTime());
 		
 		bidService.createBid(user.getId(), product, new BigDecimal(1));
 		
