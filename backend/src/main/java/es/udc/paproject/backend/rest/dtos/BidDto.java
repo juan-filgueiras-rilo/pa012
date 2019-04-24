@@ -1,34 +1,23 @@
 package es.udc.paproject.backend.rest.dtos;
 
 import java.math.BigDecimal;
-import es.udc.paproject.backend.model.entities.Bid.BidState;
 
 public class BidDto {
-	
-	public enum BidDtoState {WON, LOST, WINNING};
 	
 	private Long id;
 	private BigDecimal quantity;
 	private String productName;
-	private BidDtoState state;
+	private String state;
 	private Long date;
 	
 	public BidDto() {}
 
 	public BidDto(Long id, BigDecimal quantity, String productName, 
-			BidState state, boolean isActive, Long date) {
+			String state, Long date) {
 		this.id = id;
 		this.quantity = quantity;
 		this.productName = productName;
-		if(state == BidState.LOST) {
-			this.state = BidDtoState.LOST;
-		} else if(state == BidState.WINNING) {
-			if(isActive) {
-				this.state = BidDtoState.WINNING;
-			} else {
-				this.state = BidDtoState.WON;
-			}
-		}
+		this.state = state;
 		this.date = date;
 	}
 
@@ -56,11 +45,11 @@ public class BidDto {
 		this.productName = productName;
 	}
 
-	public BidDtoState getState() {
+	public String getState() {
 		return state;
 	}
 
-	public void setState(BidDtoState state) {
+	public void setState(String state) {
 		this.state = state;
 	}
 

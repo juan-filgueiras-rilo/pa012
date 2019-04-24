@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundException;
 import es.udc.paproject.backend.model.entities.Bid;
-import es.udc.paproject.backend.model.entities.Bid.BidState;
 import es.udc.paproject.backend.model.entities.BidDao;
 import es.udc.paproject.backend.model.entities.Product;
 import es.udc.paproject.backend.model.entities.ProductDao;
@@ -60,7 +59,7 @@ public class BidServiceImpl implements BidService {
 			throw new UnauthorizedBidException(productId);
 		}		
 
-		newBid = new Bid(quantity, BidState.WINNING, user, product);
+		newBid = new Bid(quantity, user, product);
 
 		Bid optWinningBid = product.getWinningBid();
 		if (optWinningBid != null) {
@@ -75,7 +74,7 @@ public class BidServiceImpl implements BidService {
 			
 			if (newQuantity.compareTo(productCurrentPrice) == 1) {
 				if (newQuantity.compareTo(winningQuantity) == 1) { 
-					winningBid.setState(BidState.LOST);
+//					winningBid.setState(BidState.LOST);
 					product.setWinningBid(newBid);
 					if(newQuantity.compareTo(winningQuantity.add(new BigDecimal(0.5))) == 1) {
 						product.setCurrentPrice(winningQuantity.add(new BigDecimal(0.5)));
@@ -83,7 +82,7 @@ public class BidServiceImpl implements BidService {
 						product.setCurrentPrice(newQuantity);
 					}
 				} else {
-					newBid.setState(BidState.LOST);
+//					newBid.setState(BidState.LOST);
 					//BigDecimal newPrice = newBid.getQuantity().min(newBid.getQuantity().add(new BigDecimal(0.5)));
 					BigDecimal newPrice = newBid.getQuantity().add(new BigDecimal(0.5));
 					

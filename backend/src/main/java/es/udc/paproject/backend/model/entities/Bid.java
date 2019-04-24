@@ -8,8 +8,6 @@ import java.time.temporal.ChronoUnit;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,22 +17,17 @@ import javax.persistence.Id;
 @Entity
 public class Bid {
 	
-	public enum BidState {LOST, WINNING};
-	
 	private Long id;
 	private BigDecimal quantity;
 	private Product product;
 	private User user;
-	@Enumerated(EnumType.ORDINAL)
-	private BidState state;
 	private LocalDateTime date;
 	
 	public Bid() {}
 	
-	public Bid(BigDecimal quantity, BidState state, User user, Product product) {
+	public Bid(BigDecimal quantity, User user, Product product) {
 		
 		this.quantity = quantity;
-		this.state = state;
 		this.date = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
 		this.user = user;
 		this.product = product; 
@@ -56,14 +49,6 @@ public class Bid {
 
 	public void setQuantity(BigDecimal quantity) {
 		this.quantity = quantity.setScale(2, RoundingMode.HALF_EVEN);
-	}
-
-	public BidState getState() {
-		return state;
-	}
-
-	public void setState(BidState state) {
-		this.state = state;
 	}
 
 	public LocalDateTime getDate() {
@@ -97,6 +82,19 @@ public class Bid {
 	@Transient
 	public boolean isWinning() {
 		return this.product.getWinningBid().getId() == this.id;
+	}
+	
+	@Transient
+	public String getState() {
+		if(this.isWinning()) {
+			if(this.getProduct().isActive()) {
+				return "WINNING";
+			} else {
+				return "WON";
+			}
+		} else {
+			return "LOST";
+		}
 	}
 	
 }

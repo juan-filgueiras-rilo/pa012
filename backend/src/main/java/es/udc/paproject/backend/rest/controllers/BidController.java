@@ -24,7 +24,7 @@ import es.udc.paproject.backend.model.services.InsufficientBidQuantityException;
 import es.udc.paproject.backend.model.services.UnauthorizedBidException;
 import es.udc.paproject.backend.model.services.UnauthorizedWinningUserException;
 import es.udc.paproject.backend.rest.common.ErrorsDto;
-import es.udc.paproject.backend.rest.dtos.BidDetailDto;
+import es.udc.paproject.backend.rest.dtos.BidProductDto;
 import es.udc.paproject.backend.rest.dtos.BidDto;
 import es.udc.paproject.backend.rest.dtos.BidParamsDto;
 import es.udc.paproject.backend.rest.dtos.BlockDto;
@@ -99,7 +99,7 @@ public class BidController {
 	}
 	
 	@PostMapping("/bids")
-	public BidDetailDto createBid(@RequestAttribute Long userId, 
+	public BidProductDto createBid(@RequestAttribute Long userId, 
 			@Validated @RequestBody BidParamsDto params) 
 			throws ExpiratedProductDateException, InstanceNotFoundException,
 			UnauthorizedBidException, InsufficientBidQuantityException,

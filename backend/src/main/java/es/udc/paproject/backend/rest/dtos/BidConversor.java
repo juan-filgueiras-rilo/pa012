@@ -11,15 +11,11 @@ import es.udc.paproject.backend.model.entities.Product;
 
 public class BidConversor {
 
-	public final static BidDetailDto toBidDetailDto(Bid bid) {
+	public final static BidProductDto toBidDetailDto(Bid bid) {
 		Product product = bid.getProduct();
 		
-		return new BidDetailDto(product.getId(), product.getCategory().getName(),
-				product.getName(), product.getDescriptionProduct(), 
-				product.getUser().getUserName(), toMillis(product.getCreationTime()),
-				product.getRemainingTime(), product.getInitialPrice(),
-				product.getCurrentPrice(), product.getShipmentInfo(), bid.getId(),
-				bid.getQuantity(), bid.getState(), toMillis(bid.getDate()));
+		return new BidProductDto(product.getRemainingTime(), product.getCurrentPrice(),
+				bid.getState());
 	}
 	
 	public final static List<BidDto> toBidDtos(List<Bid> bids) {
@@ -29,7 +25,7 @@ public class BidConversor {
 	private final static BidDto toBidDto(Bid bid) {
 		
 		return new BidDto(bid.getId(), bid.getQuantity(), bid.getProduct().getName(), 
-				bid.getState(), bid.getProduct().isActive(), toMillis(bid.getDate()));
+				bid.getState(), toMillis(bid.getDate()));
 	}
 	
 	private final static Long toMillis(LocalDateTime date) {
