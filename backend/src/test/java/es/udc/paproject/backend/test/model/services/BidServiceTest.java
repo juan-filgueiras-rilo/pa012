@@ -1,6 +1,8 @@
 package es.udc.paproject.backend.test.model.services;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -112,8 +114,8 @@ public class BidServiceTest {
 		
 		
 		assertEquals(productDetail.getCurrentPrice().stripTrailingZeros(), new BigDecimal(10.5));
-		assertEquals(bid2.getState(), Bid.BidState.WINNING);
-		assertEquals(bid1.getState(), Bid.BidState.LOST);
+		assertTrue(bid2.isWinning());
+		assertFalse(bid1.isWinning());
 		
 	}
 	
@@ -225,8 +227,8 @@ public class BidServiceTest {
 		
 		assertEquals(productDetail.getCurrentPrice(), new BigDecimal(12.80).setScale(2, RoundingMode.HALF_EVEN));
 		assertEquals(productDetail.getWinningBid().getUser(), user4);
-		assertEquals(bid1.getState(), Bid.BidState.LOST);
-		assertEquals(bid2.getState(), Bid.BidState.LOST);
+		assertFalse(bid1.isWinning());
+		assertFalse(bid2.isWinning());
 	}
 	
 	@Test
@@ -247,7 +249,7 @@ public class BidServiceTest {
 		bidService.createBid(user3.getId(), product, new BigDecimal(12));
 		
 		assertEquals(productDetail.getWinningBid().getUser(), user2);
-		assertEquals(bid1.getState(), Bid.BidState.WINNING);
+		assertTrue(bid1.isWinning());
 	}
 	
 	@Test
