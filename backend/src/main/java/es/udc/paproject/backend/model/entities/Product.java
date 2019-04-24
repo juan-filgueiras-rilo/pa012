@@ -3,7 +3,6 @@ package es.udc.paproject.backend.model.entities;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 
 import javax.persistence.Entity;
