@@ -81,11 +81,13 @@ public class BidServiceTest {
 		categoryDao.save(category1);
 		User user = signUpUser("user");
 		
-		Product product = productService.addProduct(user.getId(), "product1", "descripcion", (long)10, 
+		Long product = productService.addProduct(user.getId(), "product1", "descripcion", (long)10, 
 				new BigDecimal(10), "Info", category1.getId());
-		product.setCreationTime(LocalDateTime.now().minusMinutes(11));
 		
-		bidService.createBid(user.getId(), product.getId(), new BigDecimal(1));
+		Product productDetail = productService.getProductDetail(product);	
+		productDetail.setCreationTime(LocalDateTime.now().minusMinutes(1000));
+		
+		bidService.createBid(user.getId(), product, new BigDecimal(1));
 		
 	}
 	
@@ -100,14 +102,16 @@ public class BidServiceTest {
 		User user2 = signUpUser("user2");
 		User user3 = signUpUser("user3");
 		
-		Product product = productService.addProduct(user1.getId(), "product1", "descripcion", (long)10, 
+		Long product = productService.addProduct(user1.getId(), "product1", "descripcion", (long)10, 
 				new BigDecimal(10), "Info", category1.getId());
 		
-		Bid bid1 = bidService.createBid(user2.getId(), product.getId(), new BigDecimal(10));
-		Bid bid2 = bidService.createBid(user3.getId(), product.getId(), new BigDecimal(12));
+		Product productDetail = productService.getProductDetail(product);
+		
+		Bid bid1 = bidService.createBid(user2.getId(), product, new BigDecimal(10));
+		Bid bid2 = bidService.createBid(user3.getId(), product, new BigDecimal(12));
 		
 		
-		assertEquals(product.getCurrentPrice().stripTrailingZeros(), new BigDecimal(10.5));
+		assertEquals(productDetail.getCurrentPrice().stripTrailingZeros(), new BigDecimal(10.5));
 		assertEquals(bid2.getState(), Bid.BidState.WINNING);
 		assertEquals(bid1.getState(), Bid.BidState.LOST);
 		
@@ -123,12 +127,13 @@ public class BidServiceTest {
 		User user1 = signUpUser("user1");
 		User user2 = signUpUser("user2");
 		
-		Product product = productService.addProduct(user1.getId(), "name", "reger",
+		Long product = productService.addProduct(user1.getId(), "name", "reger",
 				(long) 120, new BigDecimal(10), "pergv", category1.getId()); 
+		Product productDetail = productService.getProductDetail(product);
+		
+		bidService.createBid(user2.getId(), product, new BigDecimal(12));
 
-		bidService.createBid(user2.getId(), product.getId(), new BigDecimal(12));
-
-		assertEquals(product.getCurrentPrice(), new BigDecimal(10));
+		assertEquals(productDetail.getCurrentPrice(), new BigDecimal(10).setScale(2, RoundingMode.HALF_EVEN));
 		
 	}
 	
@@ -143,14 +148,15 @@ public class BidServiceTest {
 		User user3 = signUpUser("user3");
 		User user4 = signUpUser("user4");
 		
-		Product product = productService.addProduct(user1.getId(), "name", "reger",
+		Long product = productService.addProduct(user1.getId(), "name", "reger",
 				(long) 120, new BigDecimal(10), "pergv", category1.getId());
+		Product productDetail = productService.getProductDetail(product);
 		
-		bidService.createBid(user2.getId(), product.getId(), new BigDecimal(12));
-		bidService.createBid(user3.getId(), product.getId(), new BigDecimal(1000));
-		bidService.createBid(user4.getId(), product.getId(), new BigDecimal(500));
+		bidService.createBid(user2.getId(), product, new BigDecimal(12));
+		bidService.createBid(user3.getId(), product, new BigDecimal(1000));
+		bidService.createBid(user4.getId(), product, new BigDecimal(500));
 		
-		assertEquals(new BigDecimal(500.5).setScale(2, RoundingMode.HALF_EVEN), product.getCurrentPrice());
+		assertEquals(new BigDecimal(500.5).setScale(2, RoundingMode.HALF_EVEN), productDetail.getCurrentPrice());
 		
 	}
 	
@@ -165,14 +171,15 @@ public class BidServiceTest {
 		User user3 = signUpUser("user3");
 		User user4 = signUpUser("user4");
 		
-		Product product = productService.addProduct(user1.getId(), "name", "reger",
+		Long product = productService.addProduct(user1.getId(), "name", "reger",
 				(long) 120, new BigDecimal(10), "pergv", category1.getId());
+		Product productDetail = productService.getProductDetail(product);
 		
-		bidService.createBid(user2.getId(), product.getId(), new BigDecimal(20));
-		bidService.createBid(user3.getId(), product.getId(), new BigDecimal(2000));
-		bidService.createBid(user4.getId(), product.getId(), new BigDecimal(650.3));
+		bidService.createBid(user2.getId(), product, new BigDecimal(20));
+		bidService.createBid(user3.getId(), product, new BigDecimal(2000));
+		bidService.createBid(user4.getId(), product, new BigDecimal(650.3));
 		
-		assertEquals(new BigDecimal(650.8).setScale(2, RoundingMode.HALF_EVEN), product.getCurrentPrice());
+		assertEquals(new BigDecimal(650.8).setScale(2, RoundingMode.HALF_EVEN), productDetail.getCurrentPrice());
 		
 	}
 	
@@ -186,13 +193,14 @@ public class BidServiceTest {
 		User user2 = signUpUser("user2");
 		User user3 = signUpUser("user3");
 		
-		Product product = productService.addProduct(user1.getId(), "name", "reger",
+		Long product = productService.addProduct(user1.getId(), "name", "reger",
 				(long) 120, new BigDecimal(10), "pergv", category1.getId());
+		Product productDetail = productService.getProductDetail(product);
 		
-		bidService.createBid(user2.getId(), product.getId(), new BigDecimal(12));
-		bidService.createBid(user3.getId(), product.getId(), new BigDecimal(12.3));
+		bidService.createBid(user2.getId(), product, new BigDecimal(12));
+		bidService.createBid(user3.getId(), product, new BigDecimal(12.3));
 		
-		assertEquals(product.getCurrentPrice(), new BigDecimal(12.3).setScale(2, RoundingMode.HALF_EVEN));
+		assertEquals(productDetail.getCurrentPrice(), new BigDecimal(12.3).setScale(2, RoundingMode.HALF_EVEN));
 		
 	}
 	
@@ -207,15 +215,16 @@ public class BidServiceTest {
 		User user3 = signUpUser("user3");	
 		User user4 = signUpUser("user4");
 		
-		Product product = productService.addProduct(user1.getId(), "name", "reger",
+		Long product = productService.addProduct(user1.getId(), "name", "reger",
 				(long) 120, new BigDecimal(10), "pergv", category1.getId());
+		Product productDetail = productService.getProductDetail(product);
 		
-		Bid bid1 = bidService.createBid(user2.getId(), product.getId(), new BigDecimal(12));
-		Bid bid2 = bidService.createBid(user3.getId(), product.getId(), new BigDecimal(12.3));
-		bidService.createBid(user4.getId(), product.getId(), new BigDecimal(15));
+		Bid bid1 = bidService.createBid(user2.getId(), product, new BigDecimal(12));
+		Bid bid2 = bidService.createBid(user3.getId(), product, new BigDecimal(12.3));
+		bidService.createBid(user4.getId(), product, new BigDecimal(15));
 		
-		assertEquals(product.getCurrentPrice(), new BigDecimal(12.80).setScale(2, RoundingMode.HALF_EVEN));
-		assertEquals(product.getWinningBid().getUser(), user4);
+		assertEquals(productDetail.getCurrentPrice(), new BigDecimal(12.80).setScale(2, RoundingMode.HALF_EVEN));
+		assertEquals(productDetail.getWinningBid().getUser(), user4);
 		assertEquals(bid1.getState(), Bid.BidState.LOST);
 		assertEquals(bid2.getState(), Bid.BidState.LOST);
 	}
@@ -230,13 +239,14 @@ public class BidServiceTest {
 		User user2 = signUpUser("user2");
 		User user3 = signUpUser("user3");	
 		
-		Product product = productService.addProduct(user1.getId(), "name", "reger",
+		Long product = productService.addProduct(user1.getId(), "name", "reger",
 				(long) 120, new BigDecimal(10), "pergv", category1.getId());
+		Product productDetail = productService.getProductDetail(product);
 		
-		Bid bid1 = bidService.createBid(user2.getId(), product.getId(), new BigDecimal(12));
-		bidService.createBid(user3.getId(), product.getId(), new BigDecimal(12));
+		Bid bid1 = bidService.createBid(user2.getId(), product, new BigDecimal(12));
+		bidService.createBid(user3.getId(), product, new BigDecimal(12));
 		
-		assertEquals(product.getWinningBid().getUser(), user2);
+		assertEquals(productDetail.getWinningBid().getUser(), user2);
 		assertEquals(bid1.getState(), Bid.BidState.WINNING);
 	}
 	
@@ -250,13 +260,14 @@ public class BidServiceTest {
 		User user2 = signUpUser("user2");
 		User user3 = signUpUser("user3");	
 		
-		Product product = productService.addProduct(user1.getId(), "name", "reger",
+		Long product = productService.addProduct(user1.getId(), "name", "reger",
 				(long) 120, new BigDecimal(10), "pergv", category1.getId());
+		Product productDetail = productService.getProductDetail(product);
 		
-		bidService.createBid(user2.getId(), product.getId(), new BigDecimal(14));
-		bidService.createBid(user3.getId(), product.getId(), new BigDecimal(13.7));
+		bidService.createBid(user2.getId(), product, new BigDecimal(14));
+		bidService.createBid(user3.getId(), product, new BigDecimal(13.7));
 		
-		assertEquals(new BigDecimal(14.0).setScale(2, RoundingMode.HALF_EVEN), product.getCurrentPrice());
+		assertEquals(new BigDecimal(14.0).setScale(2, RoundingMode.HALF_EVEN), productDetail.getCurrentPrice());
 	}
 	
 	//excepcion
@@ -268,10 +279,10 @@ public class BidServiceTest {
 		
 		User user1 = signUpUser("user1");	
 		
-		Product product = productService.addProduct(user1.getId(), "name", "reger",
+		Long product = productService.addProduct(user1.getId(), "name", "reger",
 				(long) 120, new BigDecimal(10), "pergv", category1.getId());
 		
-		bidService.createBid(user1.getId(), product.getId(), new BigDecimal(10));
+		bidService.createBid(user1.getId(), product, new BigDecimal(10));
 	}
 	
 	//Si se puja menos que la puja que va ganando salta excepción
@@ -284,11 +295,11 @@ public class BidServiceTest {
 		User user2 = signUpUser("user2");
 		User user3 = signUpUser("user3");
 		
-		Product product = productService.addProduct(user1.getId(), "name", "reger",
+		Long product = productService.addProduct(user1.getId(), "name", "reger",
 				(long) 120, new BigDecimal(10), "pergv", category1.getId());
 		
-		bidService.createBid(user2.getId(), product.getId(), new BigDecimal(15));
-		bidService.createBid(user3.getId(), product.getId(), new BigDecimal(2));
+		bidService.createBid(user2.getId(), product, new BigDecimal(15));
+		bidService.createBid(user3.getId(), product, new BigDecimal(2));
 
 	}
 	
@@ -300,11 +311,11 @@ public class BidServiceTest {
 		User user1 = signUpUser("user1");
 		User user2 = signUpUser("user2");
 		
-		Product product = productService.addProduct(user1.getId(), "name", "reger",
+		Long product = productService.addProduct(user1.getId(), "name", "reger",
 				(long) 120, new BigDecimal(10), "pergv", category1.getId());
 		
-		bidService.createBid(user2.getId(), product.getId(), new BigDecimal(15));
-		bidService.createBid(user2.getId(), product.getId(), new BigDecimal(20));
+		bidService.createBid(user2.getId(), product, new BigDecimal(15));
+		bidService.createBid(user2.getId(), product, new BigDecimal(20));
 
 	}
 	
@@ -320,15 +331,15 @@ public class BidServiceTest {
 		User user1 = signUpUser("user1");
 		User user2 = signUpUser("user2");
 		
-		Product product1 = productService.addProduct(user1.getId(), "product1", "descripcion", (long)10, 
+		Long product1 = productService.addProduct(user1.getId(), "product1", "descripcion", (long)10, 
 				new BigDecimal(10), "Info", category1.getId());
 		
-		Product product2 = productService.addProduct(user1.getId(), "product2", "descripcion", (long)10, 
+		Long product2 = productService.addProduct(user1.getId(), "product2", "descripcion", (long)10, 
 				new BigDecimal(20), "Info", category1.getId());
 	
 		
-		Bid bid = bidService.createBid(user2.getId(), product2.getId(), new BigDecimal(50));
-		Bid bid2 = bidService.createBid(user2.getId(), product1.getId(), new BigDecimal(60));
+		Bid bid = bidService.createBid(user2.getId(), product2, new BigDecimal(50));
+		Bid bid2 = bidService.createBid(user2.getId(), product1, new BigDecimal(60));
 		
 		Block<Bid> blockExpected = new Block<>(Arrays.asList(bid, bid2), false);
 		assertEquals(blockExpected, bidService.getUserBids(user2.getId(),0,2));	

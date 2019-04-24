@@ -34,6 +34,7 @@ CREATE TABLE Product (
 	descriptionProduct VARCHAR(2000) NOT NULL,
 	duration BIGINT NOT NULL,
 	creationTime DATETIME NOT NULL,
+	endDate DATETIME NOT NULL,
 	currentPrice DECIMAL(11, 2) NOT NULL,
 	initialPrice DECIMAL(11, 2) NOT NULL,
 	shipmentInfo VARCHAR(2000) NOT NULL,

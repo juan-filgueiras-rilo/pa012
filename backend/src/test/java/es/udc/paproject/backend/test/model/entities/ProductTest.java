@@ -22,7 +22,6 @@ public class ProductTest {
 	
 	@Test
 	public void testIsActive() throws InstanceNotFoundException {
-		
 		Product product = createProduct("producto", (long) 10);
 		assertTrue(product.isActive());
 		
@@ -31,14 +30,14 @@ public class ProductTest {
 	@Test
 	public void testIsNotActive() {
 		Product product = createProduct("producto", (long) 10);
-		product.setCreationTime(LocalDateTime.now().minusMinutes(11));
+		product.setEndDate((LocalDateTime.now().minusMinutes(100)));
 		assertFalse(product.isActive());
 	}
 	
 	@Test
 	public void testRemainingTime() throws InstanceNotFoundException {
-		Product product = createProduct("producto", (long) 10);
-		assertEquals((long)10, Math.floorDiv(product.getRemainingTime(), 60000));
+		Product product = createProduct("producto", (long) 20);
+		assertEquals((long)20, Math.floorDiv(product.getRemainingTime(), 100000));
 	}
 	
 }
