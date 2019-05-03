@@ -20,6 +20,7 @@ import es.udc.paproject.backend.model.services.ProductService;
 import es.udc.paproject.backend.rest.dtos.AddProductParamsDto;
 import es.udc.paproject.backend.rest.dtos.BlockDto;
 import es.udc.paproject.backend.rest.dtos.CategoryDto;
+import es.udc.paproject.backend.rest.dtos.IdDto;
 import es.udc.paproject.backend.rest.dtos.ProductDetailDto;
 import es.udc.paproject.backend.rest.dtos.ProductSummaryDto;
 import es.udc.paproject.backend.rest.dtos.UserProductDto;
