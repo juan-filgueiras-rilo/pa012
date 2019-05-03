@@ -1,8 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, NavLink, withRouter} from 'react-router-dom';
 import {FormattedMessage} from 'react-intl';
 
+import {FindProducts} from '../../catalog';
 import users from '../../users';
 
 const Header = ({userName}) => (
@@ -19,6 +20,16 @@ const Header = ({userName}) => (
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
 
             <ul className="navbar-nav mr-auto">
+                <li className="nav-item">
+                    <NavLink exact className="nav-link" to="/">
+                        <span className="fas fa-home"></span>&nbsp;
+                        <FormattedMessage id="project.app.Header.home"/>
+                    </NavLink>
+                </li>
+
+                <li>
+                    <FindProducts/>
+                </li>
             </ul>
             
             {userName ? 
