@@ -28,11 +28,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/users/signUp").permitAll()
 			.antMatchers("/users/login").permitAll()
 			.antMatchers("/users/loginFromServiceToken").permitAll()
-			.antMatchers("/product/categories").permitAll()
-			.antMatchers("/product/products").permitAll()
-			.antMatchers("/product/products/*").permitAll()
-			.antMatchers("/product/userProducts").permitAll()
-			.antMatchers("/product/*").permitAll()
+			.antMatchers("/catalog/categories").permitAll()
+			.antMatchers("/catalog/products").permitAll()
+			.antMatchers("/catalog/products/*").permitAll()
+			.antMatchers("/catalog/userProducts").permitAll()
+			.antMatchers("/catalog/*").permitAll()
 			.antMatchers("/**").hasRole("USER");
 
 	}

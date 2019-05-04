@@ -6,6 +6,7 @@ import Header from './Header';
 import Body from './Body';
 import Footer from './Footer';
 import users from '../../users';
+import catalog from '../../catalog';
 
 const reauthenticationCallback = dispatch => () => 
     dispatch(users.actions.logout());
@@ -17,6 +18,8 @@ class App extends React.Component {
         this.props.dispatch(
             users.actions.tryLoginFromServiceToken(
                 reauthenticationCallback(this.props.dispatch)));
+
+        this.props.dispatch(catalog.actions.findAllCategories());
 
     }
 

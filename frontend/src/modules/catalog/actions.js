@@ -35,14 +35,10 @@ export const findProducts = criteria => dispatch => {
 }
 
 export const previousFindProductsResultPage = criteria =>
-    findProducts({categoryId: criteria.categoryId,
-        keywords: criteria.keywords, 
-        page: criteria.page-1});
+    findProducts({...criteria, page: criteria.page-1});
 
 export const nextFindProductsResultPage = criteria =>
-    findProducts({categoryId: criteria.categoryId,
-        keywords: criteria.keywords, 
-        page: criteria.page+1});
+    findProducts({...criteria, page: criteria.page+1});
 
 const clearProductSearch = () => ({
     type: actionTypes.CLEAR_PRODUCT_SEARCH

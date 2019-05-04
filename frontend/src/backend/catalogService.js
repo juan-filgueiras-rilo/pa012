@@ -1,9 +1,16 @@
 import {config, appFetch} from './appFetch';
 
 export const findAllCategories = (onSuccess) => 
-    appFetch('/catalog/categories', config('GET', null), onSuccess);
+    appFetch('/catalog/categories', config('GET'), onSuccess);
 
 export const findProducts = ({categoryId, keywords, page}, 
-    onSuccess) => 
-    appFetch(`/catalog/products?categoryId=${categoryId}&keywords=${keywords}&` +
-        `page=${page}`, config('GET', null), onSuccess);
+    onSuccess) => {
+
+    let path = `/catalog/products?page=${page}`;
+
+    path += categoryId ? `&categoryId=${categoryId}` : "";
+    path += keywords.length > 0 ? `&keywords=${keywords}` : "";
+
+    appFetch(path, config('GET'), onSuccess);
+
+}
