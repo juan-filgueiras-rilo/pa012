@@ -5,5 +5,6 @@ import * as selectors from './selectors';
 
 export {default as FindProducts} from './components/FindProducts';
 export {default as FindProductsResult} from './components/FindProductsResult';
+export {default as ProductDetails} from './components/ProductDetails';
 
 export default {actions, actionTypes, reducer, selectors};

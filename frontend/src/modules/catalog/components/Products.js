@@ -17,6 +17,12 @@ const Products = ({products, categories}) => (
                 <th scope="col">
                     <FormattedMessage id='project.global.fields.name'/>
                 </th>
+                <th scope="col">
+                    <FormattedMessage id='project.global.fields.currentPrice'/>
+                </th>
+                <th scope="col">
+                    <FormattedMessage id='project.global.fields.remainingTime'/>
+                </th>
             </tr>
         </thead>
 
@@ -24,7 +30,9 @@ const Products = ({products, categories}) => (
             {products.map((product, index) => 
                 <tr key={index}>
                     <td>{selectors.getCategoryName(categories, product.categoryId)}</td>
-                    <td><Link to={`/catalog/product-details/${product.id}/withBackLink`}>{product.name}</Link></td>
+                    <td><Link to={`/catalog/product-details/${product.id}`}>{product.name}</Link></td>
+                    <td>{product.currentPrice}</td>
+                    <td>{product.remainingtime}</td>
                 </tr>
             )}
         </tbody>

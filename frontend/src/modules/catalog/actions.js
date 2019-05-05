@@ -43,3 +43,17 @@ export const nextFindProductsResultPage = criteria =>
 const clearProductSearch = () => ({
     type: actionTypes.CLEAR_PRODUCT_SEARCH
 });
+
+const findProductByIdCompleted = product => ({
+    type: actionTypes.FIND_PRODUCT_BY_ID_COMPLETED,
+    product
+});
+    
+export const findProductById = id => dispatch => {
+    backend.catalogService.findByProductId(id,
+        product => dispatch(findProductByIdCompleted(product)));
+}
+
+export const clearProduct = () => ({
+    type: actionTypes.CLEAR_PRODUCT
+});

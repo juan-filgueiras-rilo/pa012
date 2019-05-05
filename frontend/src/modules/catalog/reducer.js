@@ -39,9 +39,27 @@ const productSearch = (state = initialState.productSearch, action) => {
 
 }
 
+const product = (state = initialState.product, action) => {
+
+    switch (action.type) {
+
+        case actionTypes.FIND_PRODUCT_BY_ID_COMPLETED:
+            return action.product;
+
+        case actionTypes.CLEAR_PRODUCT:
+            return initialState.product;
+
+        default:
+            return state;
+
+    }
+
+}
+
 const reducer = combineReducers({
     categories,
     productSearch,
+    product
 });
 
 export default reducer;

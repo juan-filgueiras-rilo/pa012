@@ -35,7 +35,7 @@ public class ProductConversor {
 	
 	public final static ProductDetailDto toProductDetailDto(Product product) {
 		
-		return new ProductDetailDto(product.getId(), product.getName(), 
+		return new ProductDetailDto(product.getId(), product.getCategory().getId(), product.getName(), 
 				product.getDescriptionProduct(), product.getUser().getUserName(), 
 				toMillis(product.getCreationTime()), product.getRemainingTime(),
 				product.getInitialPrice(), product.getCurrentPrice(), 

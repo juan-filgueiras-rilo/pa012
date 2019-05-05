@@ -14,3 +14,6 @@ export const findProducts = ({categoryId, keywords, page},
     appFetch(path, config('GET'), onSuccess);
 
 }
+
+export const findByProductId = (id, onSuccess) => 
+    appFetch(`/catalog/products/${id}`, config('GET'), onSuccess);

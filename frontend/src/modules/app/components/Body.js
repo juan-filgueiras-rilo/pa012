@@ -6,7 +6,7 @@ import AppGlobalComponents from './AppGlobalComponents';
 import Home from './Home';
 import {Login, SignUp, UpdateProfile, ChangePassword, Logout} from '../../users';
 import users from '../../users';
-import {FindProductsResult} from '../../catalog';
+import {FindProductsResult, ProductDetails} from '../../catalog';
 
 const Body = ({loggedIn}) => (
 
@@ -16,6 +16,7 @@ const Body = ({loggedIn}) => (
         <Switch>
             <Route exact path="/" component={Home}/>
             <Route exact path="/catalog/find-products-result" component={FindProductsResult}/>
+            <Route exact path="/catalog/product-details/:id" component={ProductDetails}/>
             {loggedIn && <Route exact path="/users/update-profile" component={UpdateProfile}/>}
             {loggedIn && <Route exact path="/users/change-password" component={ChangePassword}/>}
             {loggedIn && <Route exact path="/users/logout" component={Logout}/>}

@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public class ProductDetailDto {
 
 	private Long id;
+	private Long categoryId;
 	private String name;
 	private String description;
 	private String userName;
@@ -16,11 +17,12 @@ public class ProductDetailDto {
 	
 	public ProductDetailDto() {}
 
-	public ProductDetailDto(Long id, String name, String description,
+	public ProductDetailDto(Long id, Long categoryId, String name, String description,
 			String userName, Long creationTime,Long remainingTime,
 			BigDecimal initialPrice, BigDecimal currentPrice,
 			String shipmentInfo) {
 		this.id = id;
+		this.categoryId = categoryId;
 		this.name = name;
 		this.description = description;
 		this.userName = userName;
@@ -37,6 +39,14 @@ public class ProductDetailDto {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
 	public String getName() {
