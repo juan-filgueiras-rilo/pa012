@@ -7,12 +7,16 @@ export default {
     
     'project.common.ErrorDialog.title': 'Erro',
 
+    'project.catalog.CategorySelector.allDepartments' : 'Todos os departamentos',
+    'project.catalog.FindProductsResult.noProductsFound': 'Non se atoparon produtos', 
+
     'project.global.buttons.cancel': 'Cancelar',
     'project.global.buttons.close': 'Cerrar',
     'project.global.buttons.next': 'Seguinte',
     'project.global.buttons.ok': 'OK',
     'project.global.buttons.back': 'Anterior',
     'project.global.buttons.save': 'Gardar',
+    'project.global.buttons.search': 'Procurar',
     'project.global.exceptions.NetworkError': 'Erro de comunicación',
     'project.global.fields.date': 'Data',
     'project.global.fields.email': 'Correo electrónico',
