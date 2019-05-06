@@ -7,12 +7,16 @@ export default {
     
     'project.common.ErrorDialog.title': 'Error',
 
+    'project.catalog.CategorySelector.allDepartments' : 'Todos los departamentos',
+    'project.catalog.FindProductsResult.noProductsFound': 'No se encontraron productos', 
+
     'project.global.buttons.cancel': 'Cancelar',
     'project.global.buttons.close': 'Cerrar',
     'project.global.buttons.next': 'Siguiente',
     'project.global.buttons.ok': 'OK',
     'project.global.buttons.back': 'Anterior',
     'project.global.buttons.save': 'Guardar',
+    'project.global.buttons.search': 'Buscar',
     'project.global.exceptions.NetworkError': 'Fallo de comunicación',
     'project.global.fields.date': 'Fecha',
     'project.global.fields.email': 'Correo electrónico',
@@ -23,9 +27,16 @@ export default {
     'project.global.fields.postalAddress': 'Dirección postal',
     'project.global.fields.postalCode': 'Código postal',
     'project.global.fields.userName': 'Usuario',
+    'project.global.fields.department': 'Departamento',
+    'project.global.fields.currentPrice': 'Precio actual',
+    'project.global.fields.remainingTime': 'Tiempo restante',
+    'project.global.fields.creationTime': 'Fecha de creación',
+    'project.global.fields.initialPrice': 'Precio inicial',
+    'project.global.fields.currentPrice': 'Precio actual',
     'project.global.validator.email': 'Introduzca una dirección de correo electrónico correcta',
     'project.global.validator.passwordsDoNotMatch': 'Las contraseñas no coinciden',
     'project.global.validator.required': 'Campo obligatorio',
+
 
     'project.users.ChangePassword.fields.confirmNewPassword': 'Confirmar contraseña nueva',
     'project.users.ChangePassword.fields.newPassword': 'Contraseña nueva',
