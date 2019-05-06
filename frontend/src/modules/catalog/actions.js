@@ -57,3 +57,25 @@ export const findProductById = id => dispatch => {
 export const clearProduct = () => ({
     type: actionTypes.CLEAR_PRODUCT
 });
+
+const addProductCompleted = (productId) => ({
+    type: actionTypes.ADD_PRODUCT_COMPLETED,
+    productId
+});
+
+export const addProduct = (name, description, duration, 
+    initialPrice, shipmentInfo, categoryId, onSuccess, onErrors) => dispatch =>
+    
+    backend.catalogService.addProduct(
+        name,
+        description,
+        duration,
+        initialPrice,
+        shipmentInfo,
+        categoryId,
+        ({id}) => {
+            dispatch(addProductCompleted(id));
+            onSuccess();
+        },
+        onErrors
+    );

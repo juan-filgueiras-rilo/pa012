@@ -24,3 +24,6 @@ export const getProductSearch = state =>
 
 export const getProduct = state =>
     getModuleState(state).product;
+
+export const getAddedProductId = state =>
+    getModuleState(state).addedProductId;

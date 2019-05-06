@@ -17,3 +17,8 @@ export const findProducts = ({categoryId, keywords, page},
 
 export const findByProductId = (id, onSuccess) => 
     appFetch(`/catalog/products/${id}`, config('GET'), onSuccess);
+
+export const addProduct = (name, description, duration, 
+    initialPrice, shipmentInfo, categoryId, onSuccess, onErrors) =>
+    appFetch(`/catalog/products`, config('POST',{name, description,
+        duration, initialPrice, shipmentInfo, categoryId}), onSuccess, onErrors);

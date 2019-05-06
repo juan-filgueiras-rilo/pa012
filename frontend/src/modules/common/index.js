@@ -5,3 +5,4 @@ export {default as Loader} from "./components/Loader";
 export {default as Success} from "./components/Success";
 export {default as Pager} from "./components/Pager";
 export {default as BackLink} from "./components/BackLink";
+export {default as ProductLink} from "./components/ProductLink";

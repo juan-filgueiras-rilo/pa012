@@ -47,7 +47,7 @@ class ProductDetails extends React.Component {
                         <p className="card-text">{product.description}</p>
                         <h6 className="card-subtitle">{product.userName}</h6>
                         <h6 className="card-subtitle">{new Date(product.creationTime).toString()}</h6>
-                        <h6 className="card-subtitle">{new Date(product.remainingTime).toString()}</h6>
+                        <h6 className="card-subtitle">{product.remainingTime}</h6>
                         <h6 className="card-subtitle">{product.initialPrice}</h6>
                         <h6 className="card-subtitle">{product.currentPrice}</h6>                       
                         <h6 className="card-subtitle">{product.shipmentInfo}</h6>                       
