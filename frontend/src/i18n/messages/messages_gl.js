@@ -30,6 +30,8 @@ export default {
     'project.global.fields.department': 'Departamento',
     'project.global.fields.currentPrice': 'Prezo actual',
     'project.global.fields.remainingTime': 'Tempo restante',
+    'project.global.fields.creationTime': 'Data de creación',
+    'project.global.fields.initialPrice': 'Prezo inicial',
     'project.global.validator.email': 'Introduzca unha dirección de correo electrónico correcta',
     'project.global.validator.passwordsDoNotMatch': 'As contrasinais non coinciden',
     'project.global.validator.required': 'Campo obrigatorio',
