@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundException;
 import es.udc.paproject.backend.model.entities.Bid;
-import es.udc.paproject.backend.model.services.BidService;
+import es.udc.paproject.backend.model.services.AuctionService;
 import es.udc.paproject.backend.model.services.Block;
 import es.udc.paproject.backend.model.services.ExpiratedProductDateException;
 import es.udc.paproject.backend.model.services.InsufficientBidQuantityException;
@@ -33,11 +33,11 @@ import static es.udc.paproject.backend.rest.dtos.BidConversor.toBidDtos;
 
 import java.util.Locale;
 
-import static es.udc.paproject.backend.rest.dtos.BidConversor.toBidDetailDto;
+import static es.udc.paproject.backend.rest.dtos.BidConversor.toBidProductDto;
 
 @RestController
-@RequestMapping("/bid")
-public class BidController {
+@RequestMapping("/auction")
+public class AuctionController {
 
 	private final static String EXPIRATED_PRODUCT_DATE_EXCEPTION_CODE = "project.exceptions.ExpiratedProductDateException";
 	private final static String UNAUTHORIZED_BID_EXCEPTION_CODE = "project.exceptions.UnauthorizedBidException";
@@ -48,7 +48,7 @@ public class BidController {
 	private MessageSource messageSource;
 	
 	@Autowired
-	private BidService bidService;
+	private AuctionService auctionService;
 	
 	@ExceptionHandler(ExpiratedProductDateException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -105,7 +105,7 @@ public class BidController {
 			UnauthorizedBidException, InsufficientBidQuantityException,
 			UnauthorizedWinningUserException {
 		
-		return toBidDetailDto(bidService.createBid(userId, 
+		return toBidProductDto(auctionService.createBid(userId, 
 				params.getProductId(), params.getQuantity()));
 	}
 	
@@ -114,7 +114,7 @@ public class BidController {
 			@RequestParam(defaultValue="0") int page) 
 			throws InstanceNotFoundException {
 		
-		Block<Bid> bidBlock = bidService.getUserBids(userId, page, 10);
+		Block<Bid> bidBlock = auctionService.getUserBids(userId, page, 10);
 		
 		return new BlockDto<>(toBidDtos(bidBlock.getItems()),bidBlock.getExistMoreItems());
 	}

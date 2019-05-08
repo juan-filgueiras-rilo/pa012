@@ -100,7 +100,7 @@ class AddProductForm extends React.Component {
 
                 <div className="card bg-light border-dark">
                     <h5 className="card-header">
-                        <FormattedMessage id="project.shopping.AddProductForm.title"/>
+                        <FormattedMessage id="project.catalog.AddProductForm.title"/>
                     </h5>
                     <div className="card-body">
                         <form ref={node => this.form = node}
@@ -183,7 +183,8 @@ class AddProductForm extends React.Component {
                                 </label>
                                 <div className="col-md-4">
                                     <CategorySelector id="categoryId" className="custom-select my-1 mr-sm-2"
-                                        value={this.state.categoryId} onChange={e => this.handleCategoryIdChange(e)}/>
+                                        value={this.state.categoryId} onChange={e => this.handleCategoryIdChange(e)}
+                                        required/>
                                     <div className="invalid-feedback">
                                         <FormattedMessage id='project.global.validator.required'/>
                                     </div>

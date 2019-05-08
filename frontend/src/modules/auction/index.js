@@ -3,4 +3,6 @@ import * as actionTypes from './actionTypes';
 import reducer from './reducer';
 import * as selectors from './selectors';
 
+export {default as BidForm} from './components/BidForm';
+
 export default {actions, actionTypes, reducer, selectors};

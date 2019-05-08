@@ -33,13 +33,13 @@ public class ProductConversor {
 				product.getCurrentPrice(), product.getRemainingTime());
 	}
 	
-	public final static ProductDetailDto toProductDetailDto(Product product) {
+	public final static ProductDto toProductDto(Product product) {
 		
-		return new ProductDetailDto(product.getId(), product.getCategory().getId(), product.getName(), 
+		return new ProductDto(product.getId(), product.getCategory().getId(), product.getName(), 
 				product.getDescriptionProduct(), product.getUser().getUserName(), 
 				toMillis(product.getCreationTime()), product.getRemainingTime(),
 				product.getInitialPrice(), product.getCurrentPrice(), 
-				product.getShipmentInfo());
+				product.getMinPrice(), product.getShipmentInfo());
 	}
 	
 	private final static Long toMillis(LocalDateTime date) {

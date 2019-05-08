@@ -5,6 +5,7 @@ import {FormattedMessage, FormattedNumber, FormattedDate} from 'react-intl';
 import users from '../../users';
 import * as selectors from '../selectors';
 import * as actions from '../actions';
+import {BidForm} from '../../auction';
 import {BackLink} from '../../common';
 
 class ProductDetails extends React.Component {
@@ -32,7 +33,6 @@ class ProductDetails extends React.Component {
         }
 
         return (
-
             <div>
 
                 <BackLink/>
@@ -60,10 +60,15 @@ class ProductDetails extends React.Component {
                         </p>
                     </div>
                 </div>
-                
-                {this.props.loggedIn && 
+                {this.props.loggedIn
+                    && this.props.userName != this.props.product.userName
+                    && product.remainingTime > 0
+                    &&
                     <div>
                         <br/>
+                        <BidForm productId={product.id} 
+                            minPrice={product.minPrice} 
+                            history={this.props.history}/>
                     </div>
                 }
             </div>
@@ -76,8 +81,9 @@ class ProductDetails extends React.Component {
 
 const mapStateToProps = (state) => ({
     loggedIn: users.selectors.isLoggedIn(state),
+    userName: users.selectors.getUserName(state),
     product: selectors.getProduct(state),
-    categories: selectors.getCategories(state)
+    categories: selectors.getCategories(state),
 });
 
 const mapDispatchToProps = {

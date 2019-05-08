@@ -1,0 +1,1 @@
+export const BID_COMPLETED = "project/auction/bidCompleted";

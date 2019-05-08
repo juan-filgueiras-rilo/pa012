@@ -22,7 +22,7 @@ import es.udc.paproject.backend.model.entities.Product;
 import es.udc.paproject.backend.model.entities.ProductDao;
 import es.udc.paproject.backend.model.entities.User;
 import es.udc.paproject.backend.model.services.Block;
-import es.udc.paproject.backend.model.services.ProductService;
+import es.udc.paproject.backend.model.services.CatalogService;
 import es.udc.paproject.backend.model.services.UserService;
 
 @RunWith(SpringRunner.class)
@@ -38,7 +38,7 @@ public class ProductServiceTest {
 	private CategoryDao categoryDao;
 	
 	@Autowired
-	private ProductService productService;
+	private CatalogService productService;
 	
 	@Autowired
 	private UserService userService;

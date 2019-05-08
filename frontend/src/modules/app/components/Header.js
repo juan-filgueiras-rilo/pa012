@@ -30,13 +30,10 @@ const Header = ({userName}) => (
                 <li>
                     <FindProducts/>
                 </li>
-                {userName ? 
+                {userName &&
                     <NavLink className="btn btn-primary my-1" to="/catalog/add-product">
                         <FormattedMessage id="project.catalog.addProductLink"/>
                     </NavLink>
-                :
-                    <li>
-                    </li>
                 }
             </ul>
             

@@ -2,7 +2,7 @@ package es.udc.paproject.backend.rest.dtos;
 
 import java.math.BigDecimal;
 
-public class ProductDetailDto {
+public class ProductDto {
 
 	private Long id;
 	private Long categoryId;
@@ -13,14 +13,15 @@ public class ProductDetailDto {
 	private Long remainingTime;
 	private BigDecimal initialPrice;
 	private BigDecimal currentPrice;
+	private BigDecimal minPrice;
 	private String shipmentInfo;
 	
-	public ProductDetailDto() {}
+	public ProductDto() {}
 
-	public ProductDetailDto(Long id, Long categoryId, String name, String description,
+	public ProductDto(Long id, Long categoryId, String name, String description,
 			String userName, Long creationTime,Long remainingTime,
 			BigDecimal initialPrice, BigDecimal currentPrice,
-			String shipmentInfo) {
+			BigDecimal minPrice, String shipmentInfo) {
 		this.id = id;
 		this.categoryId = categoryId;
 		this.name = name;
@@ -30,6 +31,7 @@ public class ProductDetailDto {
 		this.remainingTime = remainingTime;
 		this.initialPrice = initialPrice;
 		this.currentPrice = currentPrice;
+		this.minPrice = minPrice;
 		this.shipmentInfo = shipmentInfo;
 	}
 
@@ -103,6 +105,14 @@ public class ProductDetailDto {
 
 	public void setCurrentPrice(BigDecimal currentPrice) {
 		this.currentPrice = currentPrice;
+	}
+
+	public BigDecimal getMinPrice() {
+		return minPrice;
+	}
+
+	public void setMidPrice(BigDecimal minPrice) {
+		this.minPrice = minPrice;
 	}
 
 	public String getShipmentInfo() {

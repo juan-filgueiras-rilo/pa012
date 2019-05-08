@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {FormattedMessage} from 'react-intl';
 
-const Auction = ({history}) => (
+const AnnounceAuction = ({history}) => (
 
     <div className="text-center">
         <button type="button" className="btn btn-primary"
@@ -12,4 +12,4 @@ const Auction = ({history}) => (
     </div>
 );
 
-export default connect()(Auction);
+export default connect()(AnnounceAuction);

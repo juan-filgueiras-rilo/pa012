@@ -25,11 +25,11 @@ import es.udc.paproject.backend.model.entities.Category;
 import es.udc.paproject.backend.model.entities.CategoryDao;
 import es.udc.paproject.backend.model.entities.Product;
 import es.udc.paproject.backend.model.entities.User;
-import es.udc.paproject.backend.model.services.BidService;
+import es.udc.paproject.backend.model.services.AuctionService;
 import es.udc.paproject.backend.model.services.Block;
 import es.udc.paproject.backend.model.services.ExpiratedProductDateException;
 import es.udc.paproject.backend.model.services.InsufficientBidQuantityException;
-import es.udc.paproject.backend.model.services.ProductService;
+import es.udc.paproject.backend.model.services.CatalogService;
 import es.udc.paproject.backend.model.services.UnauthorizedBidException;
 import es.udc.paproject.backend.model.services.UnauthorizedWinningUserException;
 import es.udc.paproject.backend.model.services.UserService;
@@ -46,10 +46,10 @@ public class BidServiceTest {
 	private CategoryDao categoryDao;
 	
 	@Autowired
-	private BidService bidService;
+	private AuctionService bidService;
 	
 	@Autowired
-	private ProductService productService; 
+	private CatalogService productService; 
 	
 	@Autowired
 	private UserService userService;

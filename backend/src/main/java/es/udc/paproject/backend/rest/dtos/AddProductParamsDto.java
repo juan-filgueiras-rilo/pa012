@@ -1,6 +1,7 @@
 package es.udc.paproject.backend.rest.dtos;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
@@ -62,7 +63,7 @@ public class AddProductParamsDto {
 	}
 
 	public void setInitialPrice(BigDecimal initialPrice) {
-		this.initialPrice = initialPrice;
+		this.initialPrice = initialPrice.setScale(2, RoundingMode.HALF_EVEN);
 	}
 
 	@NotNull

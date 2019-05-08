@@ -23,6 +23,12 @@ public class Bid {
 	private User user;
 	private LocalDateTime date;
 	
+	public enum BidStatus {
+		WINNING,
+		WON,
+		LOST
+	};
+	
 	public Bid() {}
 	
 	public Bid(BigDecimal quantity, User user, Product product) {
@@ -85,15 +91,15 @@ public class Bid {
 	}
 	
 	@Transient
-	public String getState() {
+	public BidStatus getBidStatus() {
 		if(this.isWinning()) {
 			if(this.getProduct().isActive()) {
-				return "WINNING";
+				return BidStatus.WINNING;
 			} else {
-				return "WON";
+				return BidStatus.WON;
 			}
 		} else {
-			return "LOST";
+			return BidStatus.LOST;
 		}
 	}
 	

@@ -16,30 +16,30 @@ import org.springframework.web.bind.annotation.RestController;
 import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundException;
 import es.udc.paproject.backend.model.entities.Product;
 import es.udc.paproject.backend.model.services.Block;
-import es.udc.paproject.backend.model.services.ProductService;
+import es.udc.paproject.backend.model.services.CatalogService;
 import es.udc.paproject.backend.rest.dtos.AddProductParamsDto;
 import es.udc.paproject.backend.rest.dtos.BlockDto;
 import es.udc.paproject.backend.rest.dtos.CategoryDto;
 import es.udc.paproject.backend.rest.dtos.IdDto;
-import es.udc.paproject.backend.rest.dtos.ProductDetailDto;
+import es.udc.paproject.backend.rest.dtos.ProductDto;
 import es.udc.paproject.backend.rest.dtos.ProductSummaryDto;
 import es.udc.paproject.backend.rest.dtos.UserProductDto;
 
 import static es.udc.paproject.backend.rest.dtos.CategoryConversor.toCategoryDtos;
-import static es.udc.paproject.backend.rest.dtos.ProductConversor.toProductDetailDto;
+import static es.udc.paproject.backend.rest.dtos.ProductConversor.toProductDto;
 import static es.udc.paproject.backend.rest.dtos.ProductConversor.toProductSummaryDtos;
 import static es.udc.paproject.backend.rest.dtos.ProductConversor.toUserProductDtos;
 
 @RestController
 @RequestMapping("/catalog")
-public class ProductController {
+public class CatalogController {
 
 	@Autowired
-	private ProductService productService;
+	private CatalogService catalogService;
 	
 	@GetMapping("/categories")
 	public List<CategoryDto> findAllCategories() {
-		return toCategoryDtos(productService.findAllCategories());
+		return toCategoryDtos(catalogService.findAllCategories());
 	}
 	
 	@GetMapping("/products")
@@ -47,7 +47,7 @@ public class ProductController {
 			@RequestParam(required=false) String keywords, 
 			@RequestParam(defaultValue="0") int page) {
 		
-		Block<Product> productBlock = productService.findProducts(categoryId,
+		Block<Product> productBlock = catalogService.findProducts(categoryId,
 				keywords, page, 10);
 		
 		return new BlockDto<>(toProductSummaryDtos(productBlock.getItems()),
@@ -55,9 +55,9 @@ public class ProductController {
 	}
 
 	@GetMapping("/products/{productId}")
-	public ProductDetailDto getProductDetail(@PathVariable Long productId) throws InstanceNotFoundException {
+	public ProductDto getProductDetail(@PathVariable Long productId) throws InstanceNotFoundException {
 		
-		return toProductDetailDto(productService.getProductDetail(productId));
+		return toProductDto(catalogService.getProductDetail(productId));
 	}
 	
 	@GetMapping("/userProducts")
@@ -65,7 +65,7 @@ public class ProductController {
 			@RequestParam(defaultValue="0") int page) 
 			throws InstanceNotFoundException {
 		
-		Block<Product> productBlock = productService.getUserProducts(userId,page,10);
+		Block<Product> productBlock = catalogService.getUserProducts(userId,page,10);
 		
 		return new BlockDto<>(toUserProductDtos(productBlock.getItems()),
 				productBlock.getExistMoreItems());
@@ -75,7 +75,7 @@ public class ProductController {
 	public IdDto addProduct(@RequestAttribute Long userId, 
 			@Validated @RequestBody AddProductParamsDto params) 
 					throws InstanceNotFoundException {
-		Long productId = productService.addProduct(userId, params.getName(),
+		Long productId = catalogService.addProduct(userId, params.getName(),
 				params.getDescription(), params.getDuration(), 
 				params.getInitialPrice(), params.getShipmentInfo(), 
 				params.getCategoryId());

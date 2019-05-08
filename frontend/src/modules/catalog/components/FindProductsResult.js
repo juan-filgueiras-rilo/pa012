@@ -28,10 +28,10 @@ const FindProductsResult = ({productSearch, categories, previousFindProductsResu
             <Pager 
                 back={{
                     enabled: productSearch.criteria.page >= 1,
-                    handle: () => previousFindProductsResultPage(productSearch.criteria)}}
+                    onClick: () => previousFindProductsResultPage(productSearch.criteria)}}
                 next={{
                     enabled: productSearch.result.existMoreItems,
-                    handle: () => nextFindProductsResultPage(productSearch.criteria)}}/>
+                    onClick: () => nextFindProductsResultPage(productSearch.criteria)}}/>
         </div>
 
     );

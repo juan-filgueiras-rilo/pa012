@@ -7,7 +7,7 @@ import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundExceptio
 import es.udc.paproject.backend.model.entities.Category;
 import es.udc.paproject.backend.model.entities.Product;
 
-public interface ProductService {
+public interface CatalogService {
 		
 	Long addProduct(Long userId, String name, String descriptionProduct, Long duration, BigDecimal initialPrice, String shipmentInfo,
 			Long categoryId) throws InstanceNotFoundException;

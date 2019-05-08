@@ -20,7 +20,7 @@ import es.udc.paproject.backend.model.entities.User;
 
 @Service
 @Transactional
-public class BidServiceImpl implements BidService {
+public class AuctionServiceImpl implements AuctionService {
 
 	@Autowired
 	private PermissionChecker permissionChecker;

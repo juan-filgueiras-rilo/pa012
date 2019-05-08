@@ -164,7 +164,7 @@ public class Product {
 
 	@Transient
 	public BigDecimal getMinPrice() {
-		return this.currentPrice.add(new BigDecimal(0.01));
+		return this.currentPrice.add(new BigDecimal(0.01)).setScale(2, RoundingMode.HALF_EVEN);
 	}
 	
 	@Transient
@@ -174,7 +174,12 @@ public class Product {
 	
 	@Transient
 	public Long getRemainingTime() {
-		return ChronoUnit.MINUTES.between(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), this.endDate);
+		long secondsLeft = ChronoUnit.SECONDS.between(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), this.endDate);
+		if (secondsLeft > 0) {
+			return Math.max(Math.floorDiv(secondsLeft,60), 1);
+		} else {
+			return Long.valueOf(0);
+		}
 //		return this.endDate.(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli())
 //				.truncatedTo(ChronoUnit.SECONDS).atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli() / 60000;
 	}

@@ -1,10 +1,13 @@
 import {combineReducers} from 'redux';
 
 import * as actionTypes from './actionTypes';
+import * as auctionActionTypes from '../auction/actionTypes';
 
 const initialState = {
     categories: null,
     productSearch: null,
+    //fetching: false
+    //result: null
     product: null,
     addedProductId: null
 };
@@ -50,6 +53,10 @@ const product = (state = initialState.product, action) => {
         case actionTypes.CLEAR_PRODUCT:
             return initialState.product;
 
+        case auctionActionTypes.BID_COMPLETED:
+//            return {...state, currentPrice: action.currentPrice}    
+            return {...state, ...action};
+        
         default:
             return state;
 

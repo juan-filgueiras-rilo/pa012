@@ -1,8 +1,9 @@
 package es.udc.paproject.backend.rest.dtos;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
-import javax.validation.constraints.Min;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
 public class BidParamsDto {
@@ -14,7 +15,7 @@ public class BidParamsDto {
 	
 	public BidParamsDto(Long productId, BigDecimal quantity) {
 		this.productId = productId;
-		this.quantity = quantity;
+		this.quantity = quantity.setScale(2, RoundingMode.HALF_EVEN);
 	}
 
 	@NotNull
@@ -27,13 +28,13 @@ public class BidParamsDto {
 	}
 	
 	@NotNull
-	@Min((long)0.1)
+	@DecimalMin("0.1")
 	public BigDecimal getQuantity() {
 		return quantity;
 	}
 	
 	public void setQuantity(BigDecimal quantity) {
-		this.quantity = quantity;
+		this.quantity = quantity.setScale(2, RoundingMode.HALF_EVEN);
 	}
 	
 }
