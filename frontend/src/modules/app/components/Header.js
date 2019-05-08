@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Link, NavLink, withRouter} from 'react-router-dom';
 import {FormattedMessage} from 'react-intl';
 
-import {FindProducts} from '../../catalog';
+import {FindProducts,Auction} from '../../catalog';
 import users from '../../users';
 
 const Header = ({userName}) => (
@@ -30,6 +30,14 @@ const Header = ({userName}) => (
                 <li>
                     <FindProducts/>
                 </li>
+                {userName ? 
+                    <NavLink className="btn btn-primary my-1" to="/catalog/add-product">
+                        <FormattedMessage id="project.catalog.addProductLink"/>
+                    </NavLink>
+                :
+                    <li>
+                    </li>
+                }
             </ul>
             
             {userName ? 

@@ -1,9 +1,9 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import {FormattedMessage} from 'react-intl';
 import PropTypes from 'prop-types';
 
 import * as selectors from '../selectors';
+import {ProductLink} from '../../common';
 
 const Products = ({products, categories}) => (
 
@@ -30,9 +30,9 @@ const Products = ({products, categories}) => (
             {products.map((product, index) => 
                 <tr key={index}>
                     <td>{selectors.getCategoryName(categories, product.categoryId)}</td>
-                    <td><Link to={`/catalog/product-details/${product.id}`}>{product.name}</Link></td>
+                    <td><ProductLink id={product.id} name={product.name}/></td>
                     <td>{product.currentPrice}</td>
-                    <td>{product.remainingtime}</td>
+                    <td>{product.remainingTime}</td>
                 </tr>
             )}
         </tbody>

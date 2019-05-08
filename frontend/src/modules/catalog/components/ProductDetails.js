@@ -45,12 +45,13 @@ class ProductDetails extends React.Component {
                                 {selectors.getCategoryName(this.props.categories, product.categoryId)}
                         </h6>
                         <p className="card-text">{product.description}</p>
+
                         <h6 className="card-subtitle"></h6>
                             <strong><FormattedMessage id='project.global.fields.userName'/></strong>: {product.userName}
                         <h6 className="card-subtitle"></h6>
                             <strong><FormattedMessage id='project.global.fields.creationTime'/></strong>: {new Date(product.creationTime).toLocaleString()}
                         <h6 className="card-subtitle"></h6>
-                            <strong><FormattedMessage id='project.global.fields.remainingTime'/></strong>: {new Date(product.remainingTime).getMinutes()} min.
+                            <strong><FormattedMessage id='project.global.fields.remainingTime'/></strong>: {product.remainingTime} min.
                         <h6 className="card-subtitle"></h6>  
                         <strong><FormattedMessage id='project.global.fields.initialPrice'/></strong>: {product.initialPrice}€                                                       
                         <p className="card-text">
