@@ -8,6 +8,5 @@ export {default as FindProductsResult} from './components/FindProductsResult';
 export {default as ProductDetails} from './components/ProductDetails';
 export {default as AddProduct} from './components/AddProduct';
 export {default as ProductAdded} from './components/ProductAdded';
-export {default as AnnounceAuction} from './components/AnnounceAuction';
 
 export default {actions, actionTypes, reducer, selectors};

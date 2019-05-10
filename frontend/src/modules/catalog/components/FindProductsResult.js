@@ -22,7 +22,7 @@ const FindProductsResult = ({productSearch, categories, previousFindProductsResu
     }
 
     return (
-
+        
         <div>
             <Products products={productSearch.result.items} categories={categories}/>
             <Pager 

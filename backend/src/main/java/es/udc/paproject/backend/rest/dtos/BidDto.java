@@ -6,29 +6,21 @@ import es.udc.paproject.backend.model.entities.Bid.BidStatus;
 
 public class BidDto {
 	
-	private Long id;
 	private BigDecimal quantity;
+	private Long productId;
 	private String productName;
 	private BidStatus bidStatus;
 	private Long date;
 	
 	public BidDto() {}
 
-	public BidDto(Long id, BigDecimal quantity, String productName, 
-			BidStatus bidStatus, Long date) {
-		this.id = id;
+	public BidDto(BigDecimal quantity, String productName, 
+			Long productId, BidStatus bidStatus, Long date) {
 		this.quantity = quantity;
+		this.productId = productId;
 		this.productName = productName;
 		this.bidStatus = bidStatus;
 		this.date = date;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public BigDecimal getQuantity() {
@@ -37,6 +29,14 @@ public class BidDto {
 
 	public void setQuantity(BigDecimal quantity) {
 		this.quantity = quantity;
+	}
+
+	public Long getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Long productId) {
+		this.productId = productId;
 	}
 
 	public String getProductName() {

@@ -1,5 +1,4 @@
 import * as actionTypes from './actionTypes';
-import * as selectors from './selectors';
 import backend from '../../backend';
 
 const bidCompleted = (remainingTime, currentPrice, minPrice) => ({
@@ -19,3 +18,20 @@ export const bid = (productId, quantity,
         },
     onErrors
 );
+
+const getUserBidsCompleted = userBids => ({
+    type: actionTypes.GET_USER_BIDS_COMPLETED,
+    userBids
+});
+
+export const getUserBids = page => dispatch => {
+
+    backend.auctionService.getUserBids(page,
+        result => dispatch(getUserBidsCompleted({page, result})));
+}
+
+export const previousGetUserBidsPage = page =>
+    getUserBids(page-1);
+
+export const nextGetUserBidsPage = page =>
+    getUserBids(page+1);

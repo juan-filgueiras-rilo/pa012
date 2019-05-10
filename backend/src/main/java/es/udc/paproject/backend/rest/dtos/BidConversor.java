@@ -24,8 +24,8 @@ public class BidConversor {
 	
 	private final static BidDto toBidDto(Bid bid) {
 		
-		return new BidDto(bid.getId(), bid.getQuantity(), bid.getProduct().getName(), 
-				bid.getBidStatus(), toMillis(bid.getDate()));
+		return new BidDto(bid.getQuantity(), bid.getProduct().getName(), 
+				bid.getProduct().getId(), bid.getBidStatus(), toMillis(bid.getDate()));
 	}
 	
 	private final static Long toMillis(LocalDateTime date) {

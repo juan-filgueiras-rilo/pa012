@@ -3,7 +3,8 @@ import {connect} from 'react-redux';
 import {Link, NavLink, withRouter} from 'react-router-dom';
 import {FormattedMessage} from 'react-intl';
 
-import {FindProducts,Auction} from '../../catalog';
+import {FindProducts} from '../../catalog';
+import {GetUserBids} from '../../auction';
 import users from '../../users';
 
 const Header = ({userName}) => (
@@ -55,6 +56,7 @@ const Header = ({userName}) => (
                         <Link className="dropdown-item" to="/users/change-password">
                             <FormattedMessage id="project.users.ChangePassword.title"/>
                         </Link>
+                        <GetUserBids/>
                         <div className="dropdown-divider"></div>
                         <Link className="dropdown-item" to="/users/logout">
                             <FormattedMessage id="project.app.Header.logout"/>
