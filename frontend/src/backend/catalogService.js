@@ -22,3 +22,7 @@ export const addProduct = (name, description, duration,
     initialPrice, shipmentInfo, categoryId, onSuccess, onErrors) =>
     appFetch(`/catalog/products`, config('POST',{name, description,
         duration, initialPrice, shipmentInfo, categoryId}), onSuccess, onErrors);
+
+export const getUserProducts = (page, onSuccess) => 
+        appFetch(`/catalog/userProducts?page=${page}`, config('GET'), onSuccess);
+          

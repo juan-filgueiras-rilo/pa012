@@ -9,7 +9,8 @@ const initialState = {
     //fetching: false
     //result: null
     product: null,
-    addedProductId: null
+    addedProductId: null,
+    userProducts: null
 };
 
 const categories = (state = initialState.categories, action) => {
@@ -75,11 +76,26 @@ const addedProductId = (state = initialState.addedProductId, action) => {
     }
 }
 
+const userProducts = (state = initialState.userProducts, action) => {
+
+    switch (action.type) {
+
+        case actionTypes.GET_USER_PRODUCTS_COMPLETED:
+            return action.userProducts;
+
+        default:
+            return state;
+
+    }
+
+}
+
 const reducer = combineReducers({
     categories,
     productSearch,
     product,
-    addedProductId
+    addedProductId,
+    userProducts
 });
 
 export default reducer;

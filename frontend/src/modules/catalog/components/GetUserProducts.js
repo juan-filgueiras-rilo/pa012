@@ -5,7 +5,7 @@ import {FormattedMessage} from 'react-intl';
 
 import * as actions from '../actions';
 
-class GetUserBids extends React.Component {
+class GetUserProducts extends React.Component {
 
     constructor(props) {
         super(props);
@@ -14,8 +14,8 @@ class GetUserBids extends React.Component {
 
     handleClick(event) {
         event.preventDefault();
-        this.props.dispatch(actions.getUserBids(0));
-        this.props.history.push('/auction/get-user-bids-result');
+        this.props.dispatch(actions.getUserProducts(0));
+        this.props.history.push('/catalog/get-user-products-result');
     }
 
     render () {
@@ -23,7 +23,7 @@ class GetUserBids extends React.Component {
         return (
             <button type="button" className="btn btn-primary my-2 my-sm-0"
                 onClick={(e) => this.handleClick(e)}>
-                <FormattedMessage id='project.auction.GetUserBids.GetUserBids'/>
+                <FormattedMessage id='project.catalog.GetUserProducts.GetUserProducts'/>
             </button>
         );
 
@@ -31,4 +31,4 @@ class GetUserBids extends React.Component {
 
 }
 
-export default withRouter(connect()(GetUserBids));
+export default withRouter(connect()(GetUserProducts));

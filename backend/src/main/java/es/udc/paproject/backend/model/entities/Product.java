@@ -184,4 +184,11 @@ public class Product {
 //				.truncatedTo(ChronoUnit.SECONDS).atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli() / 60000;
 	}
 	
+	@Transient
+	public String getWinnerEmail() {
+		if(this.getWinningBid() != null) {
+			return this.getWinningBid().getUser().getEmail();
+		}
+		return "";
+	}
 }

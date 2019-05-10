@@ -79,3 +79,21 @@ export const addProduct = (name, description, duration,
         },
         onErrors
     );
+
+
+const getUserProductsCompleted = userProducts => ({
+    type: actionTypes.GET_USER_PRODUCTS_COMPLETED,
+    userProducts
+});
+
+export const getUserProducts = page => dispatch => {
+
+    backend.catalogService.getUserProducts(page,
+        result => dispatch(getUserProductsCompleted({page, result})));
+}
+
+export const previousGetUserProductsPage = page =>
+    getUserProducts(page-1);
+
+export const nextGetUserProductsPage = page =>
+    getUserProducts(page+1);

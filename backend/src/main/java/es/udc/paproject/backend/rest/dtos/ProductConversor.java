@@ -20,7 +20,7 @@ public class ProductConversor {
 		
 		return new UserProductDto(product.getId(), product.getName(), 
 			product.getRemainingTime(), product.getCurrentPrice(),
-			product.getWinningBid().getUser().getEmail());
+			product.getWinnerEmail());
 	}
 	
 	public final static List<ProductSummaryDto> toProductSummaryDtos(List<Product> products) {

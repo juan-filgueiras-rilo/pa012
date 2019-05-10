@@ -27,3 +27,6 @@ export const getProduct = state =>
 
 export const getAddedProductId = state =>
     getModuleState(state).addedProductId;
+
+export const getUserProducts = state =>
+    getModuleState(state).userProducts;
