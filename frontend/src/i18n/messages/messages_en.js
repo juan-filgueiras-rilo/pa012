@@ -9,6 +9,16 @@ export default {
 
     'project.catalog.CategorySelector.allDepartments' : 'All departments',
     'project.catalog.FindProductsResult.noProductsFound': 'Products not found', 
+    'project.catalog.addProductLink': 'Add product',
+    'project.catalog.AddProductForm.title': 'Add product',
+    'project.catalog.ProductAdded.ProductGenerated': 'Correctly added product ', 
+    'project.catalog.GetUserBidsResult.noUserBids': 'User has not made any bid',
+    'project.catalog.BidForm.BidStatus': 'Bid status:',
+    'project.catalog.GetUserProductsResult.noUserProducts': 'User has not announced any product',
+
+
+    'project.auction.GetUserBids.GetUserBids': 'Check bids made',
+
 
     'project.global.buttons.cancel': 'Cancel',
     'project.global.buttons.close': 'Close',
@@ -17,6 +27,8 @@ export default {
     'project.global.buttons.back': 'Back',
     'project.global.buttons.save': 'Save',
     'project.global.buttons.search': 'Search',
+    'project.global.buttons.addProduct': 'Add',
+    'project.global.buttons.bid': 'Bid',
     'project.global.exceptions.NetworkError': 'Network error',
     'project.global.fields.date': 'Date',
     'project.global.fields.email': 'Email address',
@@ -32,9 +44,17 @@ export default {
     'project.global.fields.remainingTime': 'Remaining Time',
     'project.global.fields.creationTime': 'Creation Time',
     'project.global.fields.initialPrice': 'Initial Price',
+    'project.global.fields.winnerEmail': 'Email',
+    'project.global.fields.quantity': 'Quantity',
     'project.global.validator.email': 'Provide a correct e-mail address',
     'project.global.validator.passwordsDoNotMatch': 'Passwords do not match',
     'project.global.validator.required': 'Required field',
+    'project.global.fields.description': 'Description',
+    'project.global.fields.duration': 'Duration',
+    'project.global.fields.shipmentInfo': 'Shipment Information',
+    'project.global.fields.bidStatus': 'Bid status',
+
+
 
 
     'project.users.ChangePassword.fields.confirmNewPassword': 'Confirm new password',
