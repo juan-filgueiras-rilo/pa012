@@ -15,7 +15,7 @@ class GetUserBids extends React.Component {
     handleClick(event) {
         event.preventDefault();
         this.props.dispatch(actions.getUserBids(0));
-        this.props.history.push('/auction/get-user-bids-result');
+        this.props.history.push('/auction/get-user-bids');
     }
 
     render () {
