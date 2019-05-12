@@ -23,7 +23,7 @@ export const findAllCategories = () => (dispatch, getState) => {
 
 const findProductsCompleted = productSearch => ({
     type: actionTypes.FIND_PRODUCTS_COMPLETED,
-    productSearch
+    productSearch,
 });
 
 export const findProducts = criteria => dispatch => {
@@ -33,12 +33,6 @@ export const findProducts = criteria => dispatch => {
         result => dispatch(findProductsCompleted({criteria, result})));
 
 }
-
-export const previousFindProductsResultPage = criteria =>
-    findProducts({...criteria, page: criteria.page-1});
-
-export const nextFindProductsResultPage = criteria =>
-    findProducts({...criteria, page: criteria.page+1});
 
 const clearProductSearch = () => ({
     type: actionTypes.CLEAR_PRODUCT_SEARCH

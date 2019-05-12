@@ -6,11 +6,9 @@ import * as auctionActionTypes from '../auction/actionTypes';
 const initialState = {
     categories: null,
     productSearch: null,
-    //fetching: false
-    //result: null
     product: null,
     addedProductId: null,
-    userProducts: null
+    userProducts: null,
 };
 
 const categories = (state = initialState.categories, action) => {
@@ -90,12 +88,14 @@ const userProducts = (state = initialState.userProducts, action) => {
 
 }
 
+
+
 const reducer = combineReducers({
     categories,
     productSearch,
     product,
     addedProductId,
-    userProducts
+    userProducts,
 });
 
 export default reducer;

@@ -28,7 +28,7 @@ const UserBids = ({userBids}) => (
         <tbody>
             {userBids.map((bid, index) => 
                 <tr key={index}>
-                    <td>{new Date(bid.date).toLocaleString()}}</td>
+                    <td>{new Date(bid.date).toLocaleString()}</td>
                     <td><ProductLink id={bid.productId} name={bid.productName}/></td>
                     <td>{bid.quantity}</td>
                     <td>{bid.bidStatus}</td>

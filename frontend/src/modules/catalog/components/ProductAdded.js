@@ -7,7 +7,7 @@ import * as selectors from '../selectors';
 
 const ProductAdded = ({addedProductId}) => addedProductId && (
     <div className="alert alert-success" role="alert">
-        <FormattedMessage id="project.catalog.ProductAdded.ProductGenerated"/>:
+        <FormattedMessage id="project.catalog.ProductAdded.ProductGenerated"/>
         &nbsp;
     </div>
 );
