@@ -15,7 +15,7 @@ class GetUserProducts extends React.Component {
     handleClick(event) {
         event.preventDefault();
         this.props.dispatch(actions.getUserProducts(0));
-        this.props.history.push('/catalog/get-user-products-result');
+        this.props.history.push('/catalog/get-user-products');
     }
 
     render () {
