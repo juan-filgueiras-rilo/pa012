@@ -46,6 +46,7 @@ export default {
     'project.global.fields.initialPrice': 'Precio inicial',
     'project.global.fields.currentPrice': 'Precio actual',
     'project.global.fields.winnerEmail': 'Email',
+    'project.global.fields.EmptyEmail': 'No hay pujas',
     'project.global.fields.quantity': 'Cantidad',
     'project.global.fields.bidStatus': 'Estado de la puja',
     'project.global.validator.email': 'Introduzca una dirección de correo electrónico correcta',

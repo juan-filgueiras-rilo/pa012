@@ -32,8 +32,9 @@ const Header = ({userName}) => (
                     <FindProducts/>
                 </li>
                 {userName &&
-                    <NavLink className="btn btn-primary my-1" to="/catalog/add-product">
+                    <NavLink className="btn btn-primary my-1" to="/catalog/add-product" id="addProduct">
                         <FormattedMessage id="project.catalog.addProductLink"/>
+
                     </NavLink>
                 }
             </ul>
@@ -50,13 +51,13 @@ const Header = ({userName}) => (
                         {userName}
                     </a>
                     <div className="dropdown-menu dropdown-menu-right">
-                        <Link className="dropdown-item" to="/users/update-profile">
+                        <Link className="dropdown-item text-left" to="/users/update-profile">
                             <FormattedMessage id="project.users.UpdateProfile.title"/>
                         </Link>
                         <Link className="dropdown-item" to="/users/change-password">
                             <FormattedMessage id="project.users.ChangePassword.title"/>
                         </Link>
-                        <div className="dropdown-divider"></div>
+                        <Link className="dropdown-divider" to="/auction/GetUserBids"></Link>
                         <GetUserBids/>
                         <GetUserProducts/>
                         <div className="dropdown-divider"></div>

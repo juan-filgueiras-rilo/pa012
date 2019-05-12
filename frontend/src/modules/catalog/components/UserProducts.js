@@ -31,7 +31,12 @@ const UserProducts = ({userProducts}) => (
                     <td><ProductLink id={userProduct.id} name={userProduct.name}/></td>
                     <td>{userProduct.remainingTime}</td>
                     <td>{userProduct.currentPrice}</td>
-                    <td>{userProduct.winnerEmail}</td>
+                    <td>{userProduct.winnerEmail?
+                     userProduct.winnerEmail
+                     :
+                     <FormattedMessage id='project.global.fields.EmptyEmail'/>
+                    }
+                    </td>
                 </tr>
             )}
         </tbody>

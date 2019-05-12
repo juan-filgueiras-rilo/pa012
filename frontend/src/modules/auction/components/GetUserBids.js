@@ -21,9 +21,10 @@ class GetUserBids extends React.Component {
     render () {
 
         return (
-            <button type="button" className="btn btn-primary my-2 my-sm-0"
-                onClick={(e) => this.handleClick(e)}>
+            <button type="button" className="btn btn-default my-2 my-sm-0"
+                onClick={(e) => this.handleClick(e)} >
                 <FormattedMessage id='project.auction.GetUserBids.GetUserBids'/>
+                <br></br>
             </button>
         );
 

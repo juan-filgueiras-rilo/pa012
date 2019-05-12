@@ -21,7 +21,7 @@ class GetUserProducts extends React.Component {
     render () {
 
         return (
-            <button type="button" className="btn btn-primary my-2 my-sm-0"
+            <button type="button" className="btn btn-default my-2 my-sm-0 text-center"
                 onClick={(e) => this.handleClick(e)}>
                 <FormattedMessage id='project.catalog.GetUserProducts.GetUserProducts'/>
             </button>
