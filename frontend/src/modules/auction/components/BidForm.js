@@ -32,6 +32,7 @@ class BidForm extends React.Component {
         event.preventDefault();
 
         if (this.form.checkValidity()) {
+            this.setBidStatus(null);            
             this.bid();
         } else {
             this.setBackendErrors(null);
@@ -50,11 +51,11 @@ class BidForm extends React.Component {
 
     setBackendErrors(backendErrors) {
         this.setState({backendErrors});
-        this.setBidStatus(null);
     }
 
     setBidStatus(bidStatus) {
         this.setState({bidStatus});
+        this.setState({quantity: this.props.minPrice});
     }
 
     handleErrorsClose() {
@@ -86,7 +87,7 @@ class BidForm extends React.Component {
                                     value={this.state.quantity}
                                     onChange={(e) => this.handleQuantityChange(e)}
                                     autoFocus
-                                    min={this.props.minPrice}
+                                    
                                     required/>
                                 <div className="invalid-feedback">
                                     <FormattedMessage id='project.global.validator.required'/>
