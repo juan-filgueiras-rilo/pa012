@@ -51,10 +51,12 @@ class BidForm extends React.Component {
 
     setBackendErrors(backendErrors) {
         this.setState({backendErrors});
+        this.setState({bidStatus: null});
     }
 
     setBidStatus(bidStatus) {
         this.setState({bidStatus});
+        this.setState({backendErrors: null});
         this.setState({quantity: this.props.minPrice});
     }
 

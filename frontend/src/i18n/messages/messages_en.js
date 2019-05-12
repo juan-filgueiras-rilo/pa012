@@ -17,7 +17,7 @@ export default {
     'project.catalog.GetUserProductsResult.noUserProducts': 'User has not announced any product',
 
 
-    'project.auction.GetUserBids.GetUserBids': 'Check bids made',
+    'project.auction.GetUserBids.GetUserBids': 'Check made bids',
 
 
     'project.global.buttons.cancel': 'Cancel',

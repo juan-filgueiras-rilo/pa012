@@ -60,7 +60,11 @@ public class AuctionServiceImpl implements AuctionService {
 		}		
 
 		newBid = new Bid(quantity, user, product);
-
+		
+		if (quantity.compareTo(product.getMinPrice()) == -1) {
+			throw new InsufficientBidQuantityException(product.getMinPrice().setScale(2, RoundingMode.HALF_EVEN).doubleValue());
+		}
+		
 		Bid optWinningBid = product.getWinningBid();
 		if (optWinningBid != null) {
 			winningBid = optWinningBid;
@@ -68,32 +72,27 @@ public class AuctionServiceImpl implements AuctionService {
 				throw new UnauthorizedWinningUserException(winningBid.getId());
 			}
 			
-			BigDecimal productCurrentPrice = product.getCurrentPrice();
 			BigDecimal winningQuantity = winningBid.getQuantity();
 			BigDecimal newQuantity = newBid.getQuantity();
 			
-			if (newQuantity.compareTo(productCurrentPrice) == 1) {
-				if (newQuantity.compareTo(winningQuantity) == 1) { 
+			if (newQuantity.compareTo(winningQuantity) == 1) { 
 //					winningBid.setState(BidState.LOST);
-					product.setWinningBid(newBid);
-					if(newQuantity.compareTo(winningQuantity.add(new BigDecimal(0.5))) == 1) {
-						product.setCurrentPrice(winningQuantity.add(new BigDecimal(0.5)));
-					} else {
-						product.setCurrentPrice(newQuantity);
-					}
+				product.setWinningBid(newBid);
+				if(newQuantity.compareTo(winningQuantity.add(new BigDecimal(0.5))) == 1) {
+					product.setCurrentPrice(winningQuantity.add(new BigDecimal(0.5)));
 				} else {
-//					newBid.setState(BidState.LOST);
-					//BigDecimal newPrice = newBid.getQuantity().min(newBid.getQuantity().add(new BigDecimal(0.5)));
-					BigDecimal newPrice = newBid.getQuantity().add(new BigDecimal(0.5));
-					
-					if(winningQuantity.compareTo(newPrice) == 1) {
-						product.setCurrentPrice(newPrice);
-					} else {
-						product.setCurrentPrice(winningQuantity);
-					}
+					product.setCurrentPrice(newQuantity);
 				}
 			} else {
-				throw new InsufficientBidQuantityException(productCurrentPrice.setScale(2, RoundingMode.HALF_EVEN).doubleValue());
+//					newBid.setState(BidState.LOST);
+				//BigDecimal newPrice = newBid.getQuantity().min(newBid.getQuantity().add(new BigDecimal(0.5)));
+				BigDecimal newPrice = newBid.getQuantity().add(new BigDecimal(0.5));
+				
+				if(winningQuantity.compareTo(newPrice) == 1) {
+					product.setCurrentPrice(newPrice);
+				} else {
+					product.setCurrentPrice(winningQuantity);
+				}
 			}
 		} else {
 			product.setWinningBid(newBid);

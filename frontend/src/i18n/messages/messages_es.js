@@ -14,7 +14,7 @@ export default {
     'project.catalog.ProductAdded.ProductGenerated': 'Producto añadido correctamente', 
     'project.catalog.GetUserProducts.GetUserProducts': 'Consultar productos anunciados', 
     'project.catalog.GetUserBidsResult.noUserBids': 'El usuario no ha realizado ninguna puja',
-    'project.catalog.BidForm.BidStatus': 'Estado de la puja:',
+    'project.catalog.BidForm.BidStatus': 'Estado de la puja',
     'project.catalog.GetUserProductsResult.noUserProducts': 'El usuario no ha anunciado ningún producto',
 
     'project.auction.GetUserBids.GetUserBids': 'Consultar pujas realizadas',
