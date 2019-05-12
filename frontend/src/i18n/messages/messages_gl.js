@@ -47,6 +47,7 @@ export default {
     'project.global.fields.winnerEmail': 'Email',
     'project.global.fields.quantity': 'Cantidade',
     'project.global.fields.bidStatus': 'Estado da puxa',
+    'project.global.fields.EmptyEmail': 'Non hai puxas',
     'project.global.validator.email': 'Introduzca unha dirección de correo electrónico correcta',
     'project.global.validator.passwordsDoNotMatch': 'As contrasinais non coinciden',
     'project.global.validator.required': 'Campo obrigatorio',
