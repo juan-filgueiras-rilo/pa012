@@ -16,12 +16,12 @@ const Body = ({loggedIn}) => (
         <AppGlobalComponents/>
         <Switch>
             <Route exact path="/" component={Home}/>
-            <Route exact path="/catalog/find-products-result" component={FindProductsResult}/>
+            <Route exact path="/catalog/find-products/search" component={FindProductsResult}/>
             <Route exact path="/catalog/product-details/:id" component={ProductDetails}/>
             {loggedIn && <Route exact path="/catalog/add-product" component={AddProduct}/>}
             {loggedIn && <Route exact path="/catalog/product-added" component={ProductAdded}/>}           
-            {loggedIn && <Route exact path="/auction/get-user-bids-result" component={GetUserBidsResult}/>}
-            {loggedIn && <Route exact path="/catalog/get-user-products-result" component={GetUserProductsResult}/>}
+            {loggedIn && <Route exact path="/auction/get-user-bids" component={GetUserBidsResult}/>}
+            {loggedIn && <Route exact path="/catalog/get-user-products" component={GetUserProductsResult}/>}
             {loggedIn && <Route exact path="/users/update-profile" component={UpdateProfile}/>}
             {loggedIn && <Route exact path="/users/change-password" component={ChangePassword}/>}
             {loggedIn && <Route exact path="/users/logout" component={Logout}/>}
