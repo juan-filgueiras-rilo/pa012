@@ -9,6 +9,16 @@ export default {
 
     'project.catalog.CategorySelector.allDepartments' : 'Todos os departamentos',
     'project.catalog.FindProductsResult.noProductsFound': 'Non se atoparon produtos', 
+    'project.catalog.addProductLink': 'Engadir produto',
+    'project.catalog.AddProductForm.title': 'Engadir produto',
+    'project.catalog.ProductAdded.ProductGenerated': 'Engadido correctamente o produto',  
+    'project.catalog.GetUserBidsResult.noUserBids': 'O usuario non fixo ningunha puxa',
+    'project.catalog.BidForm.BidStatus': 'Estado da puxa:',
+    'project.catalog.GetUserProductsResult.noUserProducts': 'O usuario non anunciou ningún produto',
+
+    'project.auction.GetUserBids.GetUserBids': 'Comprobe as puxas feitas',
+
+
 
     'project.global.buttons.cancel': 'Cancelar',
     'project.global.buttons.close': 'Cerrar',
@@ -17,6 +27,8 @@ export default {
     'project.global.buttons.back': 'Anterior',
     'project.global.buttons.save': 'Gardar',
     'project.global.buttons.search': 'Procurar',
+    'project.global.buttons.addProduct': 'Engadir',
+    'project.global.buttons.bid': 'Puxar',
     'project.global.exceptions.NetworkError': 'Erro de comunicación',
     'project.global.fields.date': 'Data',
     'project.global.fields.email': 'Correo electrónico',
@@ -32,9 +44,17 @@ export default {
     'project.global.fields.remainingTime': 'Tempo restante',
     'project.global.fields.creationTime': 'Data de creación',
     'project.global.fields.initialPrice': 'Prezo inicial',
+    'project.global.fields.winnerEmail': 'Email',
+    'project.global.fields.quantity': 'Cantidade',
+    'project.global.fields.bidStatus': 'Estado da puxa',
     'project.global.validator.email': 'Introduzca unha dirección de correo electrónico correcta',
     'project.global.validator.passwordsDoNotMatch': 'As contrasinais non coinciden',
     'project.global.validator.required': 'Campo obrigatorio',
+    'project.global.fields.duration': 'Duración',
+    'project.global.fields.description': 'Descricion',
+    'project.global.fields.shipmentInfo': 'Información de envío',
+
+
 
 
     'project.users.ChangePassword.fields.confirmNewPassword': 'Confirmar contrasinal nova',

@@ -9,6 +9,16 @@ export default {
 
     'project.catalog.CategorySelector.allDepartments' : 'Todos los departamentos',
     'project.catalog.FindProductsResult.noProductsFound': 'No se encontraron productos', 
+    'project.catalog.addProductLink': 'Añadir producto',
+    'project.catalog.AddProductForm.title': 'Añadir producto',
+    'project.catalog.ProductAdded.ProductGenerated': 'Producto añadido correctamente', 
+    'project.catalog.GetUserProducts.GetUserProducts': 'Consultar productos anunciados', 
+    'project.catalog.GetUserBidsResult.noUserBids': 'El usuario no ha realizado ninguna puja',
+    'project.catalog.BidForm.BidStatus': 'Estado de la puja:',
+    'project.catalog.GetUserProductsResult.noUserProducts': 'El usuario no ha anunciado ningún producto',
+
+    'project.auction.GetUserBids.GetUserBids': 'Consultar pujas realizadas',
+    
 
     'project.global.buttons.cancel': 'Cancelar',
     'project.global.buttons.close': 'Cerrar',
@@ -17,6 +27,8 @@ export default {
     'project.global.buttons.back': 'Anterior',
     'project.global.buttons.save': 'Guardar',
     'project.global.buttons.search': 'Buscar',
+    'project.global.buttons.addProduct': 'Añadir',
+    'project.global.buttons.bid': 'Pujar',
     'project.global.exceptions.NetworkError': 'Fallo de comunicación',
     'project.global.fields.date': 'Fecha',
     'project.global.fields.email': 'Correo electrónico',
@@ -33,9 +45,15 @@ export default {
     'project.global.fields.creationTime': 'Fecha de creación',
     'project.global.fields.initialPrice': 'Precio inicial',
     'project.global.fields.currentPrice': 'Precio actual',
+    'project.global.fields.winnerEmail': 'Email',
+    'project.global.fields.quantity': 'Cantidad',
+    'project.global.fields.bidStatus': 'Estado de la puja',
     'project.global.validator.email': 'Introduzca una dirección de correo electrónico correcta',
     'project.global.validator.passwordsDoNotMatch': 'Las contraseñas no coinciden',
     'project.global.validator.required': 'Campo obligatorio',
+    'project.global.fields.description': 'Descripción',
+    'project.global.fields.duration': 'Duración',
+    'project.global.fields.shipmentInfo': 'Información de envío',
 
 
     'project.users.ChangePassword.fields.confirmNewPassword': 'Confirmar contraseña nueva',
