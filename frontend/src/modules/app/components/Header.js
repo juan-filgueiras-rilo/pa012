@@ -31,17 +31,15 @@ const Header = ({userName}) => (
                 <li>
                     <FindProducts/>
                 </li>
-                {userName &&
-                    <NavLink className="btn btn-primary my-1" to="/catalog/add-product" id="addProduct">
-                        <FormattedMessage id="project.catalog.addProductLink"/>
-
-                    </NavLink>
-                }
             </ul>
             
             {userName ? 
 
             <ul className="navbar-nav">
+                    <NavLink className="btn btn-primary my-1 navbar-toggler-right"  to="/catalog/add-product" id="addProduct">
+                        <FormattedMessage id="project.catalog.addProductLink"/>
+
+                    </NavLink>
                
                 <li className="nav-item dropdown">
 
@@ -50,18 +48,18 @@ const Header = ({userName}) => (
                         <span className="fas fa-user"></span>&nbsp;
                         {userName}
                     </a>
-                    <div className="dropdown-menu dropdown-menu-right">
-                        <Link className="dropdown-item text-left" to="/users/update-profile">
+                    <div className="dropdown-menu dropdown-menu-right" >
+                        <Link className="dropdown-item text-center" to="/users/update-profile">
                             <FormattedMessage id="project.users.UpdateProfile.title"/>
                         </Link>
-                        <Link className="dropdown-item" to="/users/change-password">
+                        <Link className="dropdown-item text-center" to="/users/change-password">
                             <FormattedMessage id="project.users.ChangePassword.title"/>
                         </Link>
                         <Link className="dropdown-divider" to="/auction/GetUserBids"></Link>
                         <GetUserBids/>
                         <GetUserProducts/>
                         <div className="dropdown-divider"></div>
-                        <Link className="dropdown-item" to="/users/logout">
+                        <Link className="dropdown-item text-center" to="/users/logout">
                             <FormattedMessage id="project.app.Header.logout"/>
                         </Link>
                     </div>
