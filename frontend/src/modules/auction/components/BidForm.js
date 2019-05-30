@@ -42,11 +42,11 @@ class BidForm extends React.Component {
     }
 
     bid() {
-        this.props.bid(this.props.productId, this.state.quantity,
+        this.props.dispatch(actions.bid(this.props.productId, this.state.quantity,
         
             bidStatus => this.setBidStatus(bidStatus),
             
-            errors => this.setBackendErrors(errors));
+            errors => this.setBackendErrors(errors)))
     }
 
     setBackendErrors(backendErrors) {
@@ -112,11 +112,7 @@ class BidForm extends React.Component {
 
 }
 
-const mapDispatchToProps = {
-    bid: actions.bid
-}
-
-BidForm = connect(state => {}, mapDispatchToProps)(BidForm);
+BidForm = connect()(BidForm);
 
 BidForm.propTypes = {
     productId: PropTypes.number.isRequired,

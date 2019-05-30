@@ -23,13 +23,19 @@ spring:
   jackson:
     default-property-inclusion: NON_NULL
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: none
-      show-sql: true
       format-sql: true
       use-sql-comments: true
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        generate_statistics: true
+        jdbc:
+          fetch_size: 10
+        
 project:
   jwt:
     signKey: Bu:GW8bgPlEw
