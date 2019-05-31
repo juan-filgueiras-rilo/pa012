@@ -33,8 +33,9 @@ public class Product {
 	private Category category;
 	private User user;
 	private Bid winningBid;
+	private String winningUserEmail;
 	private Long version;
-		
+
 	public Product() {}
 	
 	public Product(String name, String descriptionProduct, Long duration, 
@@ -155,7 +156,18 @@ public class Product {
 	public void setWinningBid(Bid winningBid) {
 		this.winningBid = winningBid;
 	}
+	
+	public String getWinningUserEmail() {
+		if(this.getWinningBid() != null) {
+			return this.getWinningBid().getUser().getEmail();
+		}
+		return "";
+	}
 
+	public void setWinningUserEmail(String winningUserEmail) {
+		this.winningUserEmail = winningUserEmail;
+	}
+	
 	@Version
 	public Long getVersion() {
 		return version;
@@ -187,11 +199,4 @@ public class Product {
 //				.truncatedTo(ChronoUnit.SECONDS).atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli() / 60000;
 	}
 	
-	@Transient
-	public String getWinnerEmail() {
-		if(this.getWinningBid() != null) {
-			return this.getWinningBid().getUser().getEmail();
-		}
-		return "";
-	}
 }

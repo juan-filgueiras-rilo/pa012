@@ -87,5 +87,6 @@ public class User {
 	public void setRole(RoleType role) {
 		this.role = role;
 	}
+	
 		
 }
