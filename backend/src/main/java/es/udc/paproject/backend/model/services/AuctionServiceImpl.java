@@ -40,7 +40,8 @@ public class AuctionServiceImpl implements AuctionService {
 		User user = permissionChecker.checkUser(userId);		
 		Optional<Product> optProduct;
 		Product product;
-		Bid newBid, winningBid, winningUserEmail;
+		Bid newBid, winningBid;
+		String winningUserEmail;
 		
 		optProduct = productDao.findById(productId);
 		try {
@@ -69,7 +70,7 @@ public class AuctionServiceImpl implements AuctionService {
 		String optWinningUserEmail = product.getWinningBid().getUser().getEmail();
 		if (optWinningBid != null) {
 			winningBid = optWinningBid;
-			product.setWinningUserEmail(optWinningUserEmail); 
+			winningUserEmail = optWinningUserEmail;
 			if (winningBid.getUser() == user) {
 				throw new UnauthorizedWinningUserException(winningBid.getId());
 			}
