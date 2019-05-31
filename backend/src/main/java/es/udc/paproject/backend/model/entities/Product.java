@@ -51,7 +51,6 @@ public class Product {
 		this.shipmentInfo = shipmentInfo;
 		this.category = category;
 		this.user = user;
-		this.winningUserEmail = null;
 	}
 
 	@Id
@@ -177,6 +176,9 @@ public class Product {
 
 	@Transient
 	public BigDecimal getMinPrice() {
+		if(this.currentPrice.compareTo(this.initialPrice) == 0) {
+			return this.initialPrice;
+		}
 		return this.currentPrice.add(new BigDecimal(0.01)).setScale(2, RoundingMode.HALF_EVEN);
 	}
 	

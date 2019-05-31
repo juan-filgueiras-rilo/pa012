@@ -41,7 +41,6 @@ public class AuctionServiceImpl implements AuctionService {
 		Optional<Product> optProduct;
 		Product product;
 		Bid newBid, winningBid;
-		String winningUserEmail;
 		
 		optProduct = productDao.findById(productId);
 		try {
@@ -69,7 +68,6 @@ public class AuctionServiceImpl implements AuctionService {
 		winningBid = product.getWinningBid();
 		
 		if (winningBid != null) {
-			winningUserEmail = winningBid.getUser().getEmail();
 			if (winningBid.getUser() == user) {
 				throw new UnauthorizedWinningUserException(winningBid.getId());
 			}
@@ -81,6 +79,7 @@ public class AuctionServiceImpl implements AuctionService {
 			if (newQuantity.compareTo(winningQuantity) == 1) { 
 //					winningBid.setState(BidState.LOST);
 				product.setWinningBid(newBid);
+				product.setWinningUserEmail(newBid.getUser().getEmail());
 				if(newQuantity.compareTo(winningQuantity.add(new BigDecimal(0.5))) == 1) {
 					product.setCurrentPrice(winningQuantity.add(new BigDecimal(0.5)));
 				} else {
