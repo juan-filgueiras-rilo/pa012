@@ -51,6 +51,7 @@ public class Product {
 		this.shipmentInfo = shipmentInfo;
 		this.category = category;
 		this.user = user;
+		this.winningUserEmail = null;
 	}
 
 	@Id
