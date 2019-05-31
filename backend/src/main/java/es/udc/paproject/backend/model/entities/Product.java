@@ -157,11 +157,8 @@ public class Product {
 		this.winningBid = winningBid;
 	}
 	
-	public String getWinningUserEmail() {
-		if(this.getWinningBid() != null) {
-			return this.getWinningBid().getUser().getEmail();
-		}
-		return "";
+	public String getWinningUserEmail() {	
+		return winningUserEmail;
 	}
 
 	public void setWinningUserEmail(String winningUserEmail) {
