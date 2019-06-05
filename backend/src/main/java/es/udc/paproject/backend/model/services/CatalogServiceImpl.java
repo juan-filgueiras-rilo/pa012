@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -52,6 +52,7 @@ public class CatalogServiceImpl implements CatalogService{
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Block<Product> findProducts(Long categoryId, String keywords, int page, int size) {
 		
 		Slice<Product> slice = productDao.find(categoryId, keywords, page, size);
@@ -60,6 +61,7 @@ public class CatalogServiceImpl implements CatalogService{
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public List<Category> findAllCategories() {
 
 		Iterable<Category> categories = categoryDao.findAll(new Sort(Sort.Direction.ASC, "name"));
@@ -71,6 +73,7 @@ public class CatalogServiceImpl implements CatalogService{
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Product getProductDetail(Long id) throws InstanceNotFoundException {
 		 
 		Optional<Product> optProduct;
@@ -85,6 +88,7 @@ public class CatalogServiceImpl implements CatalogService{
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Block<Product> getUserProducts(Long userId, int page, int size) throws InstanceNotFoundException {
 		
 		permissionChecker.checkUserExists(userId);

@@ -104,6 +104,7 @@ public class AuctionServiceImpl implements AuctionService {
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Block<Bid> getUserBids(Long userId, int page, int size) throws InstanceNotFoundException {
 
 		permissionChecker.checkUserExists(userId);

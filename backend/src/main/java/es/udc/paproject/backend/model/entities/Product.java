@@ -19,6 +19,7 @@ import javax.persistence.Version;
 import org.hibernate.annotations.BatchSize;
 
 @Entity
+@BatchSize(size=10)
 public class Product {
 	
 	private Long id;
@@ -147,7 +148,6 @@ public class Product {
 
 	@OneToOne(optional=true, fetch=FetchType.LAZY)
 	@JoinColumn(name="winningBidId")
-	@BatchSize(size=10)
 	public Bid getWinningBid() {
 		return winningBid;
 	}

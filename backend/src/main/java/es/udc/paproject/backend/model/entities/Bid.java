@@ -80,7 +80,6 @@ public class Bid {
 
 	@ManyToOne(optional=false, fetch=FetchType.LAZY)
 	@JoinColumn(name="productId")
-	@BatchSize(size=10)
 	public Product getProduct() {
 		return product;
 	}

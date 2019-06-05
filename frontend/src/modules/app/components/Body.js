@@ -6,7 +6,7 @@ import AppGlobalComponents from './AppGlobalComponents';
 import Home from './Home';
 import {Login, SignUp, UpdateProfile, ChangePassword, Logout} from '../../users';
 import users from '../../users';
-import {FindProductsResult, ProductDetails, AddProduct, ProductAdded, GetUserProductsResult} from '../../catalog';
+import {FindProductsResultWrapper, ProductDetails, AddProduct, ProductAdded, GetUserProductsResult} from '../../catalog';
 import {GetUserBidsResult} from '../../auction';
 
 const Body = ({loggedIn}) => (
@@ -16,7 +16,7 @@ const Body = ({loggedIn}) => (
         <AppGlobalComponents/>
         <Switch>
             <Route exact path="/" component={Home}/>
-            <Route exact path="/catalog/find-products/search" component={FindProductsResult}/>
+            <Route exact path="/catalog/find-products/search" component={FindProductsResultWrapper}/>
             <Route exact path="/catalog/product-details/:id" component={ProductDetails}/>
             {loggedIn && <Route exact path="/catalog/add-product" component={AddProduct}/>}
             {loggedIn && <Route exact path="/catalog/product-added" component={ProductAdded}/>}           
