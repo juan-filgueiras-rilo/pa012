@@ -65,19 +65,21 @@ public class AuctionServiceImpl implements AuctionService {
 			throw new InsufficientBidQuantityException(product.getMinPrice().setScale(2, RoundingMode.HALF_EVEN).doubleValue());
 		}
 		
-		Bid optWinningBid = product.getWinningBid();
-		if (optWinningBid != null) {
-			winningBid = optWinningBid;
+		winningBid = product.getWinningBid();
+		
+		if (winningBid != null) {
 			if (winningBid.getUser() == user) {
 				throw new UnauthorizedWinningUserException(winningBid.getId());
 			}
 			
 			BigDecimal winningQuantity = winningBid.getQuantity();
 			BigDecimal newQuantity = newBid.getQuantity();
+
 			
 			if (newQuantity.compareTo(winningQuantity) == 1) { 
 //					winningBid.setState(BidState.LOST);
 				product.setWinningBid(newBid);
+				product.setWinningUserEmail(newBid.getUser().getEmail());
 				if(newQuantity.compareTo(winningQuantity.add(new BigDecimal(0.5))) == 1) {
 					product.setCurrentPrice(winningQuantity.add(new BigDecimal(0.5)));
 				} else {
@@ -96,6 +98,7 @@ public class AuctionServiceImpl implements AuctionService {
 			}
 		} else {
 			product.setWinningBid(newBid);
+			product.setWinningUserEmail(newBid.getUser().getEmail());
 		}
 		
 		bidDao.save(newBid);
