@@ -30,9 +30,9 @@ spring:
       use-sql-comments: true
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    properties:
-      hibernate:
-        show-estatistics: true
+    #properties:
+      #hibernate:
+        #generate_statistics: true
 project:
   jwt:
     signKey: Bu:GW8bgPlEw
