@@ -10,6 +10,9 @@ const userBids = (state = initialState.userBids, action) => {
 
     switch (action.type) {
 
+        case actionTypes.CLEAR_USER_BIDS:
+            return initialState.userBids;
+
         case actionTypes.GET_USER_BIDS_COMPLETED:
             return action.userBids;
 
