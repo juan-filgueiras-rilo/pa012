@@ -65,17 +65,15 @@ public class AuctionServiceImpl implements AuctionService {
 			throw new InsufficientBidQuantityException(product.getMinPrice().setScale(2, RoundingMode.HALF_EVEN).doubleValue());
 		}
 		
-		Bid optWinningBid = product.getWinningBid();
+		winningBid = product.getWinningBid();
 		
-		if (optWinningBid != null) {
-			winningBid= optWinningBid;
-			if (optWinningBid.getUser() == user) {
+		if (winningBid != null) {
+			if (winningBid.getUser() == user) {
 				throw new UnauthorizedWinningUserException(winningBid.getId());
 			}
 			
 			BigDecimal winningQuantity = winningBid.getQuantity();
 			BigDecimal newQuantity = newBid.getQuantity();
-
 			
 			if (newQuantity.compareTo(winningQuantity) == 1) { 
 //					winningBid.setState(BidState.LOST);

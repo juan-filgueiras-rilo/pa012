@@ -179,6 +179,14 @@ public class Product {
 	}
 	
 	@Transient
+	public String getWinnerEmail() {
+		if(this.getWinningBid() != null) {
+			return this.getWinningBid().getUser().getEmail();
+		}
+		return null;
+	}
+
+	@Transient
 	public Long getRemainingTime() {
 		long secondsLeft = ChronoUnit.SECONDS.between(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), this.endDate);
 		if (secondsLeft > 0) {
