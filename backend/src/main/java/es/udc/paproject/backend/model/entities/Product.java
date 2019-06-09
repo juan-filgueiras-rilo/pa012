@@ -19,6 +19,7 @@ import javax.persistence.Version;
 import org.hibernate.annotations.BatchSize;
 
 @Entity
+@BatchSize(size=10)
 public class Product {
 	
 	private Long id;
@@ -33,7 +34,6 @@ public class Product {
 	private Category category;
 	private User user;
 	private Bid winningBid;
-	private String winningUserEmail;
 	private Long version;
 
 	public Product() {}
@@ -148,21 +148,12 @@ public class Product {
 
 	@OneToOne(optional=true, fetch=FetchType.LAZY)
 	@JoinColumn(name="winningBidId")
-	@BatchSize(size=10)
 	public Bid getWinningBid() {
 		return winningBid;
 	}
 
 	public void setWinningBid(Bid winningBid) {
 		this.winningBid = winningBid;
-	}
-	
-	public String getWinningUserEmail() {	
-		return winningUserEmail;
-	}
-
-	public void setWinningUserEmail(String winningUserEmail) {
-		this.winningUserEmail = winningUserEmail;
 	}
 	
 	@Version
@@ -187,6 +178,14 @@ public class Product {
 		return (this.endDate.isAfter(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS)));
 	}
 	
+	@Transient
+	public String getWinnerEmail() {
+		if(this.getWinningBid() != null) {
+			return this.getWinningBid().getUser().getEmail();
+		}
+		return null;
+	}
+
 	@Transient
 	public Long getRemainingTime() {
 		long secondsLeft = ChronoUnit.SECONDS.between(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), this.endDate);

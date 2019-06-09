@@ -24,6 +24,10 @@ const getUserBidsCompleted = userBids => ({
     userBids
 });
 
+export const clearUserBids = () => ({
+    type: actionTypes.CLEAR_USER_BIDS
+});
+
 export const getUserBids = page => dispatch => {
 
     backend.auctionService.getUserBids(page,

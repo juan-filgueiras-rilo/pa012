@@ -53,9 +53,9 @@ class ProductDetails extends React.Component {
                         <h6 className="card-subtitle"></h6>
                             <strong><FormattedMessage id='project.global.fields.remainingTime'/></strong>: {product.remainingTime} min.
                         <h6 className="card-subtitle"></h6>  
-                        <strong><FormattedMessage id='project.global.fields.initialPrice'/></strong>: {product.initialPrice}€                                                       
+                        <strong><FormattedMessage id='project.global.fields.initialPrice'/></strong>: <FormattedNumber value={product.initialPrice}/>€                                                       
                         <p className="card-text">
-                            <strong><FormattedMessage id='project.global.fields.currentPrice'/></strong>: <strong>{product.currentPrice}€</strong>
+                            <strong><FormattedMessage id='project.global.fields.currentPrice'/></strong>: <strong><FormattedNumber value={product.currentPrice}/>€</strong>
                         <p className="card-subtitle">{product.shipmentInfo}</p>
                         </p>
                     </div>

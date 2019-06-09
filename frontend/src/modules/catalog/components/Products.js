@@ -1,5 +1,5 @@
 import React from 'react';
-import {FormattedMessage} from 'react-intl';
+import {FormattedMessage, FormattedNumber} from 'react-intl';
 import PropTypes from 'prop-types';
 
 import * as selectors from '../selectors';
@@ -31,7 +31,7 @@ const Products = ({products, categories}) => (
                 <tr key={index}>
                     <td>{selectors.getCategoryName(categories, product.categoryId)}</td>
                     <td><ProductLink id={product.id} name={product.name}/></td>
-                    <td>{product.currentPrice}</td>
+                    <td><FormattedNumber value={product.currentPrice}/> €</td>
                     <td>{product.remainingTime}</td>
                 </tr>
             )}

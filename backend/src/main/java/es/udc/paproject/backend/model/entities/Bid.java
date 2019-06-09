@@ -12,12 +12,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Transient;
-
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.Id;
 
 @Entity
+@BatchSize(size=10)
 public class Bid {
 	
 	private Long id;
@@ -80,7 +80,6 @@ public class Bid {
 
 	@ManyToOne(optional=false, fetch=FetchType.LAZY)
 	@JoinColumn(name="productId")
-	@BatchSize(size=10)
 	public Product getProduct() {
 		return product;
 	}

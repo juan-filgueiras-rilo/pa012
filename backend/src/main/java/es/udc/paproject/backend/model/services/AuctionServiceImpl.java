@@ -74,12 +74,10 @@ public class AuctionServiceImpl implements AuctionService {
 			
 			BigDecimal winningQuantity = winningBid.getQuantity();
 			BigDecimal newQuantity = newBid.getQuantity();
-
 			
 			if (newQuantity.compareTo(winningQuantity) == 1) { 
 //					winningBid.setState(BidState.LOST);
 				product.setWinningBid(newBid);
-				product.setWinningUserEmail(newBid.getUser().getEmail());
 				if(newQuantity.compareTo(winningQuantity.add(new BigDecimal(0.5))) == 1) {
 					product.setCurrentPrice(winningQuantity.add(new BigDecimal(0.5)));
 				} else {
@@ -98,7 +96,6 @@ public class AuctionServiceImpl implements AuctionService {
 			}
 		} else {
 			product.setWinningBid(newBid);
-			product.setWinningUserEmail(newBid.getUser().getEmail());
 		}
 		
 		bidDao.save(newBid);
@@ -107,6 +104,7 @@ public class AuctionServiceImpl implements AuctionService {
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Block<Bid> getUserBids(Long userId, int page, int size) throws InstanceNotFoundException {
 
 		permissionChecker.checkUserExists(userId);

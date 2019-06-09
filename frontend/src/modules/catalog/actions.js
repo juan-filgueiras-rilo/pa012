@@ -73,11 +73,14 @@ export const addProduct = (name, description, duration,
         },
         onErrors
     );
-
-
+    
 const getUserProductsCompleted = userProducts => ({
     type: actionTypes.GET_USER_PRODUCTS_COMPLETED,
     userProducts
+});
+
+export const clearUserProducts = () => ({
+    type: actionTypes.CLEAR_USER_PRODUCTS
 });
 
 export const getUserProducts = page => dispatch => {

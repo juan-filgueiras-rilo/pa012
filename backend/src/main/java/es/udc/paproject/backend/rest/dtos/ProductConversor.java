@@ -19,8 +19,7 @@ public class ProductConversor {
 	public final static UserProductDto toUserProductDto(Product product) {
 		
 		return new UserProductDto(product.getId(), product.getName(), 
-			product.getRemainingTime(), product.getCurrentPrice(),
-			product.getWinningUserEmail());
+			product.getRemainingTime(), product.getCurrentPrice(), product.getWinnerEmail());
 	}
 	
 	public final static List<ProductSummaryDto> toProductSummaryDtos(List<Product> products) {

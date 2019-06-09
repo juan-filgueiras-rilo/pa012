@@ -78,6 +78,9 @@ const userProducts = (state = initialState.userProducts, action) => {
 
     switch (action.type) {
 
+        case actionTypes.CLEAR_USER_PRODUCTS:
+            return initialState.userProducts;
+
         case actionTypes.GET_USER_PRODUCTS_COMPLETED:
             return action.userProducts;
 

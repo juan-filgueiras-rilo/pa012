@@ -7,15 +7,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import es.udc.paproject.backend.model.entities.Bid;
-import es.udc.paproject.backend.model.entities.Product;
 
 public class BidConversor {
 
-	public final static BidProductDto toBidProductDto(Bid bid) {
-		Product product = bid.getProduct();
-		
-		return new BidProductDto(product.getRemainingTime(), product.getCurrentPrice(),
-				product.getMinPrice(), bid.getBidStatus());
+	public final static BidProductDto toBidProductDto(Bid bid) {		
+		return new BidProductDto(bid.getProduct().getRemainingTime(), bid.getProduct().getCurrentPrice(),
+				bid.getProduct().getMinPrice(), bid.getBidStatus());
 	}
 	
 	public final static List<BidDto> toBidDtos(List<Bid> bids) {

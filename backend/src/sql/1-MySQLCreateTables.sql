@@ -41,7 +41,6 @@ CREATE TABLE Product (
 	categoryId BIGINT NOT NULL, 
 	userId BIGINT NOT NULL,
 	winningBidId BIGINT,
-	winningUserEmail VARCHAR(60),
 	version BIGINT NOT NULL,
 	CONSTRAINT ProductPK PRIMARY KEY (id),
 	CONSTRAINT ProductCategoryIdFK FOREIGN KEY(categoryId)

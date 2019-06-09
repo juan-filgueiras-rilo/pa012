@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders error message when there is no products 1`] = `
+<div
+  className="alert alert-danger"
+  role="alert"
+>
+  <span>
+    project.catalog.FindProductsResult.noProductsFound
+  </span>
+</div>
+`;

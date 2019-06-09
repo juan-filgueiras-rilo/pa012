@@ -46,7 +46,7 @@ export default {
     'project.global.fields.initialPrice': 'Initial Price',
     'project.global.fields.winnerEmail': 'Email',
     'project.global.fields.quantity': 'Quantity',
-    'project.global.fields.EmptyEmail': 'No bid',
+    'project.global.fields.EmptyEmail': 'No bids',
     'project.global.validator.email': 'Provide a correct e-mail address',
     'project.global.validator.passwordsDoNotMatch': 'Passwords do not match',
     'project.global.validator.required': 'Required field',
