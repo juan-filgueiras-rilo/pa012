@@ -47,7 +47,6 @@ public class CatalogServiceImpl implements CatalogService{
 		}
 		Product product = new Product(name, descriptionProduct, duration, initialPrice,  shipmentInfo, optCategory.get(), user);
 		
-		product.setWinningUserEmail("hola");
 		
 		product = productDao.save(product);
 		return product.getId();
