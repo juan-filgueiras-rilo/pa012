@@ -8,17 +8,15 @@ public class UserProductDto {
 	private String name;
 	private Long remainingTime;
 	private BigDecimal currentPrice;
-	private String winnerEmail;
 	
 	public UserProductDto() {}
 
 	public UserProductDto(Long id, String name, Long remainingTime,
-			BigDecimal currentPrice, String winnerEmail) {
+			BigDecimal currentPrice) {
 		this.id = id;
 		this.name = name;
 		this.remainingTime = remainingTime;
 		this.currentPrice = currentPrice;
-		this.winnerEmail = winnerEmail;
 	}
 
 	public Long getId() {
@@ -53,11 +51,4 @@ public class UserProductDto {
 		this.currentPrice = currentPrice;
 	}
 
-	public String getWinnerEmail() {
-		return winnerEmail;
-	}
-
-	public void setWinnerEmail(String winnerEmail) {
-		this.winnerEmail = winnerEmail;
-	}
 }

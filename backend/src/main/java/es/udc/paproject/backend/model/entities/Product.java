@@ -34,7 +34,6 @@ public class Product {
 	private Category category;
 	private User user;
 	private Bid winningBid;
-	private String winningUserEmail;
 	private Long version;
 
 	public Product() {}
@@ -155,14 +154,6 @@ public class Product {
 
 	public void setWinningBid(Bid winningBid) {
 		this.winningBid = winningBid;
-	}
-	
-	public String getWinningUserEmail() {	
-		return winningUserEmail;
-	}
-
-	public void setWinningUserEmail(String winningUserEmail) {
-		this.winningUserEmail = winningUserEmail;
 	}
 	
 	@Version
