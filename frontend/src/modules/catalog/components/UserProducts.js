@@ -1,11 +1,11 @@
 import React from 'react';
-import {FormattedMessage} from 'react-intl';
+import {FormattedMessage, FormattedNumber} from 'react-intl';
 import PropTypes from 'prop-types';
 
 import {ProductLink} from '../../common';
 
 const UserProducts = ({userProducts}) => {
-    
+
     return (
         <table className="table table-striped table-hover">
             <thead>
@@ -30,7 +30,7 @@ const UserProducts = ({userProducts}) => {
                     <tr key={index}>
                         <td><ProductLink id={userProduct.id} name={userProduct.name}/></td>
                         <td>{userProduct.remainingTime}</td>
-                        <td>{userProduct.currentPrice}</td>
+                        <td>{<FormattedNumber value={userProduct.currentPrice}/>} €</td>
                         <td>{userProduct.winnerEmail?
                         userProduct.winnerEmail
                         :
