@@ -70,16 +70,16 @@ class AddProductForm extends React.Component {
     }
 
     addProduct() {
-
-        this.props.addProduct(this.state.name.trim(),
+        this.props.dispatch(actions.addProduct(
+            this.state.name.trim(),
             this.state.description.trim(), this.state.duration, 
             this.state.initialPrice, this.state.shipmentInfo.trim(), 
             this.state.categoryId,
         
             () => this.props.history.push('/catalog/product-added'),
 
-            errors => this.setBackendErrors(errors));
-
+            errors => this.setBackendErrors(errors)
+        ));
     }
 
     setBackendErrors(backendErrors) {
@@ -207,11 +207,7 @@ class AddProductForm extends React.Component {
 
 }
 
-const mapDispatchToProps = {
-    addProduct: actions.addProduct
-}
-
-AddProductForm = connect(state => {}, mapDispatchToProps)(AddProductForm);
+AddProductForm = connect()(AddProductForm);
 
 AddProductForm.propTypes = {
     history: PropTypes.object.isRequired

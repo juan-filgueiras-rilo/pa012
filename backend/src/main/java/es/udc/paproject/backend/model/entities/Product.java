@@ -16,6 +16,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.BatchSize;
+
 @Entity
 public class Product {
 	
@@ -31,8 +33,9 @@ public class Product {
 	private Category category;
 	private User user;
 	private Bid winningBid;
+	private String winningUserEmail;
 	private Long version;
-		
+
 	public Product() {}
 	
 	public Product(String name, String descriptionProduct, Long duration, 
@@ -145,6 +148,7 @@ public class Product {
 
 	@OneToOne(optional=true, fetch=FetchType.LAZY)
 	@JoinColumn(name="winningBidId")
+	@BatchSize(size=10)
 	public Bid getWinningBid() {
 		return winningBid;
 	}
@@ -152,7 +156,15 @@ public class Product {
 	public void setWinningBid(Bid winningBid) {
 		this.winningBid = winningBid;
 	}
+	
+	public String getWinningUserEmail() {	
+		return winningUserEmail;
+	}
 
+	public void setWinningUserEmail(String winningUserEmail) {
+		this.winningUserEmail = winningUserEmail;
+	}
+	
 	@Version
 	public Long getVersion() {
 		return version;
@@ -164,6 +176,9 @@ public class Product {
 
 	@Transient
 	public BigDecimal getMinPrice() {
+		if(this.currentPrice.compareTo(this.initialPrice) == 0) {
+			return this.initialPrice;
+		}
 		return this.currentPrice.add(new BigDecimal(0.01)).setScale(2, RoundingMode.HALF_EVEN);
 	}
 	
@@ -184,11 +199,4 @@ public class Product {
 //				.truncatedTo(ChronoUnit.SECONDS).atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli() / 60000;
 	}
 	
-	@Transient
-	public String getWinnerEmail() {
-		if(this.getWinningBid() != null) {
-			return this.getWinningBid().getUser().getEmail();
-		}
-		return "";
-	}
 }

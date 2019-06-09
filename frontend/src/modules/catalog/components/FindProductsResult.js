@@ -7,18 +7,7 @@ import * as actions from '../actions';
 import {Pager, BackLink} from '../../common';
 import Products from './Products';
 
-const initialState = {
-    query: '',
-}
-
 class FindProductsResult extends React.Component {
-
-    constructor(props) {
-
-        super(props);
-
-        this.state = initialState;
-    }
 
     toNumber(value) {
         return value.length > 0 ? Number(value) : null;
