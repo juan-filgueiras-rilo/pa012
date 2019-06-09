@@ -40,7 +40,6 @@ export default {
     'project.global.fields.postalCode': 'Código postal',
     'project.global.fields.userName': 'Usuario',
     'project.global.fields.department': 'Departamento',
-    'project.global.fields.currentPrice': 'Precio actual',
     'project.global.fields.remainingTime': 'Tiempo restante',
     'project.global.fields.creationTime': 'Fecha de creación',
     'project.global.fields.initialPrice': 'Precio inicial',

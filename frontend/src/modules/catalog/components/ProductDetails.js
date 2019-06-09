@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {FormattedMessage, FormattedNumber, FormattedDate} from 'react-intl';
+import {FormattedMessage, FormattedNumber, FormattedDate, FormattedTime} from 'react-intl';
 
 import users from '../../users';
 import * as selectors from '../selectors';
@@ -46,22 +46,16 @@ class ProductDetails extends React.Component {
                         </h6>
                         <p className="card-text">{product.description}</p>
 
-                        <h6 className="card-subtitle"></h6>
-                            <strong><FormattedMessage id='project.global.fields.userName'/></strong>: {product.userName}
-                        <h6 className="card-subtitle"></h6>
-                            <strong><FormattedMessage id='project.global.fields.creationTime'/></strong>: {new Date(product.creationTime).toLocaleString()}
-                        <h6 className="card-subtitle"></h6>
-                            <strong><FormattedMessage id='project.global.fields.remainingTime'/></strong>: {product.remainingTime} min.
-                        <h6 className="card-subtitle"></h6>  
-                        <strong><FormattedMessage id='project.global.fields.initialPrice'/></strong>: <FormattedNumber value={product.initialPrice}/>€                                                       
-                        <p className="card-text">
-                            <strong><FormattedMessage id='project.global.fields.currentPrice'/></strong>: <strong><FormattedNumber value={product.currentPrice}/>€</strong>
-                        <p className="card-subtitle">{product.shipmentInfo}</p>
-                        </p>
+                        <p className="card-subtitle"><b><FormattedMessage id='project.global.fields.userName'/></b>: {product.userName}</p>
+                        <p className="card-subtitle"><b><FormattedMessage id='project.global.fields.creationTime'/></b>: <FormattedDate value={new Date(product.creationTime)}/> - <FormattedTime value={new Date(product.creationTime)}/></p>
+                        <p className="card-subtitle"><b><FormattedMessage id='project.global.fields.remainingTime'/></b>: {product.remainingTime} min.</p>
+                        <p className="card-subtitle"><b><FormattedMessage id='project.global.fields.initialPrice'/></b>: <FormattedNumber value={product.initialPrice}/>€</p>  
+                        <p className="card-subtitle"><b><FormattedMessage id='project.global.fields.currentPrice'/></b>:</p> <p className="text-primary"><b><FormattedNumber value={product.currentPrice}/>€</b></p>
+                        <p className="card-subtitle"><b><FormattedMessage id='project.global.fields.shipmentInfo'/></b>: {product.shipmentInfo}</p>
                     </div>
                 </div>
                 {this.props.loggedIn
-                    && this.props.userName != this.props.product.userName
+                    && this.props.userName !== this.props.product.userName
                     && product.remainingTime > 0
                     &&
                     <div>

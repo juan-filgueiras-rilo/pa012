@@ -1,5 +1,5 @@
 import React from 'react';
-import {FormattedMessage, FormattedNumber} from 'react-intl';
+import {FormattedMessage, FormattedNumber, FormattedDate, FormattedTime} from 'react-intl';
 import PropTypes from 'prop-types';
 
 import {ProductLink} from '../../common';
@@ -28,7 +28,7 @@ const UserBids = ({userBids}) => (
         <tbody>
             {userBids.map((bid, index) => 
                 <tr key={index}>
-                    <td>{new Date(bid.date).toLocaleString()}</td>
+                    <td><FormattedDate value={new Date(bid.date)}/> - <FormattedTime value={new Date(bid.date)}/></td>
                     <td><ProductLink id={bid.productId} name={bid.productName}/></td>
                     <td>{<FormattedNumber value={bid.quantity}/>} €</td>
                     <td>{bid.bidStatus}</td>
