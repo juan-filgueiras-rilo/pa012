@@ -8,7 +8,7 @@ export default {
     'project.common.ErrorDialog.title': 'Error',
 
     'project.catalog.CategorySelector.allDepartments' : 'All departments',
-    'project.catalog.FindProductsResult.noProductsFound': 'Products not found', 
+    'project.catalog.FindProductsResult.noProductsFound': 'No products found', 
     'project.catalog.addProductLink': 'Add product',
     'project.catalog.AddProductForm.title': 'Add product',
     'project.catalog.ProductAdded.ProductGenerated': 'Correctly added product ', 

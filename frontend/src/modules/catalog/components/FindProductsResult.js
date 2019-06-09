@@ -31,14 +31,17 @@ export const FindProductsResult = ({productSearch, categories, history, search})
                         const newParams = new URLSearchParams(search);
                         newParams.set('page', Number(newParams.get('page'))-1);
                         history.push(`/catalog/find-products/search?`+newParams);
-                    }}}
+                    }
+                }}
                 next={{
                     enabled: productSearch.result.existMoreItems,
                     onClick: () => {
                         const newParams = new URLSearchParams(search);
                         newParams.set('page', Number(newParams.get('page'))+1);
                         history.push(`/catalog/find-products/search?`+newParams);
-                    }}}/>
+                    }
+                }}
+            />
         </div>
 
     );
