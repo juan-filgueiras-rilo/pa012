@@ -58,6 +58,7 @@
 				<testDataSource.url>${dataSource.baseUrl}test?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=Europe/Madrid</testDataSource.url>
 				<dataSource.createTablesScript>1-MySQLCreateTables.sql</dataSource.createTablesScript>
 				<dataSource.createDataScript>2-MySQLCreateData.sql</dataSource.createDataScript>
+				<graphwalker.version>4.1.0</graphwalker.version>
 			</properties>
 		</profile>
 	</profiles>
@@ -111,17 +112,37 @@
 			<version>0.9</version>
 		</dependency>
 		<dependency>
-    <groupId>com.pholser</groupId>
-    <artifactId>junit-quickcheck-generators</artifactId>
-    <version>0.7</version>
-</dependency>
+			<groupId>com.pholser</groupId>
+			<artifactId>junit-quickcheck-generators</artifactId>
+			<version>0.7</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.jacoco/-maven-plugin -->
 		<dependency>
 			<groupId>org.jacoco</groupId>
 			<artifactId>jacoco-maven-plugin</artifactId>
 			<version>0.8.5</version>
 		</dependency>
-
+		<!-- https://mvnrepository.com/artifact/org.graphwalker/graphwalker-core -->
+		<dependency>
+			<groupId>org.graphwalker</groupId>
+			<artifactId>graphwalker-core</artifactId>
+			<version>${graphwalker.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.graphwalker</groupId>
+			<artifactId>graphwalker-io</artifactId>
+			<version>${graphwalker.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.graphwalker</groupId>
+			<artifactId>graphwalker-java</artifactId>
+			<version>${graphwalker.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.graphwalker</groupId>
+			<artifactId>graphwalker-maven-plugin</artifactId>
+			<version>${graphwalker.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -208,7 +229,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-							<configuration>
+				<configuration>
 					<excludes>
 						<exclude>**/es/udc/paproject/backend/rest/dtos/*</exclude>
 					</excludes>
@@ -229,8 +250,9 @@
 					</execution>
 
 				</executions>
-				
+
 			</plugin>
+
 		</plugins>
 
 		<pluginManagement>

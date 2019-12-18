@@ -24,7 +24,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import es.udc.paproject.backend.model.common.exceptions.DuplicateInstanceException;
 import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundException;
 import es.udc.paproject.backend.model.entities.Bid;
-import es.udc.paproject.backend.model.entities.BidDao;
 import es.udc.paproject.backend.model.entities.Category;
 import es.udc.paproject.backend.model.entities.CategoryDao;
 import es.udc.paproject.backend.model.entities.Product;
@@ -53,9 +52,6 @@ public class BidServiceTest {
 	@Autowired
 	private ProductDao productDao;
 	
-	@Autowired
-	private BidDao bidDao;
-
 	@Autowired
 	private AuctionService bidService;
 

@@ -25,11 +25,11 @@ public class ProductGenerator extends Generator<Product>{
 		BigDecimal initialPrice = gen().type(BigDecimal.class).generate(random, status);
 		String shipmentInfo = gen().type(String.class).generate(random, status);
 		Category category = new Category("cat");
-		category.setId(random.nextLong());
+		category.setId(random.nextLong(0,1));
 		User user = new User("user","password","user","user","user@user.com");
-		user.setId(random.nextLong());
+		user.setId(random.nextLong(0,1));
 		Product product = new Product(name,description,duration,initialPrice,shipmentInfo,category,user);
-		
+		product.setId(random.nextLong(1,1000));
 		return product;
 	}
 
