@@ -43,6 +43,8 @@ public class ProductServiceTest {
 	@Autowired
 	private UserService userService;
 	
+	private final Long NON_EXISTENT_ID = new Long(-1);
+
 	
 	private User signUpUser(String userName) {
 		
@@ -219,4 +221,24 @@ public class ProductServiceTest {
 		assertEquals(blockExpected, productService.getUserProducts(user1.getId(), 0, 2));
 	}
 	
+	@Test(expected = InstanceNotFoundException.class)
+	public void testGetUserProductsNonExistentUser() throws InstanceNotFoundException {
+		
+		productService.getUserProducts(NON_EXISTENT_ID, 0, 2);
+	}
+	
+	@Test(expected = InstanceNotFoundException.class)
+	public void testGetNonExistentProductId() throws InstanceNotFoundException {
+		
+		productService.getProductDetail(NON_EXISTENT_ID);
+	}
+	
+	@Test(expected = InstanceNotFoundException.class)
+	public void testAddProductNonExistentCategoryId() throws InstanceNotFoundException {
+		
+		User user1 = signUpUser("user1");
+
+		productService.addProduct(user1.getId(), "nombre", "descripcion", (long)10, 
+				new BigDecimal(10), "Info", NON_EXISTENT_ID);
+	}
 }

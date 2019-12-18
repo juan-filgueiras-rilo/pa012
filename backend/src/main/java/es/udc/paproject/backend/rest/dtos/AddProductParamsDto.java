@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 
 public class AddProductParamsDto {
 
-	
 	private String name;
 	private String description;
 	private Long duration;

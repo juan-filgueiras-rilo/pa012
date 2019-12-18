@@ -14,8 +14,4 @@ public class InsufficientBidQuantityException extends Exception {
 		return quantity;
 	}
 
-	public void setQuantity(double quantity) {
-		this.quantity = quantity;
-	}
-
 }

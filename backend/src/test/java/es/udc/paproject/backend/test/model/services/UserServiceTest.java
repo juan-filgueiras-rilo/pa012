@@ -49,12 +49,17 @@ public class UserServiceTest {
 	
 	@Test(expected = DuplicateInstanceException.class)
 	public void testSignUpDuplicatedUserName() throws DuplicateInstanceException {
-		
 		User user = createUser("user");
-		
+		DuplicateInstanceException exn = new DuplicateInstanceException("project.entities.user", user.getUserName());
+
 		userService.signUp(user);
-		userService.signUp(user);
-		
+		try {
+			userService.signUp(user);
+		} catch (DuplicateInstanceException e) {
+			assertEquals(exn.getName(), e.getName());
+			assertEquals(exn.getKey(), e.getKey());
+			throw e;
+		}
 	}
 	
 	@Test(expected = InstanceNotFoundException.class)
@@ -83,8 +88,13 @@ public class UserServiceTest {
 		String clearPassword = user.getPassword();
 		
 		userService.signUp(user);
-		userService.login(user.getUserName(), 'X' + clearPassword);
-		
+		try {
+			userService.login(user.getUserName(), 'X' + clearPassword);
+		} catch (IncorrectLoginException e){
+			assertEquals(e.getUserName(), user.getUserName());
+			assertEquals(e.getPassword(), 'X' + clearPassword);
+			throw e;
+		}
 	}
 	
 	@Test(expected = IncorrectLoginException.class)

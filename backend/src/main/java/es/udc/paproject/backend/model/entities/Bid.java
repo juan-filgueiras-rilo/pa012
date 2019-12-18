@@ -90,7 +90,7 @@ public class Bid {
 	
 	@Transient
 	public boolean isWinning() {
-		return this.product.getWinningBid().getId() == this.id;
+		return this.product.getWinningBid().getId().equals(this.id);
 	}
 	
 	@Transient

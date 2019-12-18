@@ -1,7 +1,9 @@
 package es.udc.paproject.backend.model.services;
 
+import es.udc.paproject.backend.model.common.exceptions.InstanceException;
+
 @SuppressWarnings("serial")
-public class UnauthorizedBidException extends Exception {
+public class UnauthorizedBidException extends InstanceException {
 	
 	private Long id;
 	
@@ -13,9 +15,6 @@ public class UnauthorizedBidException extends Exception {
 	public Long getId() {
 		return id;
 	}
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
+
 
 }
