@@ -54,6 +54,7 @@ public class UserServiceTest {
 
 		userService.signUp(user);
 		try {
+			user.setUserName("user");
 			userService.signUp(user);
 		} catch (DuplicateInstanceException e) {
 			assertEquals(exn.getName(), e.getName());

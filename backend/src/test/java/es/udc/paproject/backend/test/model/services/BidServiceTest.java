@@ -3,10 +3,12 @@ package es.udc.paproject.backend.test.model.services;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -22,6 +24,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import es.udc.paproject.backend.model.common.exceptions.DuplicateInstanceException;
 import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundException;
 import es.udc.paproject.backend.model.entities.Bid;
+import es.udc.paproject.backend.model.entities.BidDao;
 import es.udc.paproject.backend.model.entities.Category;
 import es.udc.paproject.backend.model.entities.CategoryDao;
 import es.udc.paproject.backend.model.entities.Product;
@@ -49,6 +52,9 @@ public class BidServiceTest {
 
 	@Autowired
 	private ProductDao productDao;
+	
+	@Autowired
+	private BidDao bidDao;
 
 	@Autowired
 	private AuctionService bidService;
@@ -118,15 +124,24 @@ public class BidServiceTest {
 				new BigDecimal(10), "Info", category1.getId());
 
 		Product productDetail = productService.getProductDetail(product);
-
-		Bid bid1 = bidService.createBid(user2.getId(), product, new BigDecimal(10));
+		//Nos aseguramos de que esta bid no se tiene en cuenta despues de devolver los datos de la puja
+		Bid bid1 = new Bid();
+		bid1.setQuantity(new BigDecimal(100));
+		bid1.setDate(LocalDateTime.now());
+		bid1.setUser(new User());
+		bid1.setProduct(new Product());
+		
+		bid1 = bidService.createBid(user2.getId(), product, new BigDecimal(10));
 		Bid bid2 = bidService.createBid(user3.getId(), product, new BigDecimal(12));
 
 		assertEquals(productDetail.getCurrentPrice().stripTrailingZeros(), new BigDecimal(10.5));
-		// assertEquals(bid2.getState(), Bid.BidState.WINNING);
-		// assertEquals(bid1.getState(), Bid.BidState.LOST);
+		assertEquals(bid2.getBidStatus(), Bid.BidStatus.WINNING);
+		assertEquals(bid1.getBidStatus(), Bid.BidStatus.LOST);
 		assertTrue(bid2.isWinning());
 		assertFalse(bid1.isWinning());
+		productDetail.setEndDate(productDetail.getEndDate().minusMinutes(10));
+		productDao.save(productDetail);
+		assertEquals(bid2.getBidStatus(), Bid.BidStatus.WON);
 
 	}
 
@@ -143,10 +158,11 @@ public class BidServiceTest {
 		Long product = productService.addProduct(user1.getId(), "name", "reger", (long) 120, new BigDecimal(10),
 				"pergv", category1.getId());
 		Product productDetail = productService.getProductDetail(product);
-
+		assertNull(productDetail.getWinnerEmail());
 		bidService.createBid(user2.getId(), product, new BigDecimal(12));
-
+		
 		assertEquals(productDetail.getCurrentPrice(), new BigDecimal(10).setScale(2, RoundingMode.HALF_EVEN));
+		assertEquals(productDetail.getWinnerEmail(), "user2@user2.com");
 
 	}
 
@@ -242,8 +258,8 @@ public class BidServiceTest {
 
 		assertEquals(productDetail.getCurrentPrice(), new BigDecimal(12.80).setScale(2, RoundingMode.HALF_EVEN));
 		assertEquals(productDetail.getWinningBid().getUser(), user4);
-		// assertEquals(bid1.getState(), Bid.BidState.LOST);
-		// assertEquals(bid2.getState(), Bid.BidState.LOST);
+		assertEquals(bid1.getBidStatus(), Bid.BidStatus.LOST);
+		assertEquals(bid2.getBidStatus(), Bid.BidStatus.LOST);
 		assertFalse(bid1.isWinning());
 		assertFalse(bid2.isWinning());
 	}
@@ -352,7 +368,13 @@ public class BidServiceTest {
 				"pergv", category1.getId());
 
 		bidService.createBid(user2.getId(), product, new BigDecimal(15));
-		bidService.createBid(user2.getId(), product, new BigDecimal(20));
+		try {
+			bidService.createBid(user2.getId(), product, new BigDecimal(20));
+		} catch (UnauthorizedWinningUserException e) {
+			Product p = productDao.findById(product).get();
+			assertEquals(e.getId(),p.getWinningBid().getId());
+			throw e;
+		}
 	}
 
 	// Consultar las pujas realizadas por un usuario (getUserBids)

@@ -63,7 +63,8 @@ public class ProductServiceTest {
 	@Test
 	public void addProductTest() throws InstanceNotFoundException {
 		
-		Category category1 = new Category("category1");
+		Category category1 = new Category();
+		category1.setName("category1");
 		Category category2 = new Category("category2");
 		categoryDao.save(category1);
 		categoryDao.save(category2);
@@ -107,7 +108,11 @@ public class ProductServiceTest {
 		
 		Block<Product> expectedBlock = new Block<>(Arrays.asList(productDetail, productDetail2), false);
 		assertEquals(expectedBlock, productService.findProducts(null, "PrOdu", 0, 2));
-		
+		Block<Product> expectedBlock2 = new Block<>(Arrays.asList(productDetail, productDetail2), false);
+		assertEquals(expectedBlock2, productService.findProducts(category1.getId(), "PrOdu", 0, 2));
+		Block<Product> expectedBlock3 = new Block<>(Arrays.asList(productDetail2), false);
+		assertEquals(expectedBlock3, productService.findProducts(category1.getId(), "X PrOdu", 0, 2));
+		assertEquals(1, productService.findProducts(category1.getId(), "PrOdu", 0, 1).getItems().size());
 	}
 	
 	//Buscar un producto un producto por categorias

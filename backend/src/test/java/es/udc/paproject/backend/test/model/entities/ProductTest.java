@@ -39,5 +39,12 @@ public class ProductTest {
 		Product product = createProduct("producto", (long) 40);
 		assertEquals(new Long(40), product.getRemainingTime());
 	}
+
+	@Test
+	public void testRemainingTimeIsZero() throws InstanceNotFoundException {
+		Product product = createProduct("producto", (long) 1);
+		product.setEndDate(product.getEndDate().minusMinutes(1));
+		assertEquals(new Long(0), product.getRemainingTime());
+	}
 	
 }
