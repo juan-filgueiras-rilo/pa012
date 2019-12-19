@@ -1,24 +1,25 @@
-package es.udc.paproject.backend.test.model.quickcheck;
+package jetm;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-
-import com.pholser.junit.quickcheck.From;
-import com.pholser.junit.quickcheck.Property;
-import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.SliceImpl;
 
 import es.udc.paproject.backend.model.common.exceptions.InstanceNotFoundException;
 import es.udc.paproject.backend.model.entities.Category;
@@ -29,10 +30,16 @@ import es.udc.paproject.backend.model.entities.User;
 import es.udc.paproject.backend.model.entities.UserDao;
 import es.udc.paproject.backend.model.services.CatalogServiceImpl;
 import es.udc.paproject.backend.model.services.PermissionChecker;
+import etm.core.configuration.BasicEtmConfigurator;
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
+import etm.core.renderer.SimpleTextRenderer;
 
-@RunWith(JUnitQuickcheck.class)
-public class BackendProperties {
-    
+public class OneMinuteTest {
+
+	private static EtmMonitor etmMonitor;
+
 	@Mock
 	private ProductDao productDao;
 	
@@ -53,11 +60,10 @@ public class BackendProperties {
 	
 	Category CATEGORY = new Category("cat");
 	User USER = new User("user", "password", "fn", "ln","user@user.com");
-	
+	Product PRODUCT = new Product("NOMBRE", "DESCRIPCION", 10L, new BigDecimal(10), "SHIPMENTINFO", CATEGORY, USER);
+
 	@Before
-	public void setup() throws InstanceNotFoundException {
-		USER.setId(1L);
-		CATEGORY.setId(1L);
+	public void setupMocks() throws InstanceNotFoundException {
 		MockitoAnnotations.initMocks(this);
 		when(categoryDao.findById(1L)).thenReturn(Optional.of(CATEGORY));
 		when(categoryDao.findById(0L)).thenReturn(Optional.empty());
@@ -72,20 +78,44 @@ public class BackendProperties {
 		    	return product;
 		    }
 		});
+		when(productDao.findById(any(Long.class))).thenReturn(Optional.of(PRODUCT));
+		when(productDao.findByUserIdOrderByEndDateDesc(any(Long.class), any(PageRequest.class))).thenReturn(new SliceImpl<>(new ArrayList<Product>(),PageRequest.of(0, 10), true));
 	}
 	
-	@Property(trials=1000)
-	public void addProductTest(@From(ProductGenerator.class) Product product) throws InstanceNotFoundException {
-		if(product.getCategory().getId() <= 0) {
-			exception.expect(InstanceNotFoundException.class);
-			catalogService.addProduct(product.getUser().getId(), product.getName(), product.getDescriptionProduct(), product.getDuration(), product.getInitialPrice(), product.getShipmentInfo(), product.getCategory().getId());
-		}
-		if(product.getUser().getId() <= 0) {
-			exception.expect(InstanceNotFoundException.class);
-			catalogService.addProduct(product.getUser().getId(), product.getName(), product.getDescriptionProduct(), product.getDuration(), product.getInitialPrice(), product.getShipmentInfo(), product.getCategory().getId());
-		}
-		Long id = catalogService.addProduct(product.getUser().getId(), product.getName(), product.getDescriptionProduct(), product.getDuration(), product.getInitialPrice(), product.getShipmentInfo(), product.getCategory().getId());
-		assertEquals(id,(Long)1L);
+	@Test
+	public void test() throws InstanceNotFoundException {
+		// configure measurement framework
+		setup();
+
+		// execute business logic
+
+		EtmPoint addProductPoint = etmMonitor.createPoint("CatalogService:addProduct");
+		catalogService.addProduct(1L, "NOMBRE", "DESCRIPCION", 10L, new BigDecimal(10), "SHIPMENTINFO", 1L);
+		addProductPoint.collect();
+		
+		EtmPoint getDetailsPoint = etmMonitor.createPoint("CatalogService:getProductDetails");
+		catalogService.getProductDetail(1L);
+		getDetailsPoint.collect();
+		
+		EtmPoint getUserProductsPoint = etmMonitor.createPoint("CatalogService:getUserProducts");
+		catalogService.getUserProducts(1L, 0, 10);
+		getUserProductsPoint.collect();
+		
+		// visualize results
+		etmMonitor.render(new SimpleTextRenderer());
+
+		// shutdown measurement framework
+		tearDown();
 	}
-	
+
+	private static void setup() {
+		BasicEtmConfigurator.configure();
+		etmMonitor = EtmManager.getEtmMonitor();
+		etmMonitor.start();
+	}
+
+	private static void tearDown() {
+		etmMonitor.stop();
+	}
+
 }
