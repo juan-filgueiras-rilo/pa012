@@ -1,0 +1,34 @@
+{
+	"id": "1bac574b-077f-4274-9b4f-b08f7e8706c9",
+	"name": "TestPa",
+	"values": [
+		{
+			"key": "auctionerUserName",
+			"value": "auctioner",
+			"enabled": true
+		},
+		{
+			"key": "bidderUserName",
+			"value": "bidder",
+			"enabled": true
+		},
+		{
+			"key": "auctionerBearerToken",
+			"value": "",
+			"enabled": true
+		},
+		{
+			"key": "bidderBearerToken",
+			"value": "",
+			"enabled": true
+		},		
+		{
+			"key": "productId",
+			"value": "",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2019-12-18T18:38:32.886Z",
+	"_postman_exported_using": "Postman/7.13.0"
+}

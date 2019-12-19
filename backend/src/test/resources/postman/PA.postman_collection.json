@@ -1,0 +1,598 @@
+{
+	"info": {
+		"name": "PA",
+		"_postman_id": "f3b00028-0a98-0b44-1aa9-eafca3798beb",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auctioner signUp",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"auctionerBearerToken\", jsonData.serviceToken);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userName\":\"auctioner\",\n\t\"password\":\"password\",\n\t\"firstName\":\"auctioner\",\n\t\"lastName\":\"auctioner\",\n\t\"email\":\"auctioner@user.com\",\n\t\"role\":\"USER\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/users/signUp",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"signUp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bidder signUp",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"bidderBearerToken\", jsonData.serviceToken);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userName\":\"bidder\",\n\t\"password\":\"password\",\n\t\"firstName\":\"bidder\",\n\t\"lastName\":\"bidder\",\n\t\"email\":\"bidder@user.com\",\n\t\"role\":\"USER\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/users/signUp",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"signUp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auctioner login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"auctionerBearerToken\", jsonData.serviceToken);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "UserName",
+						"value": "asdd"
+					},
+					{
+						"key": "password",
+						"value": "aaaaaaa"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userName\":\"auctioner\",\n\t\"password\":\"password\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bidder login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"bidderBearerToken\", jsonData.serviceToken);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "UserName",
+						"value": "asdd"
+					},
+					{
+						"key": "password",
+						"value": "aaaaaaa"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userName\":\"bidder\",\n\t\"password\":\"password\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auctioner addProduct",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"productId\", jsonData.id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auctionerBearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"Product1\",\n\t\"description\":\"Product 1\",\n\t\"duration\":\"100\",\n\t\"initialPrice\":\"10\",\n\t\"shipmentInfo\":\"info\",\n\t\"categoryId\":\"1\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/catalog/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"catalog",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auctioner addProductNotValidException",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auctionerBearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"Product1\",\n\t\"description\":\"Product 1\",\n\t\"duration\":\"100\",\n\t\"initialPrice\":\"10\",\n\t\"shipmentInfo\":\"info\",\n\t\"categoryId\":\"0\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/catalog/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"catalog",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findProducts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/catalog/products?keywords=",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"catalog",
+						"products"
+					],
+					"query": [
+						{
+							"key": "keywords",
+							"value": "",
+							"equals": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findByKeywords",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/catalog/products?keywords=prod",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"catalog",
+						"products"
+					],
+					"query": [
+						{
+							"key": "keywords",
+							"value": "prod",
+							"equals": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findByKeywords&Category",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/catalog/products?categoryId=&keywords=prod",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"catalog",
+						"products"
+					],
+					"query": [
+						{
+							"key": "categoryId",
+							"value": "",
+							"equals": true
+						},
+						{
+							"key": "keywords",
+							"value": "prod",
+							"equals": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findByCategory",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/catalog/products?categoryId=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"catalog",
+						"products"
+					],
+					"query": [
+						{
+							"key": "categoryId",
+							"value": "2",
+							"equals": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getProductDetails",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/catalog/products/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"catalog",
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getProductDetailsInstanceNotFoundEx",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/catalog/products/1000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"catalog",
+						"products",
+						"1000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bidder createBid",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bidderBearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"productId\" :{{productId}},\r\n\t\"quantity\" :\"50.0\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/auction/bids",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auction",
+						"bids"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bidder createBidAlreadyWinningUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bidderBearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"productId\" :{{productId}},\r\n\t\"quantity\" :\"52.0\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/auction/bids",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auction",
+						"bids"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bidder getUserBids",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bidderBearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/auction/bids?page=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auction",
+						"bids"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0",
+							"equals": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auctioner getUserProducts",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auctionerBearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/catalog/userProducts?page=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"catalog",
+						"userProducts"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0",
+							"equals": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
